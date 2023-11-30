@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Entity
 @Setter
 @Getter
@@ -22,4 +24,6 @@ public class User extends Person{
     private String password;
     @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY,optional = true)
     private Profile profile;
+    @Enumerated(EnumType.STRING)
+    private List<Authority> authorities;
 }
