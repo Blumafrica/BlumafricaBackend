@@ -16,7 +16,7 @@ public class Validate {
 
 
     public static boolean validateAdminDetails(LoginAsAdminRequest request){
-        System.out.println("on validate"+admin);
+        System.out.println("on validate"+ admin.getEmail() + "ON validate "+ admin.getPassword());
         return request.getPassword().equals(admin.getEmail()) && request.getEmail().equals(admin.getEmail());
     }
 }

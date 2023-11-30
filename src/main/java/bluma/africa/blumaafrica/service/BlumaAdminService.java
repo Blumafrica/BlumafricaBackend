@@ -24,7 +24,7 @@ public class BlumaAdminService implements AdminService {
     public LoginAsAdminResponse logInAsAdmin(LoginAsAdminRequest request) throws BlumaException {
         boolean response = Validate.validateAdminDetails(request);
         if (response) return new LoginAsAdminResponse(request.getEmail());
-        else throw new BlumaException("Incorrect admin details");
+        else throw  new BlumaException("incorrect details");
     }
 
 
@@ -43,6 +43,7 @@ public class BlumaAdminService implements AdminService {
         response.setPostOwnerId(post.getPostOwner().getId());
         return response;
     }
+
 
 
 }
