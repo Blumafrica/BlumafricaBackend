@@ -24,7 +24,7 @@ public class JwtService {
         return token;
 
     }
-    public String ExtractUsernameFromToken(String token){
+    public String extractUsernameFromToken(String token){
         JWTVerifier verifier = JWT.require(Algorithm.HMAC256("secret"))
                 .withIssuer("Blumafrica .")
                 .build();
