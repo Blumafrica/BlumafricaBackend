@@ -36,7 +36,7 @@ public class BlumaAdminService implements AdminService {
 
 
     @Override
-    public PostResponse post(PostRequest postRequest) {
+    public PostResponse post(PostRequest postRequest) throws BlumaException {
         Post post = Mapper.map(postRequest);
         Post savedPost  = postRepository.save(post);
         System.out.println("saved post ==> "+savedPost);

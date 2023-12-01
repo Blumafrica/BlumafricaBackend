@@ -13,6 +13,6 @@ public class PostRequest {
     private String description;
     private String fileUrl;
     private Long id;
-    private Authority authority;
+    private String authority;
     private Long PosterId;
 }

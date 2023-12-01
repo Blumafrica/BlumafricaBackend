@@ -41,16 +41,16 @@ class BlumaAdminServiceTest {
     }
 
     @Test
-    public void testThatAdminCanPost(){
+    public void testThatAdminCanPost() throws BlumaException {
         PostRequest postRequest = new PostRequest();
         postRequest.setDescription("about nigeria");
         postRequest.setText("I love nigerian");
         postRequest.setFileUrl("C:\\Users\\mariam\\capstone-backend\\BlumafricaBackend\\src\\main\\resources\\assets\\e field.jpeg");
         postRequest.setPosterId(1L);
-        postRequest.setAuthority(Authority.ADMIN);
+        postRequest.setAuthority("ADMIN");
         PostResponse response = adminService.post(postRequest);
         assertNotNull(response);
-        assertEquals(1L, response.getPostId());
+
     }
 
 

@@ -37,7 +37,11 @@ public class AdminControllers {
    @PostMapping("/api/v1/post")
     public ResponseEntity<?> post(@RequestBody PostRequest request){
        PostResponse response = null;
-       response = adminService.post(request);
+       try {
+           response = adminService.post(request);
+       } catch (BlumaException e) {
+           return new ResponseEntity<>("error occurs", HttpStatus.CONFLICT);
+       }
 
        return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
    }
