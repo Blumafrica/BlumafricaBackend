@@ -35,4 +35,5 @@ public class Post {
     @Enumerated(EnumType.STRING)
     private Authority postOwnerAuthority;
 
+
 }

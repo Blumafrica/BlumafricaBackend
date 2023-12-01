@@ -6,13 +6,14 @@ import bluma.africa.blumaafrica.data.models.User;
 import bluma.africa.blumaafrica.data.repositories.PostRepository;
 import bluma.africa.blumaafrica.dtos.requests.PostRequest;
 import bluma.africa.blumaafrica.dtos.responses.PostResponse;
+import bluma.africa.blumaafrica.exceptions.PostNotFoundException;
 import bluma.africa.blumaafrica.exceptions.UserNotFound;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
-public class BlumaPostService implements PostService{
+public class BlumaPostService implements PostService {
     private final PostRepository postRepository;
 
 
@@ -20,10 +21,18 @@ public class BlumaPostService implements PostService{
     public PostResponse saveUserPost(Post post) throws UserNotFound {
         var savedPost = postRepository.save(post);
 
-         PostResponse postResponse = new PostResponse();
-         postResponse.setTimePosted(savedPost.getCreatedAt());
-         postResponse.setPostId(savedPost.getId());
-         postResponse.setPostOwnerId(savedPost.getPostOwnerId());
+        PostResponse postResponse = new PostResponse();
+        postResponse.setTimePosted(savedPost.getCreatedAt());
+        postResponse.setPostId(savedPost.getId());
+        postResponse.setPostOwnerId(savedPost.getPostOwnerId());
         return postResponse;
     }
+
+    @Override
+    public Post getPostById(Long postId) throws PostNotFoundException {
+
+        // return postRepository.findById(postId);
+    return null;
+}
+
 }

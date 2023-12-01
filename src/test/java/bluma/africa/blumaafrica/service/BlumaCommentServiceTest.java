@@ -1,0 +1,40 @@
+package bluma.africa.blumaafrica.service;
+
+import bluma.africa.blumaafrica.dtos.requests.CreateCommentRequest;
+import bluma.africa.blumaafrica.dtos.requests.UpdateCommentRequest;
+import bluma.africa.blumaafrica.dtos.responses.ResponseApi;
+import bluma.africa.blumaafrica.exceptions.BlumaException;
+import bluma.africa.blumaafrica.exceptions.CommentNotFoundException;
+import bluma.africa.blumaafrica.exceptions.PostNotFoundException;
+import bluma.africa.blumaafrica.exceptions.UserNotFound;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+@SpringBootTest
+public class BlumaCommentServiceTest {
+    @Autowired
+
+    private CommentService commentService;
+
+    @Test
+    public void addCommentTest() throws CommentNotFoundException, UserNotFound, PostNotFoundException {
+        CreateCommentRequest createCommentRequest = new CreateCommentRequest();
+        createCommentRequest.setCommenterId(1L);
+        createCommentRequest.setCommentText("This is a test");
+        var response = commentService.createComment(1L, createCommentRequest);
+        assertThat(response).isNotNull();
+    }
+    @Test
+    public void updateCommentTest() throws BlumaException {
+        UpdateCommentRequest updateCommentRequest = new UpdateCommentRequest();
+        updateCommentRequest.setCommentId(1L);
+        updateCommentRequest.setNewCommentText("This should be updated please");
+        ResponseApi<?> response =commentService.updateComment(1L,1L,updateCommentRequest);assertNotNull(response);
+
+    }
+
+}
