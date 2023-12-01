@@ -14,4 +14,9 @@ public class PostResponse {
     private LocalDateTime timePosted;
     private Long postId;
     private Long postOwnerId;
+    private String message;
+
+    public String getMessage(){
+        return "Posted";
+    }
 }
