@@ -11,8 +11,9 @@ public class Mapper {
         Post post = new Post();
         post.setContent(postRequest.getText());
         post.setDescription(postRequest.getDescription());
-        post.setPostOwner(postRequest.getPostOwner());
+        post.setPostOwnerId(postRequest.getPosterId());
         post.setCreatedAt(LocalDateTime.now());
+        post.setPostOwnerAuthority(postRequest.getAuthority());
         post.setFileUrl(postRequest.getFileUrl());
         return post;
     }

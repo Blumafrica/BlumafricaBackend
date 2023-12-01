@@ -1,6 +1,9 @@
 package bluma.africa.blumaafrica.controllers;
 
+import bluma.africa.blumaafrica.data.models.Authority;
 import bluma.africa.blumaafrica.dtos.requests.LoginAsAdminRequest;
+import bluma.africa.blumaafrica.dtos.requests.PostRequest;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +31,7 @@ class AdminControllersTest {
     public void testThatAdminCanLogin(){
         LoginAsAdminRequest request = new LoginAsAdminRequest();
         request.setEmail("mariiam22222@gmail.com");
-        request.setPassword("password");
+        request.setPassword("@Ahhaj(JJI");
 
         try {
             byte [] content = mapper.writeValueAsBytes(request);
@@ -39,6 +42,28 @@ class AdminControllersTest {
                     .andDo(print());
         } catch (Exception e) {
                    e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void testThatUserCanPost(){
+        PostRequest request =  new PostRequest();
+        request.setAuthority(Authority.ADMIN);
+        request.setPosterId(1L);
+        request.setText("Test admin");
+        request.setDescription("description");
+        request.setFileUrl("C:\\Users\\mariam\\Desktop\\BlumafricaBackend\\src\\main\\resources\\assets\\the cat.jpeg");
+
+
+        try {
+            byte [] content = mapper.writeValueAsBytes(request);
+            mockMvc.perform(post("/api/v1/post")
+                    .content(content)
+                    .contentType(MediaType.APPLICATION_JSON))
+                    .andExpect(status().is2xxSuccessful())
+                    .andDo(print());
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }
