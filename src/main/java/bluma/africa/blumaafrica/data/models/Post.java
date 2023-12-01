@@ -22,8 +22,7 @@ public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @ManyToOne(cascade =CascadeType.ALL, fetch = FetchType.EAGER )
-    private Person postOwner;
+    private Long postOwnerId;
     private String content;
     private int totalOfShare;
     @JsonDeserialize(using = LocalDateDeserializer.class)
@@ -33,6 +32,7 @@ public class Post {
     private int totalOfLike;
     private String description;
     private String fileUrl;
-//    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-//    private MultipartFile file;
+    @Enumerated(EnumType.STRING)
+    private Authority postOwnerAuthority;
+
 }

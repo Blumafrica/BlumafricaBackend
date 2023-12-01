@@ -2,6 +2,8 @@ package bluma.africa.blumaafrica.controllers;
 
 import bluma.africa.blumaafrica.dtos.requests.LoginAsAdminRequest;
 import bluma.africa.blumaafrica.dtos.requests.LoginAsAdminResponse;
+import bluma.africa.blumaafrica.dtos.requests.PostRequest;
+import bluma.africa.blumaafrica.dtos.responses.PostResponse;
 import bluma.africa.blumaafrica.exceptions.BlumaException;
 import bluma.africa.blumaafrica.service.AdminService;
 import lombok.AllArgsConstructor;
@@ -29,6 +31,14 @@ public class AdminControllers {
        } catch (BlumaException e) {
            return new ResponseEntity<>("incorrect details", HttpStatus.BAD_REQUEST);
        }
+       return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
+   }
+
+   @PostMapping("/api/v1/post")
+    public ResponseEntity<?> post(@RequestBody PostRequest request){
+       PostResponse response = null;
+       response = adminService.post(request);
+
        return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
    }
 

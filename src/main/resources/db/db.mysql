@@ -1,2 +1,0 @@
-insert into admin (id, email, password) values
-(1, 'mariiam22222@gmail.com', 'password'),
