@@ -1,11 +1,9 @@
 package bluma.africa.blumaafrica.service;
 
-import bluma.africa.blumaafrica.data.models.Authority;
 import bluma.africa.blumaafrica.data.models.Post;
-import bluma.africa.blumaafrica.data.models.User;
 import bluma.africa.blumaafrica.data.repositories.PostRepository;
-import bluma.africa.blumaafrica.dtos.requests.PostRequest;
 import bluma.africa.blumaafrica.dtos.responses.PostResponse;
+import bluma.africa.blumaafrica.exceptions.PostNotFound;
 import bluma.africa.blumaafrica.exceptions.UserNotFound;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -26,4 +24,25 @@ public class BlumaPostService implements PostService{
          postResponse.setPostOwnerId(savedPost.getPostOwnerId());
         return postResponse;
     }
+
+    @Override
+    public Post getPostById(Long id) throws PostNotFound {
+            return postRepository.findById(id)
+                    .orElseThrow(() -> new PostNotFound("Post not found with id: " + id));
+        }
+
+    @Override
+    public PostResponse deletePostById(Long postId) throws PostNotFound {
+        Post getPost = postRepository.findById(postId).
+                 orElseThrow(() -> new PostNotFound("Post not found with id: " + postId));
+        var extractId = getPost.getId();
+        postRepository.deleteById(extractId);
+        PostResponse response = new PostResponse();
+        response.setMessage("Post Successfully deleted");
+        return response;
+    }
+
 }
+
+
+

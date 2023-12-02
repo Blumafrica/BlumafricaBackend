@@ -24,31 +24,44 @@ import java.io.IOException;
 public class BlumaAuthorizationFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
     private final UserService userService;
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        boolean isRequestToPublicEndpoint = request.getMethod().equals("POST")&&
+        boolean isRequestToPublicEndpoint = request.getMethod().equals("POST") &&
                 SecurityUtils.getPublicEndpoints().contains(request.getServletPath());
 
-        if (isRequestToPublicEndpoint) filterChain.doFilter(request, response);
-
-        else {
+        if (isRequestToPublicEndpoint) {
+            filterChain.doFilter(request, response);
+        } else {
             String authorizationHeader = request.getHeader("Authorization");
             log.info("auth header:: {}", authorizationHeader);
-            String token = authorizationHeader.substring("Bearer ".length());
-            String username = jwtService.extractUsernameFromToken(token);
 
-            log.info("username:: {}", username);
-            User user = userService.getUserBy(username);
-            var authorities = user.getAuthorities().stream()
-                    .map(authority -> new SimpleGrantedAuthority(authority.name()))
-                    .toList();
-            log.info("authorities:: {}", authorities);
-            var authentication = new UsernamePasswordAuthenticationToken(user.getEmail(), null, authorities);
+            if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+                String token = authorizationHeader.substring("Bearer ".length());
 
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+                try {
+                    String username = jwtService.extractUsernameFromToken(token);
+                    log.info("username:: {}", username);
+
+                    User user = userService.getUserBy(username);
+                    var authorities = user.getAuthorities().stream()
+                            .map(authority -> new SimpleGrantedAuthority(authority.name()))
+                            .toList();
+                    log.info("authorities:: {}", authorities);
+
+                    var authentication = new UsernamePasswordAuthenticationToken(user.getEmail(), null, authorities);
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+
+                } catch (Exception e) {
+                    log.error("Error processing JWT token: {}", e.getMessage());
+                }
+            } else {
+                log.warn("Invalid or missing 'Authorization' header");
+            }
+
             filterChain.doFilter(request, response);
         }
-
     }
-}
 
+
+}
