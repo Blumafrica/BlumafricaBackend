@@ -48,7 +48,7 @@ class AdminControllersTest {
     @Test
     public void testThatUserCanPost(){
         PostRequest request =  new PostRequest();
-        request.setAuthority(Authority.ADMIN);
+        request.setAuthority("ADMIN");
         request.setPosterId(1L);
         request.setText("Test admin");
         request.setDescription("description");

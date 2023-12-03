@@ -14,6 +14,5 @@ public class SecurityUtils {
                 "/api/v1/user/{postId}/editPost/",
                 "/api/v1/{postId}/deletePost/"
         );
-
     }
 }

@@ -12,6 +12,6 @@ public interface AdminService {
 
     LoginAsAdminResponse logInAsAdmin(LoginAsAdminRequest request) throws BlumaException;
 
-    PostResponse post(PostRequest postRequest);
+    PostResponse post(PostRequest postRequest) throws BlumaException;
 
 }
