@@ -10,8 +10,9 @@ public class SecurityUtils {
                 "/login",
                 "/api/v1/loginAsAdmin",
                 "/api/v1/user/register",
-                "/api/v1/post"
+                "/api/v1/user/post",
+                "/api/v1/user/{postId}/editPost/",
+                "/api/v1/{postId}/deletePost/"
         );
-
     }
 }
