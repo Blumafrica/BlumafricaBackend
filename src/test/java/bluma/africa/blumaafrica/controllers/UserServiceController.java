@@ -1,6 +1,7 @@
 package bluma.africa.blumaafrica.controllers;
 
 import bluma.africa.blumaafrica.data.models.Authority;
+import bluma.africa.blumaafrica.dtos.requests.FetchUserPostRequest;
 import bluma.africa.blumaafrica.dtos.requests.PostRequest;
 import bluma.africa.blumaafrica.dtos.requests.UserRequest;
 import bluma.africa.blumaafrica.dtos.responses.PostResponse;
@@ -17,8 +18,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.List;
 
 import static bluma.africa.blumaafrica.data.models.Authority.USER;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -95,6 +95,22 @@ public class UserServiceController {
                     andExpect(status().is2xxSuccessful()).
                     andDo(print());
         }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void testAllUserPostCanBeFound(){
+        FetchUserPostRequest request = new FetchUserPostRequest("103");
+
+        try {
+            byte [] content = objectMapper.writeValueAsBytes(request);
+            mockMvc.perform(get("api/v1/getPosts")
+                    .content(content)
+                    .contentType(MediaType.APPLICATION_JSON))
+                    .andExpect(status().is2xxSuccessful())
+                    .andDo(print());
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

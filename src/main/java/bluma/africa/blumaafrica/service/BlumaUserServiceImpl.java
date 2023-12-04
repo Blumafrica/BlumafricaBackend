@@ -4,9 +4,11 @@ import bluma.africa.blumaafrica.data.models.Authority;
 import bluma.africa.blumaafrica.data.models.Post;
 import bluma.africa.blumaafrica.data.models.User;
 import bluma.africa.blumaafrica.data.repositories.UserRepository;
+import bluma.africa.blumaafrica.dtos.requests.FetchUserPostRequest;
 import bluma.africa.blumaafrica.dtos.requests.PostRequest;
 import bluma.africa.blumaafrica.dtos.requests.UserRequest;
 import bluma.africa.blumaafrica.dtos.responses.EditPostResponse;
+import bluma.africa.blumaafrica.dtos.responses.FetchUserPostResponse;
 import bluma.africa.blumaafrica.dtos.responses.PostResponse;
 import bluma.africa.blumaafrica.dtos.responses.UserResponse;
 import bluma.africa.blumaafrica.exceptions.PostNotFound;
@@ -97,5 +99,15 @@ public class BlumaUserServiceImpl implements UserService{
     @Override
     public Post findPostById(Long postId) throws PostNotFound {
         return postService.getPostById(postId);
+    }
+
+    @Override
+    public FetchUserPostResponse findUserPosts(FetchUserPostRequest request) {
+        List<Post> foundPosts =  postService.getUserPosts(request.getUserId());
+        return convertToResponse(foundPosts);
+    }
+
+    private FetchUserPostResponse convertToResponse(List<Post> foundPosts) {
+        return new FetchUserPostResponse(foundPosts);
     }
 }

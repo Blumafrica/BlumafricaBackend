@@ -1,5 +1,6 @@
 package bluma.africa.blumaafrica.service;
 
+import bluma.africa.blumaafrica.data.models.Authority;
 import bluma.africa.blumaafrica.data.models.Post;
 import bluma.africa.blumaafrica.data.repositories.PostRepository;
 import bluma.africa.blumaafrica.dtos.responses.PostResponse;
@@ -8,11 +9,23 @@ import bluma.africa.blumaafrica.exceptions.UserNotFound;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @AllArgsConstructor
 public class BlumaPostService implements PostService{
     private final PostRepository postRepository;
 
+
+    @Override
+    public Post save(Post post) {
+        return postRepository.save(post);
+    }
+
+    @Override
+    public List<Post> findByPostOwnerAuthority(Authority userAuthority) {
+        return postRepository.findByPostOwnerAuthority(userAuthority);
+    }
 
     @Override
     public PostResponse saveUserPost(Post post) throws UserNotFound {
@@ -41,6 +54,16 @@ public class BlumaPostService implements PostService{
         response.setMessage("Post Successfully deleted");
         return response;
     }
+
+    @Override
+    public List<Post> getUserPosts(String userId) {
+        long convertId = Long.parseLong(userId);
+       List<Post> foundPosts = findByPostOwnerAuthority(Authority.USER);
+       return foundPosts.stream()
+               .filter(x -> x.getPostOwnerId() == convertId)
+               .toList();
+    }
+
 
 }
 
