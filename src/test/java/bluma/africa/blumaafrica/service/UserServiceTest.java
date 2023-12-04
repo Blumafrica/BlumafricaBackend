@@ -2,10 +2,12 @@ package bluma.africa.blumaafrica.service;
 
 
 import bluma.africa.blumaafrica.data.models.Authority;
+import bluma.africa.blumaafrica.dtos.requests.FetchUserPostRequest;
 import bluma.africa.blumaafrica.dtos.requests.PostEditRequest;
 import bluma.africa.blumaafrica.dtos.requests.PostRequest;
 import bluma.africa.blumaafrica.dtos.requests.UserRequest;
 import bluma.africa.blumaafrica.dtos.responses.EditPostResponse;
+import bluma.africa.blumaafrica.dtos.responses.FetchUserPostResponse;
 import bluma.africa.blumaafrica.dtos.responses.PostResponse;
 import bluma.africa.blumaafrica.dtos.responses.UserResponse;
 import bluma.africa.blumaafrica.exceptions.PostNotFound;
@@ -91,6 +93,12 @@ public class UserServiceTest {
         assertThrows(PostNotFound.class, () -> userService.findPostById(postId));
         assertNull(userService.findPostById(postId));
 
+    }
+    @Test
+    public void testThatUserPostsCanBeFound(){
+        FetchUserPostRequest request = new FetchUserPostRequest("103");
+        FetchUserPostResponse response = userService.findUserPosts(request);
+        assertEquals(10, response.getUserPost().size());
     }
 }
 

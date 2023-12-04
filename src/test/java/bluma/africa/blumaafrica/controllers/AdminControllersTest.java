@@ -93,4 +93,9 @@ class AdminControllersTest {
             e.printStackTrace();
         }
     }
+
+    @Test
+    public void testThatUserPostCanBeFetch(){
+
+    }
 }

@@ -1,8 +1,10 @@
 package bluma.africa.blumaafrica.controllers;
 
+import bluma.africa.blumaafrica.dtos.requests.FetchUserPostRequest;
 import bluma.africa.blumaafrica.dtos.requests.PostRequest;
 import bluma.africa.blumaafrica.dtos.requests.UserRequest;
 import bluma.africa.blumaafrica.dtos.responses.EditPostResponse;
+import bluma.africa.blumaafrica.dtos.responses.FetchUserPostResponse;
 import bluma.africa.blumaafrica.dtos.responses.PostResponse;
 import bluma.africa.blumaafrica.dtos.responses.UserResponse;
 import bluma.africa.blumaafrica.exceptions.PostNotFound;
@@ -57,6 +59,12 @@ public class UserController {
         } catch (PostNotFound postNotFound) {
            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(postNotFound.getMessage());
         }
+    }
+    @GetMapping("api/v1/getPosts")
+    public ResponseEntity<?> getUserPost(@RequestBody FetchUserPostRequest request){
+
+        FetchUserPostResponse response = userService.findUserPosts(request);
+        return new ResponseEntity<>(response, HttpStatus.FOUND);
     }
 
 }

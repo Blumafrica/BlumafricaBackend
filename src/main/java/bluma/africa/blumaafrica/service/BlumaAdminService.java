@@ -1,10 +1,7 @@
 package bluma.africa.blumaafrica.service;
 
 
-<<<<<<< HEAD
 import bluma.africa.blumaafrica.data.models.Authority;
-=======
->>>>>>> 94cf9b0213a4796e17d2fec9d74e6f858f5e36e4
 import bluma.africa.blumaafrica.data.models.Post;
 import bluma.africa.blumaafrica.data.repositories.PostRepository;
 import bluma.africa.blumaafrica.dtos.requests.LoginAsAdminRequest;
@@ -28,6 +25,7 @@ public class BlumaAdminService implements AdminService {
 
     private final PostRepository postRepository;
     private final Validate validate;
+    private final PostService postService;
 
 
 
@@ -45,9 +43,7 @@ public class BlumaAdminService implements AdminService {
     @Override
     public PostResponse post(PostRequest postRequest) throws BlumaException {
         Post post = Mapper.map(postRequest);
-        Post savedPost  = postRepository.save(post);
-        System.out.println("saved post ==> "+savedPost);
-        System.out.println("time posted ==> " + savedPost.getCreatedAt());
+        Post savedPost  = postService.save(post);
         return convertToResponse(savedPost);
     }
 
