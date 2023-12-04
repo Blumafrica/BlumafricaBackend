@@ -1,6 +1,5 @@
 package bluma.africa.blumaafrica.service;
 
-import bluma.africa.blumaafrica.data.models.Authority;
 import bluma.africa.blumaafrica.dtos.requests.PostRequest;
 import bluma.africa.blumaafrica.dtos.requests.UserRequest;
 import bluma.africa.blumaafrica.dtos.responses.PostResponse;
@@ -36,7 +35,7 @@ public class UserServiceTest {
         postRequest.setDescription("The story");
         postRequest.setFileUrl("C:\\Users\\mr Adio\\IdeaProjects\\BlumafricaBackend\\src\\main\\resources\\assets\\e field.jpeg");
         postRequest.setPosterId(1L);
-        postRequest.setAuthority(Authority.USER);
+        postRequest.setAuthority("ADMIN");
 
 
     }
@@ -53,6 +52,7 @@ public class UserServiceTest {
         assertNotNull(postResponse);
         assertNotNull(postResponse.getMessage());
 
-
     }
+
+
 }

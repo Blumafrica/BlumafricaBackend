@@ -1,10 +1,12 @@
 package bluma.africa.blumaafrica.service;
 
 
-import bluma.africa.blumaafrica.data.models.Authority;
+import bluma.africa.blumaafrica.data.models.Post;
 import bluma.africa.blumaafrica.dtos.requests.LoginAsAdminRequest;
 import bluma.africa.blumaafrica.dtos.requests.LoginAsAdminResponse;
 import bluma.africa.blumaafrica.dtos.requests.PostRequest;
+import bluma.africa.blumaafrica.dtos.responses.DeleteResponse;
+import bluma.africa.blumaafrica.dtos.responses.FetchAdminPost;
 import bluma.africa.blumaafrica.dtos.responses.PostResponse;
 import bluma.africa.blumaafrica.exceptions.BlumaException;
 import org.junit.jupiter.api.Test;
@@ -52,6 +54,21 @@ class BlumaAdminServiceTest {
         assertNotNull(response);
 
     }
+
+    @Test
+    public void testThatAdminCanDeletePost(){
+        DeleteResponse response = adminService.deletePost(1L);
+//        assertNotNull(response);
+        Post post = adminService.findPostById(1L);
+        assertNull(post);
+    }
+
+    @Test
+    public void testThatAllAdminPostCanBeFetch(){
+        FetchAdminPost response = adminService.fetchAllPost();
+        assertEquals(16, response.getPosts().size());
+    }
+
 
 
 

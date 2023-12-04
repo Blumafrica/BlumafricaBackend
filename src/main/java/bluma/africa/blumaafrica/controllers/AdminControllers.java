@@ -3,16 +3,14 @@ package bluma.africa.blumaafrica.controllers;
 import bluma.africa.blumaafrica.dtos.requests.LoginAsAdminRequest;
 import bluma.africa.blumaafrica.dtos.requests.LoginAsAdminResponse;
 import bluma.africa.blumaafrica.dtos.requests.PostRequest;
+import bluma.africa.blumaafrica.dtos.responses.FetchAdminPost;
 import bluma.africa.blumaafrica.dtos.responses.PostResponse;
 import bluma.africa.blumaafrica.exceptions.BlumaException;
 import bluma.africa.blumaafrica.service.AdminService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping
@@ -45,6 +43,22 @@ public class AdminControllers {
 
        return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
    }
+
+   @GetMapping("/api/v1/getAdminPost")
+   public ResponseEntity<?> getAllAdminPost(){
+       FetchAdminPost response = adminService.fetchAllPost();
+       return new ResponseEntity<>(response, HttpStatus.ACCEPTED );
+
+   }
+
+   @DeleteMapping("/api/v1/deletePost/{id}")
+    public void deletePost(@PathVariable String id){
+     Long convertedId = Long.parseLong(id);
+     adminService.deletePost(convertedId);
+
+   }
+
+
 
 
 

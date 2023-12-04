@@ -1,12 +1,14 @@
 package bluma.africa.blumaafrica.service;
 
 
-import bluma.africa.blumaafrica.data.models.Admin;
+import bluma.africa.blumaafrica.data.models.Authority;
 import bluma.africa.blumaafrica.data.models.Post;
 import bluma.africa.blumaafrica.data.repositories.PostRepository;
 import bluma.africa.blumaafrica.dtos.requests.LoginAsAdminRequest;
 import bluma.africa.blumaafrica.dtos.requests.LoginAsAdminResponse;
 import bluma.africa.blumaafrica.dtos.requests.PostRequest;
+import bluma.africa.blumaafrica.dtos.responses.DeleteResponse;
+import bluma.africa.blumaafrica.dtos.responses.FetchAdminPost;
 import bluma.africa.blumaafrica.dtos.responses.PostResponse;
 import bluma.africa.blumaafrica.exceptions.BlumaException;
 ;
@@ -14,6 +16,8 @@ import bluma.africa.blumaafrica.mapper.Mapper;
 import bluma.africa.blumaafrica.validators.Validate;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -42,6 +46,29 @@ public class BlumaAdminService implements AdminService {
         System.out.println("saved post ==> "+savedPost);
         System.out.println("time posted ==> " + savedPost.getCreatedAt());
         return convertToResponse(savedPost);
+    }
+
+    @Override
+    public Post findPostById(long id) {
+        return postRepository.findPostById(id);
+    }
+
+    @Override
+    public DeleteResponse deletePost(long id) {
+        postRepository.deleteById(id);
+        return null;
+    }
+
+
+
+    @Override
+    public FetchAdminPost fetchAllPost() {
+        List<Post> foundPost = postRepository.findByPostOwnerAuthority(Authority.ADMIN);
+        return convertToResponse(foundPost);
+    }
+
+    private FetchAdminPost convertToResponse(List<Post> posts) {
+        return new FetchAdminPost(posts);
     }
 
 
