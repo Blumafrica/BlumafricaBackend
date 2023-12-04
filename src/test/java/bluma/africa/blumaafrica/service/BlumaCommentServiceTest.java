@@ -7,6 +7,7 @@ import bluma.africa.blumaafrica.exceptions.BlumaException;
 import bluma.africa.blumaafrica.exceptions.CommentNotFoundException;
 import bluma.africa.blumaafrica.exceptions.PostNotFoundException;
 import bluma.africa.blumaafrica.exceptions.UserNotFound;
+import org.assertj.core.api.AssertionsForClassTypes;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -31,9 +32,15 @@ public class BlumaCommentServiceTest {
     @Test
     public void updateCommentTest() throws BlumaException {
         UpdateCommentRequest updateCommentRequest = new UpdateCommentRequest();
+        CreateCommentRequest createCommentRequest = new CreateCommentRequest();
+        createCommentRequest.setCommenterId(2L);
+        createCommentRequest.setCommentText("This is an updated test.");
+
         updateCommentRequest.setCommentId(1L);
         updateCommentRequest.setNewCommentText("This should be updated please");
-        ResponseApi<?> response =commentService.updateComment(1L,1L,updateCommentRequest);assertNotNull(response);
+        var response =commentService.updateComment(1L,1L,updateCommentRequest);
+        assertNotNull(response);
+        AssertionsForClassTypes.assertThat(response).isInstanceOf(ResponseApi.class);
 
     }
 

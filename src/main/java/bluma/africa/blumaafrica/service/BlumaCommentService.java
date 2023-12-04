@@ -37,6 +37,7 @@ public class BlumaCommentService implements CommentService{
     @Override
     public ResponseApi<?> updateComment(
             Long commentTextId, Long commenterId, UpdateCommentRequest updateCommentRequest) throws BlumaException {
+
         var comment = commentRepository.findById(commentTextId).
                 orElseThrow(()-> new CommentNotFoundException(String.format("no comment found with this id %d", commentTextId)));
         var mainCommenterId= comment.getCommenterId().getId();
