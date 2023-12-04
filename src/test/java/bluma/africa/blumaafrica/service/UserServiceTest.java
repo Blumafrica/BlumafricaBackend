@@ -1,5 +1,6 @@
 package bluma.africa.blumaafrica.service;
 
+
 import bluma.africa.blumaafrica.data.models.Authority;
 import bluma.africa.blumaafrica.dtos.requests.PostEditRequest;
 import bluma.africa.blumaafrica.dtos.requests.PostRequest;
@@ -44,8 +45,9 @@ public class UserServiceTest {
         postRequest.setText(" Reaction lead to action.");
         postRequest.setDescription("Action");
         postRequest.setFileUrl("C:\\Users\\mr Adio\\IdeaProjects\\BlumafricaBackend\\src\\main\\resources\\assets\\e field.jpeg");
-//        postRequest.setPosterId(1L);
-//        postRequest.setAuthority(USER);
+        postRequest.setPosterId(1L);
+        postRequest.setAuthority("ADMIN");
+
 
 
     }
@@ -64,9 +66,7 @@ public class UserServiceTest {
         assertNotNull(postResponse);
         assertNotNull(postResponse.getMessage());
 
-
     }
-
     @Test
     public void userEditPostTest() throws UserNotFound, PostNotFound {
         Long postId = 152L;
@@ -93,3 +93,4 @@ public class UserServiceTest {
 
     }
 }
+
