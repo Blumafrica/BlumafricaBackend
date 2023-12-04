@@ -1,7 +1,10 @@
 package bluma.africa.blumaafrica.service;
 
 
+<<<<<<< HEAD
 import bluma.africa.blumaafrica.data.models.Authority;
+=======
+>>>>>>> 94cf9b0213a4796e17d2fec9d74e6f858f5e36e4
 import bluma.africa.blumaafrica.data.models.Post;
 import bluma.africa.blumaafrica.data.repositories.PostRepository;
 import bluma.africa.blumaafrica.dtos.requests.LoginAsAdminRequest;
