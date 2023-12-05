@@ -13,7 +13,7 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
-public class BlumaPostService implements PostService{
+public class BlumaPostService implements PostService {
     private final PostRepository postRepository;
 
 
@@ -31,14 +31,15 @@ public class BlumaPostService implements PostService{
     public PostResponse saveUserPost(Post post) throws UserNotFound {
         var savedPost = postRepository.save(post);
 
-         PostResponse postResponse = new PostResponse();
-         postResponse.setTimePosted(savedPost.getCreatedAt());
-         postResponse.setPostId(savedPost.getId());
-         postResponse.setPostOwnerId(savedPost.getPostOwnerId());
+        PostResponse postResponse = new PostResponse();
+        postResponse.setTimePosted(savedPost.getCreatedAt());
+        postResponse.setPostId(savedPost.getId());
+        postResponse.setPostOwnerId(savedPost.getPostOwnerId());
         return postResponse;
     }
 
     @Override
+
     public Post getPostById(Long id) throws PostNotFound {
             return postRepository.findById(id)
                     .orElseThrow(() -> new PostNotFound("Post not found with id: " + id));
@@ -63,6 +64,7 @@ public class BlumaPostService implements PostService{
                .filter(x -> x.getPostOwnerId() == convertId)
                .toList();
     }
+
 
 
 }
