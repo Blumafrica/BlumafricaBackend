@@ -1,11 +1,14 @@
 package bluma.africa.blumaafrica.service;
 
 import bluma.africa.blumaafrica.data.models.Authority;
+import bluma.africa.blumaafrica.data.models.Gender;
 import bluma.africa.blumaafrica.dtos.requests.PostEditRequest;
 import bluma.africa.blumaafrica.dtos.requests.PostRequest;
+import bluma.africa.blumaafrica.dtos.requests.ProfileRequest;
 import bluma.africa.blumaafrica.dtos.requests.UserRequest;
 import bluma.africa.blumaafrica.dtos.responses.EditPostResponse;
 import bluma.africa.blumaafrica.dtos.responses.PostResponse;
+import bluma.africa.blumaafrica.dtos.responses.ProfileResponse;
 import bluma.africa.blumaafrica.dtos.responses.UserResponse;
 import bluma.africa.blumaafrica.exceptions.PostNotFound;
 import bluma.africa.blumaafrica.exceptions.UserAlreadyExist;
@@ -16,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import static bluma.africa.blumaafrica.data.models.Authority.USER;
+import static bluma.africa.blumaafrica.data.models.Gender.MALE;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -28,6 +32,8 @@ public class UserServiceTest {
     private PostResponse postResponse;
     private PostEditRequest postEditRequest;
     private EditPostResponse editPostResponse;
+    private ProfileRequest profileRequest;
+
 
     @BeforeEach
     void setUp() {
@@ -36,6 +42,7 @@ public class UserServiceTest {
         postRequest = new PostRequest();
         postEditRequest = new PostEditRequest();
         editPostResponse = new EditPostResponse();
+        profileRequest = new ProfileRequest();
 
         userRequest.setUsername("Honorable");
         userRequest.setEmail("honorable@gmail.com");
@@ -46,6 +53,15 @@ public class UserServiceTest {
         postRequest.setFileUrl("C:\\Users\\mr Adio\\IdeaProjects\\BlumafricaBackend\\src\\main\\resources\\assets\\e field.jpeg");
 //        postRequest.setPosterId(1L);
 //        postRequest.setAuthority(USER);
+        profileRequest.setFirstname("John");
+        profileRequest.setLastname("Mavens");
+        profileRequest.setPhoneNumber("+234123454");
+        profileRequest.setAbout("Digital native at semicolon");
+        profileRequest.setHeadline("Reaping days ahead");
+        profileRequest.setGender(MALE);
+        profileRequest.setProfilePicture("C:\\Users\\mr Adio\\IdeaProjects\\BlumafricaBackend\\src\\main\\resources\\assets\\e field.jpeg");
+        profileRequest.setCoverPicture("C:\\Users\\mr Adio\\IdeaProjects\\BlumafricaBackend\\src\\main\\resources\\assets\\e field.jpeg");
+        profileRequest.setUserId(1L);
 
 
     }
@@ -92,4 +108,15 @@ public class UserServiceTest {
         assertNull(userService.findPostById(postId));
 
     }
+    @Test
+    public void userProfileTest() throws UserNotFound {
+         ProfileResponse response = userService.setProfile(profileRequest);
+         assertNotNull(response.getMessage());
+    }
+    @Test
+    public void userUpdateProfileTest() throws UserNotFound {
+        ProfileResponse response = userService.updateProfile(profileRequest);
+        assertNotNull(response.getMessage());
+    }
+
 }

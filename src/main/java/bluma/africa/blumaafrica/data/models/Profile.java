@@ -1,16 +1,14 @@
 package bluma.africa.blumaafrica.data.models;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Setter
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 
 public class Profile {
     @Id
@@ -25,5 +23,6 @@ public class Profile {
     private Gender gender;
     private String profilePicture;
     private String coverPicture;
+    private Long userId;
 
 }

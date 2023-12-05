@@ -44,7 +44,7 @@ public class UserServiceController {
         postRequest.setText("Reader are leader");
         postRequest.setDescription("The leaders");
         postRequest.setFileUrl("C:\\Users\\mr Adio\\IdeaProjects\\BlumafricaBackend\\src\\main\\resources\\assets\\e field.jpeg");
-//        postRequest.setPosterId(2L);
+        postRequest.setPosterId(1L);
 //        postRequest.setAuthority(USER);
     }
     @Test
