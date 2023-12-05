@@ -9,8 +9,13 @@ public class SecurityUtils {
         return List.of(
                 "/login",
                 "/api/v1/loginAsAdmin",
-                "/api/v1/user/register"
+                "/api/v1/user/register",
+                "/api/v1/post",
+                "/api/v1/deletePost/{id}",
+                "/api/v1/getAdminPost",
+                "/api/v1/user/post",
+                "/api/v1/user/{postId}/editPost/",
+                "/api/v1/{postId}/deletePost/"
         );
-
     }
 }

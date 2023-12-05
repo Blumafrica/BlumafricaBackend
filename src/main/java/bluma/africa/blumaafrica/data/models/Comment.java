@@ -38,4 +38,5 @@ public class Comment {
     public void setUpdatedAt(){
         this.updatedAt = LocalDateTime.now();
     }
+
 }
