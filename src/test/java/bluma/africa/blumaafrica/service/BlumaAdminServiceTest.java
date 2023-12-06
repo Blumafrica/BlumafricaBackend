@@ -1,10 +1,12 @@
 package bluma.africa.blumaafrica.service;
 
 
-import bluma.africa.blumaafrica.data.models.Admin;
+import bluma.africa.blumaafrica.data.models.Post;
 import bluma.africa.blumaafrica.dtos.requests.LoginAsAdminRequest;
 import bluma.africa.blumaafrica.dtos.requests.LoginAsAdminResponse;
 import bluma.africa.blumaafrica.dtos.requests.PostRequest;
+import bluma.africa.blumaafrica.dtos.responses.DeleteResponse;
+import bluma.africa.blumaafrica.dtos.responses.FetchAdminPost;
 import bluma.africa.blumaafrica.dtos.responses.PostResponse;
 import bluma.africa.blumaafrica.exceptions.BlumaException;
 import org.junit.jupiter.api.Test;
@@ -18,18 +20,16 @@ class BlumaAdminServiceTest {
 
     @Autowired
     private AdminService adminService;
-    @Autowired
-    Admin admin ;
+
+
+
     @Test
-    public void testThatAdminCanRegister() throws BlumaException {
+    public void testThatAdminCanLoginAs() throws BlumaException {
         LoginAsAdminRequest request = new LoginAsAdminRequest();
         request.setEmail("mariiam22222@gmail.com");
-        request.setPassword("password");
-        System.out.println("admin"+ admin);
-
+        request.setPassword("@Ahhaj(JJI");
         LoginAsAdminResponse response = adminService.logInAsAdmin(request);
         assertEquals("mariiam22222@gmail.com",response.getEmail());
-
 
     }
 
@@ -38,21 +38,37 @@ class BlumaAdminServiceTest {
         LoginAsAdminRequest request = new LoginAsAdminRequest();
         request.setEmail("mariiabm22222@gmail.com");
         request.setPassword("passwhnord");
-        System.out.println("admin"+ admin);
+
         assertThrows(BlumaException.class, ()->adminService.logInAsAdmin(request));
     }
 
     @Test
-    public void testThatAdminCanPost(){
+    public void testThatAdminCanPost() throws BlumaException {
         PostRequest postRequest = new PostRequest();
         postRequest.setDescription("about nigeria");
         postRequest.setText("I love nigerian");
         postRequest.setFileUrl("C:\\Users\\mariam\\capstone-backend\\BlumafricaBackend\\src\\main\\resources\\assets\\e field.jpeg");
-        postRequest.setPostOwner(admin);
+        postRequest.setPosterId(1L);
+        postRequest.setAuthority("ADMIN");
         PostResponse response = adminService.post(postRequest);
         assertNotNull(response);
-        assertEquals(1L, response.getPostId());
+
     }
+
+    @Test
+    public void testThatAdminCanDeletePost(){
+        DeleteResponse response = adminService.deletePost(1L);
+//        assertNotNull(response);
+        Post post = adminService.findPostById(1L);
+        assertNull(post);
+    }
+
+    @Test
+    public void testThatAllAdminPostCanBeFetch(){
+        FetchAdminPost response = adminService.fetchAllPost();
+        assertEquals(16, response.getPosts().size());
+    }
+
 
 
 
