@@ -1,15 +1,10 @@
 package bluma.africa.blumaafrica.service;
 
 
-import bluma.africa.blumaafrica.data.models.Authority;
-import bluma.africa.blumaafrica.dtos.requests.FetchUserPostRequest;
-import bluma.africa.blumaafrica.dtos.requests.PostEditRequest;
-import bluma.africa.blumaafrica.dtos.requests.PostRequest;
-import bluma.africa.blumaafrica.dtos.requests.UserRequest;
-import bluma.africa.blumaafrica.dtos.responses.EditPostResponse;
-import bluma.africa.blumaafrica.dtos.responses.FetchUserPostResponse;
-import bluma.africa.blumaafrica.dtos.responses.PostResponse;
-import bluma.africa.blumaafrica.dtos.responses.UserResponse;
+import bluma.africa.blumaafrica.data.models.Post;
+import bluma.africa.blumaafrica.data.models.User;
+import bluma.africa.blumaafrica.dtos.requests.*;
+import bluma.africa.blumaafrica.dtos.responses.*;
 import bluma.africa.blumaafrica.exceptions.PostNotFound;
 import bluma.africa.blumaafrica.exceptions.UserAlreadyExist;
 import bluma.africa.blumaafrica.exceptions.UserNotFound;
@@ -18,7 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import static bluma.africa.blumaafrica.data.models.Authority.USER;
+import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -30,6 +25,9 @@ public class UserServiceTest {
     private PostRequest postRequest;
     private PostResponse postResponse;
     private PostEditRequest postEditRequest;
+    @Autowired
+    private PostService postService;
+
     private EditPostResponse editPostResponse;
 
     @BeforeEach
@@ -48,7 +46,6 @@ public class UserServiceTest {
         postRequest.setDescription("Action");
         postRequest.setFileUrl("C:\\Users\\mr Adio\\IdeaProjects\\BlumafricaBackend\\src\\main\\resources\\assets\\e field.jpeg");
         postRequest.setPosterId(1L);
-        postRequest.setAuthority("ADMIN");
 
 
 
@@ -71,9 +68,8 @@ public class UserServiceTest {
     }
     @Test
     public void userEditPostTest() throws UserNotFound, PostNotFound {
-        Long postId = 152L;
 
-        editPostResponse = userService.editPost(postId, postRequest);
+        editPostResponse = userService.editPost("152", postRequest);
         assertNotNull(editPostResponse);
         assertNotNull(editPostResponse.getMessage());
     }
@@ -90,8 +86,8 @@ public class UserServiceTest {
     public void deletedPostCanNotBeInvokeAgain() throws PostNotFound {
         Long postId = 52L;
         assertThrows(PostNotFound.class, () -> userService.deletePost(postId));
-        assertThrows(PostNotFound.class, () -> userService.findPostById(postId));
-        assertNull(userService.findPostById(postId));
+        assertNull( userService.findPostById("52"));
+        assertNull(userService.findPostById("52"));
 
     }
     @Test
@@ -100,5 +96,19 @@ public class UserServiceTest {
         FetchUserPostResponse response = userService.findUserPosts(request);
         assertEquals(10, response.getUserPost().size());
     }
+
+    @Test
+    public void testThatUserCanLikePost(){
+        LikeRequest likeRequest = new LikeRequest("1",  "201");
+        LikeResponse response = userService.userCanLikePost(likeRequest);
+        assertNotNull(response.getLikeId());
+        Post foundPost = postService.getPostById("201");
+        assertNotNull(response.getLikeId());
+        System.out.println(response.getLikeId());
+        System.out.println(foundPost.getListOfLikeIds());
+        assertEquals(1, foundPost.getListOfLikeIds().size());
+    }
+
+
 }
 

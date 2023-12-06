@@ -1,16 +1,15 @@
 package bluma.africa.blumaafrica.service;
 
 import bluma.africa.blumaafrica.data.models.Authority;
+import bluma.africa.blumaafrica.data.models.Likes;
 import bluma.africa.blumaafrica.data.models.Post;
 import bluma.africa.blumaafrica.data.models.User;
 import bluma.africa.blumaafrica.data.repositories.UserRepository;
 import bluma.africa.blumaafrica.dtos.requests.FetchUserPostRequest;
+import bluma.africa.blumaafrica.dtos.requests.LikeRequest;
 import bluma.africa.blumaafrica.dtos.requests.PostRequest;
 import bluma.africa.blumaafrica.dtos.requests.UserRequest;
-import bluma.africa.blumaafrica.dtos.responses.EditPostResponse;
-import bluma.africa.blumaafrica.dtos.responses.FetchUserPostResponse;
-import bluma.africa.blumaafrica.dtos.responses.PostResponse;
-import bluma.africa.blumaafrica.dtos.responses.UserResponse;
+import bluma.africa.blumaafrica.dtos.responses.*;
 import bluma.africa.blumaafrica.exceptions.PostNotFound;
 import bluma.africa.blumaafrica.exceptions.UserAlreadyExist;
 import bluma.africa.blumaafrica.exceptions.UserNotFound;
@@ -27,6 +26,7 @@ public class BlumaUserServiceImpl implements UserService{
     private UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final PostService postService;
+    private LikesService likesService;
     @Override
     public UserResponse createUser(UserRequest request) throws UserAlreadyExist {
         boolean isUserExist = userRepository.findByUsername(request.getUsername()).isPresent();
@@ -78,7 +78,7 @@ public class BlumaUserServiceImpl implements UserService{
     }
 
     @Override
-    public EditPostResponse editPost( Long postId, PostRequest postRequest) throws UserNotFound, PostNotFound {
+    public EditPostResponse editPost( String postId, PostRequest postRequest) throws UserNotFound, PostNotFound {
         Post post = postService.getPostById(postId);
         System.out.println(post);
 
@@ -97,7 +97,7 @@ public class BlumaUserServiceImpl implements UserService{
     }
 
     @Override
-    public Post findPostById(Long postId) throws PostNotFound {
+    public Post findPostById(String postId) throws PostNotFound {
         return postService.getPostById(postId);
     }
 
@@ -105,6 +105,18 @@ public class BlumaUserServiceImpl implements UserService{
     public FetchUserPostResponse findUserPosts(FetchUserPostRequest request) {
         List<Post> foundPosts =  postService.getUserPosts(request.getUserId());
         return convertToResponse(foundPosts);
+    }
+
+    @Override
+    public LikeResponse userCanLikePost(LikeRequest likeRequest) {
+        Post foundPost = postService.getPostById(likeRequest.getPostId());
+        Likes likes = likesService.userCanLikePost(likeRequest);
+        foundPost.setListOfLikeIds(List.of(likes.getId()));
+        Post saved = postService.save(foundPost);
+        System.out.println("created like "+likes);
+        System.out.println("after liking ==> "+saved.getListOfLikeIds().size());
+        System.out.println("post after liking ==> " + saved);
+        return new LikeResponse(likes.getId().toString());
     }
 
     private FetchUserPostResponse convertToResponse(List<Post> foundPosts) {

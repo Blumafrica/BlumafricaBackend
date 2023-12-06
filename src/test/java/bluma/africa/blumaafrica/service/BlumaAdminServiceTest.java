@@ -69,6 +69,11 @@ class BlumaAdminServiceTest {
         assertEquals(16, response.getPosts().size());
     }
 
+    @Test
+    public void testThatAdminCanFindUserById(){
+
+    }
+
 
 
 

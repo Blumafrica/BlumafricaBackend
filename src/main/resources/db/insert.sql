@@ -36,14 +36,21 @@ value (101, 103, 'testing', '2023-12-03T08:52:33.075+01:00', 'testing 123', 'www
 
 
 
-insert into post (id, post_owner_id, content, created_at, description, file_url, post_owner_authority, total_of_comment, total_of_like, total_of_share)
-    value (201, 103, 'testing', '2023-12-03T08:52:33.075+01:00', 'testing 123', 'www.getFilePath.com', 'USER', 2, 2,2),
-          (291, 103, 'testing', '2023-12-03T08:52:33.075+01:00', 'testing 123', 'www.getFilePath.com', 'USER', 2, 2,2),
-(223, 103, 'testing', '2023-12-03T08:52:33.075+01:00', 'testing 123', 'www.getFilePath.com', 'USER', 2, 2,2),
-(294, 103, 'testing', '2023-12-03T08:52:33.075+01:00', 'testing 123', 'www.getFilePath.com', 'USER', 2, 2,2),
-(225, 103, 'testing', '2023-12-03T08:52:33.075+01:00', 'testing 123', 'www.getFilePath.com', 'USER', 2, 2,2),
-(296, 103, 'testing', '2023-12-03T08:52:33.075+01:00', 'testing 123', 'www.getFilePath.com', 'USER', 2, 2,2),
-(327, 103, 'testing', '2023-12-03T08:52:33.075+01:00', 'testing 123', 'www.getFilePath.com', 'USER', 2, 2,2),
-(338, 103, 'testing', '2023-12-03T08:52:33.075+01:00', 'testing 123', 'www.getFilePath.com', 'USER', 2, 2,2),
-(329, 103, 'testing', '2023-12-03T08:52:33.075+01:00', 'testing 123', 'www.getFilePath.com', 'USER', 2, 2,2),
-(300, 103, 'testing', '2023-12-03T08:52:33.075+01:00', 'testing 123', 'www.getFilePath.com', 'USER', 2, 2,2);
+insert into post (id, post_owner_id, content, created_at, post.`description`, file_url, post_owner_authority)
+    value (201, 103, 'testing', '2023-12-03T08:52:33.075+01:00', 'testing 123', 'www.getFilePath.com', 'USER'),
+          (291, 103, 'testing', '2023-12-03T08:52:33.075+01:00', 'testing 123', 'www.getFilePath.com', 'USER'),
+(223, 103, 'testing', '2023-12-03T08:52:33.075+01:00', 'testing 123', 'www.getFilePath.com', 'USER'),
+(294, 103, 'testing', '2023-12-03T08:52:33.075+01:00', 'testing 123', 'www.getFilePath.com', 'USER'),
+(225, 103, 'testing', '2023-12-03T08:52:33.075+01:00', 'testing 123', 'www.getFilePath.com', 'USER'),
+(296, 103, 'testing', '2023-12-03T08:52:33.075+01:00', 'testing 123', 'www.getFilePath.com', 'USER'),
+(327, 103, 'testing', '2023-12-03T08:52:33.075+01:00', 'testing 123', 'www.getFilePath.com', 'USER'),
+(338, 103, 'testing', '2023-12-03T08:52:33.075+01:00', 'testing 123', 'www.getFilePath.com', 'USER'),
+(329, 103, 'testing', '2023-12-03T08:52:33.075+01:00', 'testing 123', 'www.getFilePath.com', 'USER'),
+(300, 103, 'testing', '2023-12-03T08:52:33.075+01:00', 'testing 123', 'www.getFilePath.com', 'USER');
+
+
+insert into profile(id, about, cover_picture, headline, profile_picture, phone_number, gender, firstname )
+value (102, 'about', 'www.coverPhoto', 'headline', 'www.profilePictures', '0903388338','FEMALE', 'first');
+
+insert into user (id, username, authorities, password, email, profile_id)
+values (101, 'mariam','USER', 'password', 'mariam@gmail.com', 101)

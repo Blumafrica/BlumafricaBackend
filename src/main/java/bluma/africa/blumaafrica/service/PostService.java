@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface PostService {
     PostResponse saveUserPost(Post post) throws UserNotFound;
-   Post getPostById(Long id) throws PostNotFound;
+   Post getPostById(String id) ;
    PostResponse deletePostById(Long postId) throws PostNotFound;
 
     List<Post> getUserPosts(String userId);

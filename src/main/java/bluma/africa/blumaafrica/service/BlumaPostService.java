@@ -39,9 +39,8 @@ public class BlumaPostService implements PostService{
     }
 
     @Override
-    public Post getPostById(Long id) throws PostNotFound {
-            return postRepository.findById(id)
-                    .orElseThrow(() -> new PostNotFound("Post not found with id: " + id));
+    public Post getPostById(String id) {
+            return postRepository.findPostById(Long.valueOf(id));
         }
 
     @Override

@@ -1,12 +1,10 @@
 package bluma.africa.blumaafrica.controllers;
 
 import bluma.africa.blumaafrica.dtos.requests.FetchUserPostRequest;
+import bluma.africa.blumaafrica.dtos.requests.LikeRequest;
 import bluma.africa.blumaafrica.dtos.requests.PostRequest;
 import bluma.africa.blumaafrica.dtos.requests.UserRequest;
-import bluma.africa.blumaafrica.dtos.responses.EditPostResponse;
-import bluma.africa.blumaafrica.dtos.responses.FetchUserPostResponse;
-import bluma.africa.blumaafrica.dtos.responses.PostResponse;
-import bluma.africa.blumaafrica.dtos.responses.UserResponse;
+import bluma.africa.blumaafrica.dtos.responses.*;
 import bluma.africa.blumaafrica.exceptions.PostNotFound;
 import bluma.africa.blumaafrica.exceptions.UserAlreadyExist;
 import bluma.africa.blumaafrica.exceptions.UserNotFound;
@@ -43,7 +41,7 @@ public class UserController {
         }
     }
     @PostMapping("/{postId}/editPost/")
-    public  ResponseEntity<?> editPost(@PathVariable Long postId,@RequestBody PostRequest postRequest){
+    public  ResponseEntity<?> editPost(@PathVariable String postId,@RequestBody PostRequest postRequest){
         try{
             EditPostResponse response = userService.editPost(postId,postRequest);
             return new ResponseEntity<>(response.getMessage(),HttpStatus.OK);
@@ -65,6 +63,12 @@ public class UserController {
 
         FetchUserPostResponse response = userService.findUserPosts(request);
         return new ResponseEntity<>(response, HttpStatus.FOUND);
+    }
+
+    @PostMapping("/api/v1/likePosts")
+    public ResponseEntity<?> likePost(@RequestBody LikeRequest request){
+//        LikeResponse response = userService
+        return null;
     }
 
 }
