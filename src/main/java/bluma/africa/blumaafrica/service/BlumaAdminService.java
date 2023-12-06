@@ -30,11 +30,11 @@ public class BlumaAdminService implements AdminService {
     @Override
     public LoginAsAdminResponse logInAsAdmin(LoginAsAdminRequest request) throws BlumaException {
         boolean response = validate.validateAdminDetails(request);
-        if (response) return new LoginAsAdminResponse(request.getEmail());
-        throw  new BlumaException("incorrect details");
+        if (response) {
+            return new LoginAsAdminResponse(request.getEmail());
+        }
+        throw new BlumaException("incorrect details");
     }
-
-
 
     @Override
     public PostResponse post(PostRequest postRequest) throws BlumaException {
