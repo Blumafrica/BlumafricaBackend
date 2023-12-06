@@ -1,8 +1,10 @@
 package bluma.africa.blumaafrica.controllers;
 
+import bluma.africa.blumaafrica.dtos.requests.FetchUserPostRequest;
 import bluma.africa.blumaafrica.dtos.requests.PostRequest;
 import bluma.africa.blumaafrica.dtos.requests.UserRequest;
 import bluma.africa.blumaafrica.dtos.responses.EditPostResponse;
+import bluma.africa.blumaafrica.dtos.responses.FetchUserPostResponse;
 import bluma.africa.blumaafrica.dtos.responses.PostResponse;
 import bluma.africa.blumaafrica.dtos.responses.UserResponse;
 import bluma.africa.blumaafrica.exceptions.PostNotFound;
@@ -29,33 +31,6 @@ public class UserController {
             return new ResponseEntity<>(response.getMessage(), HttpStatus.OK);
         } catch (UserAlreadyExist exception) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
-        }
-    }
-    @PostMapping("/post")
-    public ResponseEntity<?> userPost(@RequestBody PostRequest postRequest){
-        try{
-            PostResponse response = userService.makePost(postRequest);
-            return new ResponseEntity<>(response.getMessage(),HttpStatus.OK);
-        }catch (UserNotFound userNotFound){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(userNotFound.getMessage());
-        }
-    }
-    @PostMapping("/{postId}/editPost/")
-    public  ResponseEntity<?> editPost(@PathVariable Long postId,@RequestBody PostRequest postRequest){
-        try{
-            EditPostResponse response = userService.editPost(postId,postRequest);
-            return new ResponseEntity<>(response.getMessage(),HttpStatus.OK);
-        }catch (PostNotFound | UserNotFound exception){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
-        }
-    }
-    @DeleteMapping("/{postId}/deletePost")
-    public ResponseEntity<?> deletePost (@PathVariable Long postId) {
-        try {
-            userService.deletePost(postId);
-           return ResponseEntity.ok("successfully deleted ");
-        } catch (PostNotFound postNotFound) {
-           return ResponseEntity.status(HttpStatus.NOT_FOUND).body(postNotFound.getMessage());
         }
     }
 

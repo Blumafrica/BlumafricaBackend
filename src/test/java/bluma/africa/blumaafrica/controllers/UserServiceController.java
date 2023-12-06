@@ -1,6 +1,7 @@
 package bluma.africa.blumaafrica.controllers;
 
 import bluma.africa.blumaafrica.data.models.Authority;
+import bluma.africa.blumaafrica.dtos.requests.FetchUserPostRequest;
 import bluma.africa.blumaafrica.dtos.requests.PostRequest;
 import bluma.africa.blumaafrica.dtos.requests.UserRequest;
 import bluma.africa.blumaafrica.dtos.responses.PostResponse;
@@ -17,8 +18,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.List;
 
 import static bluma.africa.blumaafrica.data.models.Authority.USER;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -41,11 +41,6 @@ public class UserServiceController {
         userRequest.setEmail("jude@gmail.com");
         userRequest.setPassword("judePassword");
 
-        postRequest.setText("Reader are leader");
-        postRequest.setDescription("The leaders");
-        postRequest.setFileUrl("C:\\Users\\mr Adio\\IdeaProjects\\BlumafricaBackend\\src\\main\\resources\\assets\\e field.jpeg");
-        postRequest.setPosterId(1L);
-//        postRequest.setAuthority(USER);
     }
     @Test
     public void userSignUpTest(){
@@ -59,44 +54,6 @@ public class UserServiceController {
             exception.printStackTrace();
         }
 
-    }
-    @Test
-    public void userPostTest(){
-        try{
-            mockMvc.perform(post("/api/v1/user/post").
-                    content(objectMapper.writeValueAsBytes(postRequest)).
-                    contentType(MediaType.APPLICATION_JSON)).
-                    andExpect(status().is2xxSuccessful()).
-                    andDo(print());
-
-        }catch (Exception exception){
-            exception.printStackTrace();
-        }
-    }
-    @Test
-    public void userEditPostTest()  {
-        Long postId = 102L;
-        try{
-            mockMvc.perform(post("/api/v1/user/{postId}/editPost/",postId).
-                    content(objectMapper.writeValueAsBytes(postRequest)).
-                    contentType(MediaType.APPLICATION_JSON)).
-                    andExpect(status().is2xxSuccessful()).
-                    andDo(print());
-
-        }catch (Exception exception){
-            exception.printStackTrace();
-        }
-    }
-    @Test
-    public void userDeletePostTest(){
-        Long postId =   102L;
-        try{
-            mockMvc.perform(delete("/api/v1/{postId}/deletePost/",postId)).
-                    andExpect(status().is2xxSuccessful()).
-                    andDo(print());
-        }catch (Exception e){
-            e.printStackTrace();
-        }
     }
 
 }
