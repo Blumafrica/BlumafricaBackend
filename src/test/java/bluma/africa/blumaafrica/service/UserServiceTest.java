@@ -105,7 +105,6 @@ public class UserServiceTest {
         Post foundPost = postService.getPostById("201");
         assertNotNull(response.getLikeId());
         System.out.println(response.getLikeId());
-        System.out.println(foundPost.getListOfLikeIds());
         assertEquals(1, foundPost.getListOfLikeIds().size());
     }
 

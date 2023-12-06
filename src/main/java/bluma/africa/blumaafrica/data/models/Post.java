@@ -6,10 +6,13 @@ import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
+
+
+
+
 
 @Entity(name = "post")
 @Setter
@@ -31,12 +34,12 @@ public class Post {
     @ElementCollection
     @CollectionTable(name = " ListOfLikeIds", joinColumns = @JoinColumn(name = "LikesId"))
     @Column(name = " ListOfLikeIds")
-    private List<Long > ListOfLikeIds;
+    private List<Long> ListOfLikeIds = new ArrayList<>();
     @ElementCollection
     @CollectionTable(name = "ListOfCommentIds", joinColumns = @JoinColumn(name = "commentId"))
     @Column(name = "ListOfCommentIds")
     private List<Long> listOfCommentIds;
-    @ElementCollection
+    @ElementCollection( fetch = FetchType.EAGER)
     @CollectionTable(name = "ListOfShareIds", joinColumns = @JoinColumn(name = "shareId"))
     @Column(name = "ListOfShareIds")
     private List<Long> listOfShareIds;
