@@ -16,6 +16,7 @@ public class ProfileRequest {
     private String about;
     private String headline;
     private Gender gender;
-    private MultipartFile profilePicture;
-    private MultipartFile coverPicture;
+    private String profilePicture;
+    private String coverPicture;
+    private Long userId;
 }

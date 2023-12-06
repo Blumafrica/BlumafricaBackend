@@ -10,4 +10,5 @@ public class LikeResponse {
 
 
     private String LikeId;
+    private String postId;
 }

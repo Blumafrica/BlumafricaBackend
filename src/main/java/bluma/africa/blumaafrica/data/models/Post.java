@@ -44,4 +44,5 @@ public class Post {
     @Column(name = "ListOfShareIds")
     private List<Long> listOfShareIds;
 
+
 }

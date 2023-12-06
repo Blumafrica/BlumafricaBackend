@@ -13,7 +13,16 @@ import bluma.africa.blumaafrica.dtos.responses.*;
 import bluma.africa.blumaafrica.exceptions.PostNotFound;
 import bluma.africa.blumaafrica.exceptions.UserAlreadyExist;
 import bluma.africa.blumaafrica.exceptions.UserNotFound;
+
+import bluma.africa.blumaafrica.data.models.*;
+import bluma.africa.blumaafrica.data.repositories.UserRepository;
+import bluma.africa.blumaafrica.dtos.requests.*;
+import bluma.africa.blumaafrica.dtos.responses.*;
+import bluma.africa.blumaafrica.exceptions.*;
+
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -22,11 +31,16 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
-public class BlumaUserServiceImpl implements UserService{
+@Slf4j
+
+
+public class BlumaUserServiceImpl implements UserService {
     private UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final PostService postService;
-    private LikesService likesService;
+
+    private final ModelMapper mapper;
+
+
     @Override
     public UserResponse createUser(UserRequest request) throws UserAlreadyExist {
         boolean isUserExist = userRepository.findByUsername(request.getUsername()).isPresent();
@@ -46,8 +60,10 @@ public class BlumaUserServiceImpl implements UserService{
     }
 
     @Override
-    public User getUserBy(String username) {
-        return userRepository.findByUsername(username).orElseThrow(()-> new RuntimeException("user with this username is not found"));
+    public User getUserBy(String email) {
+        return userRepository.findByEmail(email).orElseThrow(() ->
+                new RuntimeException(
+                        String.format("user with %s is not found", email)));
     }
 
     @Override
@@ -56,70 +72,36 @@ public class BlumaUserServiceImpl implements UserService{
     }
 
     @Override
-    public PostResponse makePost(PostRequest postRequest) throws UserNotFound {
-        Post post = new Post();
-        var user = userRepository.findById(postRequest.getPosterId()).
-                orElseThrow(()-> new UserNotFound("user not found"));
-        Long extractUserId = user.getId();
 
-        post.setContent(postRequest.getText());
-        post.setDescription(postRequest.getDescription());
-        post.setFileUrl(postRequest.getFileUrl());
-        post.setCreatedAt(LocalDateTime.now());
-        post.setPostOwnerId(extractUserId);
-        post.setPostOwnerAuthority(Authority.USER);
-        var savedPost = postService.saveUserPost(post);
-         PostResponse postResponse = new PostResponse();
-         postResponse.setTimePosted(savedPost.getTimePosted());
-         postResponse.setPostId(savedPost.getPostId());
-         postResponse.setPostOwnerId(savedPost.getPostOwnerId());
-         postResponse.setMessage("Posted!!!");
-         return postResponse;
+    public ProfileResponse setProfile(ProfileRequest profileRequest) throws UserNotFound {
+        var getUser = getUserById(profileRequest.getUserId());
+        Profile userProfile = mapper.map(profileRequest, Profile.class);
+        userProfile.setUserId(getUser.getId());
+        getUser.setProfile(userProfile);
+        userRepository.save(getUser);
+        return new ProfileResponse();
     }
 
     @Override
-    public EditPostResponse editPost( String postId, PostRequest postRequest) throws UserNotFound, PostNotFound {
-        Post post = postService.getPostById(postId);
-        System.out.println(post);
-
-        post.setContent(postRequest.getText());
-        post.setDescription(postRequest.getDescription());
-        post.setFileUrl(postRequest.getFileUrl());
-        post.setCreatedAt(LocalDateTime.now());
-         postService.saveUserPost(post);
-        return new EditPostResponse();
+    public ProfileResponse updateProfile(ProfileRequest profileRequest) throws UserNotFound {
+        return null;
     }
 
-    @Override
-    public void deletePost(Long postId) throws PostNotFound {
-        postService.deletePostById(postId);
+//    @Override
+//    public LikeResponse userCanLikePost(LikeRequest likeRequest) {
+//        Post foundPost =   postService.getPostById(likeRequest.getPostId());
+//        Likes likes = likesService.userCanLikePost(likeRequest);
+//        foundPost.setListOfLikeIds(List.of(likes.getId()));
+//        Post saved = postService.save(foundPost);
+//        System.out.println("created like "+likes);
+//        System.out.println("after liking ==> "+saved.getListOfLikeIds().size());
+//        System.out.println("post after liking ==> " + saved);
+//        return new LikeResponse(likes.getId().toString());
+//    }
+
+
+
+
 
     }
 
-    @Override
-    public Post findPostById(String postId) throws PostNotFound {
-        return postService.getPostById(postId);
-    }
-
-    @Override
-    public FetchUserPostResponse findUserPosts(FetchUserPostRequest request) {
-        List<Post> foundPosts =  postService.getUserPosts(request.getUserId());
-        return convertToResponse(foundPosts);
-    }
-
-    @Override
-    public LikeResponse userCanLikePost(LikeRequest likeRequest) {
-        Post foundPost = postService.getPostById(likeRequest.getPostId());
-        Likes likes = likesService.userCanLikePost(likeRequest);
-        foundPost.setListOfLikeIds(List.of(likes.getId()));
-        Post saved = postService.save(foundPost);
-        System.out.println("created like "+likes);
-        System.out.println("after liking ==> "+saved.getListOfLikeIds().size());
-        System.out.println("post after liking ==> " + saved);
-        return new LikeResponse(likes.getId().toString());
-    }
-
-    private FetchUserPostResponse convertToResponse(List<Post> foundPosts) {
-        return new FetchUserPostResponse(foundPosts);
-    }
-}

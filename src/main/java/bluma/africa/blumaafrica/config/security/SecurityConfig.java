@@ -2,12 +2,10 @@ package bluma.africa.blumaafrica.config.security;
 
 import bluma.africa.blumaafrica.config.security.Service.JwtService;
 import bluma.africa.blumaafrica.config.security.filter.BlumaAuthenticationFilter;
-
 import bluma.africa.blumaafrica.config.security.utils.SecurityUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -30,14 +28,15 @@ public class SecurityConfig {
                 .sessionManagement(c -> c.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .cors(httpSecurityCorsConfigurer -> {
                     CorsConfiguration corsConfiguration = new CorsConfiguration();
-                    corsConfiguration.setAllowedMethods(List.of("POST", "PUT", "GET"));
+                    corsConfiguration.setAllowedMethods(List.of("POST", "PUT", "GET","DELETE"));
                     corsConfiguration.setAllowedOrigins(List.of("*"));
                 })
                 .addFilterAt(new BlumaAuthenticationFilter(authenticationManager, jwtService), UsernamePasswordAuthenticationFilter.class)
 //                .addFilterBefore(blumaAuthorizationFilter, BlumaAuthorizationFilter.class)
-                .authorizeHttpRequests(c -> c.requestMatchers(HttpMethod.POST, getPublicEndpoints()).permitAll())
-//                        requestMatchers(HttpMethod.GET, "/api/v1/user", "/api/v1/user/**").hasAnyAuthority(Authority.USER.name()))
-
+//                .authorizeHttpRequests(c -> c.requestMatchers(HttpMethod.POST, getPublicEndpoints()).permitAll())
+////                        requestMatchers(HttpMethod.GET, "/api/v1/user", "/api/v1/user/**").hasAnyAuthority(Authority.USER.name()))
+                .authorizeHttpRequests(request ->
+                        request.requestMatchers("/login", "/api/v1/user/register","/api/v1/user/post").permitAll().anyRequest().authenticated())
                 .build();
 
     }
