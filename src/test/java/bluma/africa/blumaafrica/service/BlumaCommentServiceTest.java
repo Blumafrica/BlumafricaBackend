@@ -3,10 +3,7 @@ package bluma.africa.blumaafrica.service;
 import bluma.africa.blumaafrica.dtos.requests.CreateCommentRequest;
 import bluma.africa.blumaafrica.dtos.requests.UpdateCommentRequest;
 import bluma.africa.blumaafrica.dtos.responses.ResponseApi;
-import bluma.africa.blumaafrica.exceptions.BlumaException;
-import bluma.africa.blumaafrica.exceptions.CommentNotFoundException;
-import bluma.africa.blumaafrica.exceptions.PostNotFoundException;
-import bluma.africa.blumaafrica.exceptions.UserNotFound;
+import bluma.africa.blumaafrica.exceptions.*;
 import org.assertj.core.api.AssertionsForClassTypes;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +19,7 @@ public class BlumaCommentServiceTest {
     private CommentService commentService;
 
     @Test
-    public void addCommentTest() throws CommentNotFoundException, UserNotFound, PostNotFoundException {
+    public void addCommentTest() throws CommentNotFoundException, UserNotFound, PostNotFoundException, PostNotFound {
         CreateCommentRequest createCommentRequest = new CreateCommentRequest();
         createCommentRequest.setCommenterId(1L);
         createCommentRequest.setCommentText("This is a test");

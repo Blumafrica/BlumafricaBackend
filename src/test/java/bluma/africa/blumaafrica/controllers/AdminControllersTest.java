@@ -13,6 +13,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -48,7 +49,7 @@ class AdminControllersTest {
     @Test
     public void testThatUserCanPost(){
         PostRequest request =  new PostRequest();
-        request.setAuthority(Authority.ADMIN);
+        request.setAuthority("ADMIN");
         request.setPosterId(1L);
         request.setText("Test admin");
         request.setDescription("description");
@@ -65,5 +66,36 @@ class AdminControllersTest {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Test
+    public  void testThatAdminCanDeletePost(){
+
+        try {
+            byte []  content = mapper.writeValueAsBytes(1L);
+            mockMvc.perform(post("/api/v1/deletePost{1}"))
+//                    .contentType(MediaType.APPLICATION_JSON)
+//                    .content(content))
+                    .andExpect(status().is2xxSuccessful())
+                    .andDo(print());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void testThatAdminPostCanBeFetch(){
+        try {
+            mockMvc.perform(get("/api/v1/getAdminPost"))
+                    .andExpect(status().is2xxSuccessful())
+                    .andDo(print());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void testThatUserPostCanBeFetch(){
+
     }
 }

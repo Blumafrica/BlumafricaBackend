@@ -6,10 +6,7 @@ import bluma.africa.blumaafrica.data.repositories.CommentRepository;
 import bluma.africa.blumaafrica.dtos.requests.CreateCommentRequest;
 import bluma.africa.blumaafrica.dtos.requests.UpdateCommentRequest;
 import bluma.africa.blumaafrica.dtos.responses.ResponseApi;
-import bluma.africa.blumaafrica.exceptions.BlumaException;
-import bluma.africa.blumaafrica.exceptions.CommentNotFoundException;
-import bluma.africa.blumaafrica.exceptions.PostNotFoundException;
-import bluma.africa.blumaafrica.exceptions.UserNotFound;
+import bluma.africa.blumaafrica.exceptions.*;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -23,7 +20,7 @@ public class BlumaCommentService implements CommentService{
     private final ModelMapper modelMapper;
 
     @Override
-    public ResponseApi<?> createComment(Long postId, CreateCommentRequest createCommentRequest) throws PostNotFoundException, UserNotFound {
+    public ResponseApi<?> createComment(Long postId, CreateCommentRequest createCommentRequest) throws PostNotFoundException, UserNotFound, PostNotFound {
         Post foundPost = postService.getPostById(postId);
         Comment comment = modelMapper.map(createCommentRequest, Comment.class);
         comment.setPostId(foundPost);

@@ -2,9 +2,8 @@ package bluma.africa.blumaafrica.config.security;
 
 import bluma.africa.blumaafrica.config.security.Service.JwtService;
 import bluma.africa.blumaafrica.config.security.filter.BlumaAuthenticationFilter;
-import bluma.africa.blumaafrica.config.security.filter.BlumaAuthorizationFilter;
+
 import bluma.africa.blumaafrica.config.security.utils.SecurityUtils;
-import bluma.africa.blumaafrica.data.models.Authority;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
