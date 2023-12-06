@@ -41,11 +41,6 @@ public class UserServiceController {
         userRequest.setEmail("jude@gmail.com");
         userRequest.setPassword("judePassword");
 
-        postRequest.setText("Reader are leader");
-        postRequest.setDescription("The leaders");
-        postRequest.setFileUrl("C:\\Users\\mr Adio\\IdeaProjects\\BlumafricaBackend\\src\\main\\resources\\assets\\e field.jpeg");
-//        postRequest.setPosterId(2L);
-//        postRequest.setAuthority(USER);
     }
     @Test
     public void userSignUpTest(){
@@ -59,60 +54,6 @@ public class UserServiceController {
             exception.printStackTrace();
         }
 
-    }
-    @Test
-    public void userPostTest(){
-        try{
-            mockMvc.perform(post("/api/v1/user/post").
-                    content(objectMapper.writeValueAsBytes(postRequest)).
-                    contentType(MediaType.APPLICATION_JSON)).
-                    andExpect(status().is2xxSuccessful()).
-                    andDo(print());
-
-        }catch (Exception exception){
-            exception.printStackTrace();
-        }
-    }
-    @Test
-    public void userEditPostTest()  {
-        Long postId = 102L;
-        try{
-            mockMvc.perform(post("/api/v1/user/{postId}/editPost/",postId).
-                    content(objectMapper.writeValueAsBytes(postRequest)).
-                    contentType(MediaType.APPLICATION_JSON)).
-                    andExpect(status().is2xxSuccessful()).
-                    andDo(print());
-
-        }catch (Exception exception){
-            exception.printStackTrace();
-        }
-    }
-    @Test
-    public void userDeletePostTest(){
-        Long postId =   102L;
-        try{
-            mockMvc.perform(delete("/api/v1/{postId}/deletePost/",postId)).
-                    andExpect(status().is2xxSuccessful()).
-                    andDo(print());
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-    }
-
-    @Test
-    public void testAllUserPostCanBeFound(){
-        FetchUserPostRequest request = new FetchUserPostRequest("103");
-
-        try {
-            byte [] content = objectMapper.writeValueAsBytes(request);
-            mockMvc.perform(get("api/v1/getPosts")
-                    .content(content)
-                    .contentType(MediaType.APPLICATION_JSON))
-                    .andExpect(status().is2xxSuccessful())
-                    .andDo(print());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
 }

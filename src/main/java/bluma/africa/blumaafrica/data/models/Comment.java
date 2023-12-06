@@ -29,7 +29,6 @@ public class Comment {
     @ManyToOne
     private User commenterId;
     @ManyToOne
-    //@JoinColumn(name="post_id")
     private Post postId;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;

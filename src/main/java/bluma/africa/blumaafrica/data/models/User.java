@@ -22,7 +22,7 @@ public class User{
     @Column(unique = true, length = 100, nullable = false)
     private String email;
     private String password;
-    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL)
     private Profile profile;
     @Enumerated(EnumType.STRING)
     private List<Authority> authorities;

@@ -29,6 +29,7 @@ public class AppConfig {
         return new ModelMapper();
     }
 
+
     @Bean
     public UserDetailsService userDetailsService(UserService userService){
         return (username )-> getUserByUsername(userService, username);
