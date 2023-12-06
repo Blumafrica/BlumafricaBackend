@@ -9,6 +9,7 @@ import bluma.africa.blumaafrica.dtos.responses.DeleteResponse;
 import bluma.africa.blumaafrica.dtos.responses.FetchAdminPost;
 import bluma.africa.blumaafrica.dtos.responses.PostResponse;
 import bluma.africa.blumaafrica.exceptions.BlumaException;
+import bluma.africa.blumaafrica.exceptions.PostNotFound;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -56,7 +57,7 @@ class BlumaAdminServiceTest {
     }
 
     @Test
-    public void testThatAdminCanDeletePost(){
+    public void testThatAdminCanDeletePost() throws PostNotFound {
         DeleteResponse response = adminService.deletePost(1L);
 //        assertNotNull(response);
         Post post = adminService.findPostById(1L);
@@ -67,6 +68,11 @@ class BlumaAdminServiceTest {
     public void testThatAllAdminPostCanBeFetch(){
         FetchAdminPost response = adminService.fetchAllPost();
         assertEquals(16, response.getPosts().size());
+    }
+
+    @Test
+    public void testThatAdminCanFindUserById(){
+
     }
 
 

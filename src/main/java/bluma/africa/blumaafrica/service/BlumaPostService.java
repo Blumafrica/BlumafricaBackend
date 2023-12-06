@@ -57,6 +57,11 @@ public class BlumaPostService implements PostService {
     }
 
     @Override
+    public Post getPostById(Long id) throws PostNotFound {
+        return null;
+    }
+
+    @Override
     public List<Post> findByPostOwnerAuthority(Authority userAuthority) {
         return postRepository.findByPostOwnerAuthority(userAuthority);
     }
@@ -67,10 +72,16 @@ public class BlumaPostService implements PostService {
     }
 
     @Override
+    public PostResponse saveUserPost(Post post) throws UserNotFound {
+        return null;
+    }
 
-    public Post getPostById(Long id) throws PostNotFound {
-            return postRepository.findById(id)
-                    .orElseThrow(() -> new PostNotFound("Post not found with id: " + id));
+    @Override
+
+    public Post getPostById(String id) throws PostNotFound {
+            return postRepository.findPostById(Long.valueOf(id)).orElseThrow(() -> new PostNotFound("post not found "));
+
+
         }
 
     @Override

@@ -21,7 +21,7 @@ public class AdminControllers {
     private AdminService adminService;
 
 
-   @PostMapping("/api/v1/loginAsAdmin")
+   @PostMapping("/api/v1/login")
     public ResponseEntity<?> loginAsAdmin(@RequestBody LoginAsAdminRequest request){
        LoginAsAdminResponse response = null;
        try {

@@ -12,6 +12,7 @@ import bluma.africa.blumaafrica.dtos.responses.FetchAdminPost;
 import bluma.africa.blumaafrica.dtos.responses.PostResponse;
 import bluma.africa.blumaafrica.exceptions.BlumaException;
 ;
+import bluma.africa.blumaafrica.exceptions.PostNotFound;
 import bluma.africa.blumaafrica.mapper.Mapper;
 import bluma.africa.blumaafrica.validators.Validate;
 import lombok.AllArgsConstructor;
@@ -38,14 +39,15 @@ public class BlumaAdminService implements AdminService {
 
     @Override
     public PostResponse post(PostRequest postRequest) throws BlumaException {
+//        var response = validate.validatePostDetails(postRequest);
         Post post = Mapper.map(postRequest);
         Post savedPost  = postService.save(post);
         return convertToResponse(savedPost);
     }
 
     @Override
-    public Post findPostById(long id) {
-        return postRepository.findPostById(id);
+    public Post findPostById(long id) throws PostNotFound {
+        return postRepository.findPostById(id).orElseThrow(() ->  new PostNotFound(""));
     }
 
     @Override

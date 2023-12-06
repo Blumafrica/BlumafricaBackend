@@ -8,6 +8,7 @@ import bluma.africa.blumaafrica.dtos.responses.DeleteResponse;
 import bluma.africa.blumaafrica.dtos.responses.FetchAdminPost;
 import bluma.africa.blumaafrica.dtos.responses.PostResponse;
 import bluma.africa.blumaafrica.exceptions.BlumaException;
+import bluma.africa.blumaafrica.exceptions.PostNotFound;
 
 
 public interface AdminService {
@@ -16,7 +17,7 @@ public interface AdminService {
 
     PostResponse post(PostRequest postRequest) throws BlumaException;
 
-    Post findPostById(long id);
+    Post findPostById(long id) throws PostNotFound;
 
     DeleteResponse deletePost(long id);
 

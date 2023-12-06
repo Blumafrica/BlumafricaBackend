@@ -36,7 +36,7 @@ class AdminControllersTest {
 
         try {
             byte [] content = mapper.writeValueAsBytes(request);
-            mockMvc.perform(post("/api/v1/loginAsAdmin")
+            mockMvc.perform(post("/api/v1/login")
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(content))
                     .andExpect(status().is2xxSuccessful())
