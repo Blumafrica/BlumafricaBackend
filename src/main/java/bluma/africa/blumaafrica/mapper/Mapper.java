@@ -13,9 +13,9 @@ import java.time.LocalDateTime;
 public class Mapper {
     public static Post map(PostRequest postRequest) throws BlumaException {
         Post post = new Post();
-        post.setContent(postRequest.getText());
+        post.setContent(postRequest.getContent());
         post.setDescription(postRequest.getDescription());
-        post.setPostOwnerId(postRequest.getPosterId());
+        post.setPostOwnerId(Long.valueOf(postRequest.getPosterId()));
         post.setCreatedAt(LocalDateTime.now());
         setAuthority(postRequest, post);
         post.setFileUrl(postRequest.getFileUrl());
@@ -29,7 +29,7 @@ public class Mapper {
     }
 
 
-    public static Likes map(LikeRequest likeRequest) {
+    public static Likes  map(LikeRequest likeRequest) {
         Likes likes = new Likes();
         likes.setUserAUTHORITY(Authority.USER);
         likes.setUserId(Long.parseLong(likeRequest.getUserId()));

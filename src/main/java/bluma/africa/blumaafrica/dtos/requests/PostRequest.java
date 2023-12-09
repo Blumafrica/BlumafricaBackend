@@ -10,15 +10,13 @@ import lombok.Setter;
 @Setter
 public class PostRequest {
     @NotNull
-    private String text;
+    private String content;
     @NotNull
     private String description;
     @NotNull
     private String fileUrl;
     @NotNull
-    private Long postId;
-    @NotNull
     private String authority;
     @NotNull
-    private Long PosterId;
+    private String PosterId;
 }

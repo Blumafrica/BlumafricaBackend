@@ -1,9 +1,7 @@
 package bluma.africa.blumaafrica.controllers;
 
-import bluma.africa.blumaafrica.data.models.Authority;
 import bluma.africa.blumaafrica.dtos.requests.LoginAsAdminRequest;
 import bluma.africa.blumaafrica.dtos.requests.PostRequest;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,8 +48,8 @@ class AdminControllersTest {
     public void testThatUserCanPost(){
         PostRequest request =  new PostRequest();
         request.setAuthority("ADMIN");
-        request.setPosterId(1L);
-        request.setText("Test admin");
+        request.setPosterId("1");
+        request.setContent("Test admin");
         request.setDescription("description");
         request.setFileUrl("C:\\Users\\mariam\\Desktop\\BlumafricaBackend\\src\\main\\resources\\assets\\the cat.jpeg");
 

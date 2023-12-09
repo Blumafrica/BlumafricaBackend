@@ -35,10 +35,6 @@ public class UserController {
 
 
 
-    @PostMapping("/api/v1/likePosts")
-    public ResponseEntity<?> likePost(@RequestBody LikeRequest request){
-//        LikeResponse response = userService
-        return null;
-    }
+
 
 }

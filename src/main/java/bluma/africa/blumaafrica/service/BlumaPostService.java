@@ -27,10 +27,10 @@ public class BlumaPostService implements PostService {
     @Override
     public PostResponse creatPost(PostRequest postRequest) throws UserNotFound {
         Post post = new Post();
-        var user = userService. getUserById(postRequest.getPosterId());
+        var user = userService. getUserById(Long.valueOf(postRequest.getPosterId()));
         Long extractUserId = user.getId();
 
-        post.setContent(postRequest.getText());
+        post.setContent(postRequest.getContent());
         post.setDescription(postRequest.getDescription());
         post.setFileUrl(postRequest.getFileUrl());
         post.setCreatedAt(LocalDateTime.now());
@@ -48,7 +48,7 @@ public class BlumaPostService implements PostService {
     @Override
     public EditPostResponse editPost(Long postId, PostRequest postRequest) throws UserNotFound, PostNotFound {
         Post post = getPostById(postId);
-        post.setContent(postRequest.getText());
+        post.setContent(postRequest.getContent());
         post.setDescription(postRequest.getDescription());
         post.setFileUrl(postRequest.getFileUrl());
         post.setCreatedAt(LocalDateTime.now());
@@ -114,7 +114,7 @@ public class BlumaPostService implements PostService {
 
     @Override
     public Post save(Post post) {
-        return null;
+        return postRepository.save(post);
     }
 
 

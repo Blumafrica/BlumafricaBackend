@@ -17,7 +17,7 @@ import java.util.List;
 @Entity(name = "post")
 @Setter
 @Getter
-public class Post {
+public class  Post {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
