@@ -1,10 +1,25 @@
 package bluma.africa.blumaafrica.service;
 
+import bluma.africa.blumaafrica.data.models.Authority;
+import bluma.africa.blumaafrica.data.models.Likes;
+import bluma.africa.blumaafrica.data.models.Post;
+import bluma.africa.blumaafrica.data.models.User;
+import bluma.africa.blumaafrica.data.repositories.UserRepository;
+import bluma.africa.blumaafrica.dtos.requests.FetchUserPostRequest;
+import bluma.africa.blumaafrica.dtos.requests.LikeRequest;
+import bluma.africa.blumaafrica.dtos.requests.PostRequest;
+import bluma.africa.blumaafrica.dtos.requests.UserRequest;
+import bluma.africa.blumaafrica.dtos.responses.*;
+import bluma.africa.blumaafrica.exceptions.PostNotFound;
+import bluma.africa.blumaafrica.exceptions.UserAlreadyExist;
+import bluma.africa.blumaafrica.exceptions.UserNotFound;
+
 import bluma.africa.blumaafrica.data.models.*;
 import bluma.africa.blumaafrica.data.repositories.UserRepository;
 import bluma.africa.blumaafrica.dtos.requests.*;
 import bluma.africa.blumaafrica.dtos.responses.*;
 import bluma.africa.blumaafrica.exceptions.*;
+
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -19,9 +34,10 @@ import java.util.List;
 @Slf4j
 
 
-public class BlumaUserServiceImpl implements UserService{
+public class BlumaUserServiceImpl implements UserService {
     private UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+
     private final ModelMapper mapper;
 
 
@@ -45,9 +61,9 @@ public class BlumaUserServiceImpl implements UserService{
 
     @Override
     public User getUserBy(String email) {
-        return userRepository.findByEmail(email).orElseThrow(()->
+        return userRepository.findByEmail(email).orElseThrow(() ->
                 new RuntimeException(
-                        String.format("user with %s is not found",email)));
+                        String.format("user with %s is not found", email)));
     }
 
     @Override
@@ -59,18 +75,33 @@ public class BlumaUserServiceImpl implements UserService{
 
     public ProfileResponse setProfile(ProfileRequest profileRequest) throws UserNotFound {
         var getUser = getUserById(profileRequest.getUserId());
-        Profile userProfile =mapper.map(profileRequest,Profile.class);
+        Profile userProfile = mapper.map(profileRequest, Profile.class);
         userProfile.setUserId(getUser.getId());
         getUser.setProfile(userProfile);
-         userRepository.save(getUser);
+        userRepository.save(getUser);
         return new ProfileResponse();
     }
 
     @Override
     public ProfileResponse updateProfile(ProfileRequest profileRequest) throws UserNotFound {
-        var getUser = getUserById(profileRequest.getUserId());
         return null;
+    }
 
-        }
+//    @Override
+//    public LikeResponse userCanLikePost(LikeRequest likeRequest) {
+//        Post foundPost =   postService.getPostById(likeRequest.getPostId());
+//        Likes likes = likesService.userCanLikePost(likeRequest);
+//        foundPost.setListOfLikeIds(List.of(likes.getId()));
+//        Post saved = postService.save(foundPost);
+//        System.out.println("created like "+likes);
+//        System.out.println("after liking ==> "+saved.getListOfLikeIds().size());
+//        System.out.println("post after liking ==> " + saved);
+//        return new LikeResponse(likes.getId().toString());
+//    }
 
-}
+
+
+
+
+    }
+

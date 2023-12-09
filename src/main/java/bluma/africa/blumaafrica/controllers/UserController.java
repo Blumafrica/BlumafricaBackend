@@ -1,12 +1,10 @@
 package bluma.africa.blumaafrica.controllers;
 
 import bluma.africa.blumaafrica.dtos.requests.FetchUserPostRequest;
+import bluma.africa.blumaafrica.dtos.requests.LikeRequest;
 import bluma.africa.blumaafrica.dtos.requests.PostRequest;
 import bluma.africa.blumaafrica.dtos.requests.UserRequest;
-import bluma.africa.blumaafrica.dtos.responses.EditPostResponse;
-import bluma.africa.blumaafrica.dtos.responses.FetchUserPostResponse;
-import bluma.africa.blumaafrica.dtos.responses.PostResponse;
-import bluma.africa.blumaafrica.dtos.responses.UserResponse;
+import bluma.africa.blumaafrica.dtos.responses.*;
 import bluma.africa.blumaafrica.exceptions.PostNotFound;
 import bluma.africa.blumaafrica.exceptions.UserAlreadyExist;
 import bluma.africa.blumaafrica.exceptions.UserNotFound;
@@ -32,6 +30,15 @@ public class UserController {
         } catch (UserAlreadyExist exception) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
         }
+    }
+
+
+
+
+    @PostMapping("/api/v1/likePosts")
+    public ResponseEntity<?> likePost(@RequestBody LikeRequest request){
+//        LikeResponse response = userService
+        return null;
     }
 
 }
