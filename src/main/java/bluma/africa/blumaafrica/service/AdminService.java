@@ -1,6 +1,8 @@
 package bluma.africa.blumaafrica.service;
 
+import bluma.africa.blumaafrica.data.models.Admin;
 import bluma.africa.blumaafrica.data.models.Post;
+import bluma.africa.blumaafrica.dtos.requests.DeletePost;
 import bluma.africa.blumaafrica.dtos.requests.LoginAsAdminRequest;
 import bluma.africa.blumaafrica.dtos.requests.LoginAsAdminResponse;
 import bluma.africa.blumaafrica.dtos.requests.PostRequest;
@@ -12,6 +14,7 @@ import bluma.africa.blumaafrica.exceptions.PostNotFound;
 
 
 public interface AdminService {
+    void createAdmin();
 
     LoginAsAdminResponse logInAsAdmin(LoginAsAdminRequest request) throws BlumaException;
 
@@ -19,8 +22,10 @@ public interface AdminService {
 
     Post findPostById(long id) throws PostNotFound;
 
-    DeleteResponse deletePost(long id);
+    DeleteResponse deletePost(DeletePost deletePost) throws  BlumaException;
 
 
     FetchAdminPost fetchAllPost();
+
+    Admin findAdminById(String id);
 }

@@ -1,8 +1,11 @@
 package bluma.africa.blumaafrica.validators;
 
 import bluma.africa.blumaafrica.data.models.Admin;
+import bluma.africa.blumaafrica.data.models.Authority;
+import bluma.africa.blumaafrica.data.repositories.AdminRepository;
 import bluma.africa.blumaafrica.dtos.requests.LoginAsAdminRequest;
 import bluma.africa.blumaafrica.dtos.requests.PostRequest;
+import bluma.africa.blumaafrica.exceptions.BlumaException;
 import bluma.africa.blumaafrica.service.PostService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -11,25 +14,21 @@ import org.springframework.stereotype.Component;
 @AllArgsConstructor
 public class Validate {
     
-    private final Admin admin;
+    private final AdminRepository adminRepository;
     private final PostService postService;
-//    private final
 
-//    public Validate(Admin admin) {
-//        this.admin = admin;
-//    }
 
     public  boolean validateAdminDetails(LoginAsAdminRequest request){
+        Admin admin = adminRepository.findAdminById(1L);
         return admin.getPassword().equals(request.getPassword()) && admin.getEmail().equals(request.getEmail());
     }
 
-    public void validatePostDetails(PostRequest postRequest) {
-//        if (postRequest.getPosterId().equals(admin.getId()) && postRequest.getPostId().equals(postService.getPostById(postRequest.getPostId())) ){
-//
-//        }
+    public Boolean validatePostDetails(PostRequest postRequest) throws BlumaException {
+        Admin admin = adminRepository.findAdminById(1L);
+        if (postRequest.getPosterId().equals(admin.getId().toString()) && postRequest.getAuthority().equals(Authority.ADMIN.toString()))
+            return true;
+        throw new BlumaException("incorrect credentials");
     }
 
-//    public void validatePostRequest(PostRequest postRequest) {
-//       if (postRequest.getId() && postRequest.getText() && postRequest.getDescription() && postRequest.getAuthority() && )
-//    }
+
 }

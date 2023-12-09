@@ -27,12 +27,12 @@ public class PostServiceTest {
         postRequest = new PostRequest();
         postEditRequest = new PostEditRequest();
 
-        postRequest.setText(" Reaction lead to action.");
+        postRequest.setContent(" Reaction lead to action.");
         postRequest.setDescription("Action");
         postRequest.setFileUrl("C:\\Users\\mr Adio\\IdeaProjects\\BlumafricaBackend\\src\\main\\resources\\assets\\e field.jpeg");
-        postRequest.setPosterId(1L);
+        postRequest.setPosterId("1");
 
-        postRequest.setText("Gin Jin Sin");
+        postRequest.setContent("Gin Jin Sin");
         postRequest.setDescription("The sinner");
         postRequest.setFileUrl("my file location");
     }
