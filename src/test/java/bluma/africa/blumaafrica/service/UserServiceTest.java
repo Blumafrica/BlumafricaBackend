@@ -67,7 +67,7 @@ public class UserServiceTest {
         profileRequest.setProfilePicture("C:\\Users\\mr Adio\\IdeaProjects\\BlumafricaBackend\\src\\main\\resources\\assets\\e field.jpeg");
         profileRequest.setCoverPicture("C:\\Users\\mr Adio\\IdeaProjects\\BlumafricaBackend\\src\\main\\resources\\assets\\e field.jpeg");
         profileRequest.setUserId(1L);
-        postRequest.setPosterId(1L);
+        postRequest.setPosterId("1");
 
 
 

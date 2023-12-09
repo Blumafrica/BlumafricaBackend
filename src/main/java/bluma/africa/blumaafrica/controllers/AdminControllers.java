@@ -1,8 +1,10 @@
 package bluma.africa.blumaafrica.controllers;
 
+import bluma.africa.blumaafrica.dtos.requests.DeletePost;
 import bluma.africa.blumaafrica.dtos.requests.LoginAsAdminRequest;
 import bluma.africa.blumaafrica.dtos.requests.LoginAsAdminResponse;
 import bluma.africa.blumaafrica.dtos.requests.PostRequest;
+import bluma.africa.blumaafrica.dtos.responses.DeleteResponse;
 import bluma.africa.blumaafrica.dtos.responses.FetchAdminPost;
 import bluma.africa.blumaafrica.dtos.responses.PostResponse;
 import bluma.africa.blumaafrica.exceptions.BlumaException;
@@ -51,11 +53,16 @@ public class AdminControllers {
 
    }
 
-   @DeleteMapping("/api/v1/deletePost/{id}")
-    public void deletePost(@PathVariable String id){
-     Long convertedId = Long.parseLong(id);
-     adminService.deletePost(convertedId);
+   @DeleteMapping("/api/v1/deletePost/")
+    public ResponseEntity<?> deletePost(@RequestBody DeletePost deletePost){
+     DeleteResponse response = null;
 
+       try {
+           response = adminService.deletePost(deletePost);
+       } catch (BlumaException e) {
+           return new ResponseEntity<>(e, HttpStatus.CONFLICT);
+       }
+       return new ResponseEntity<>(response, HttpStatus.OK);
    }
 
 
