@@ -27,10 +27,6 @@ public class BlumaAdminService implements AdminService {
     private final Validate validate;
     private final PostService postService;
 
-
-
-
-
     @Override
     public LoginAsAdminResponse logInAsAdmin(LoginAsAdminRequest request) throws BlumaException {
         boolean response = validate.validateAdminDetails(request);

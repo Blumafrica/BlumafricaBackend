@@ -18,7 +18,6 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @AllArgsConstructor
 @RequiredArgsConstructor
 public class Comment {
-
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Long commentId;
@@ -26,7 +25,6 @@ public class Comment {
     @ManyToOne
     private User commenterId;
     @ManyToOne
-    //@JoinColumn(name="post_id")
     private Post postId;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;

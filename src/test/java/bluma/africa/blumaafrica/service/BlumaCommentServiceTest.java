@@ -21,17 +21,17 @@ public class BlumaCommentServiceTest {
     @Test
     public void addCommentTest() throws CommentNotFoundException, UserNotFound, PostNotFoundException, PostNotFound {
         CreateCommentRequest createCommentRequest = new CreateCommentRequest();
-        createCommentRequest.setCommenterId(1L);
+        createCommentRequest.setCommenterId(2L);
         createCommentRequest.setCommentText("This is a test");
         var response = commentService.createComment(1L, createCommentRequest);
         assertThat(response).isNotNull();
     }
     @Test
     public void updateCommentTest() throws BlumaException {
-        UpdateCommentRequest updateCommentRequest = new UpdateCommentRequest();
-        CreateCommentRequest createCommentRequest = new CreateCommentRequest();
-        createCommentRequest.setCommenterId(2L);
-        createCommentRequest.setCommentText("This is an updated test.");
+       UpdateCommentRequest updateCommentRequest = new UpdateCommentRequest();
+//        CreateCommentRequest createCommentRequest = new CreateCommentRequest();
+//        createCommentRequest.setCommenterId(2L);
+//        createCommentRequest.setCommentText("This is an updated test.");
 
         updateCommentRequest.setCommentId(1L);
         updateCommentRequest.setNewCommentText("This should be updated please");
