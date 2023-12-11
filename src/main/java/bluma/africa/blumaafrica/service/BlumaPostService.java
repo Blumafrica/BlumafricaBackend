@@ -35,10 +35,10 @@ public class BlumaPostService implements PostService {
     @Override
     public PostResponse creatPost(PostRequest postRequest) throws UserNotFound {
         Post post = new Post();
-        var user = userService. getUserById(postRequest.getPosterId());
+        var user = userService. getUserById(Long.valueOf(postRequest.getPosterId()));
         Long extractUserId = user.getId();
 
-        post.setContent(postRequest.getText());
+        post.setContent(postRequest.getContent());
         post.setDescription(postRequest.getDescription());
         post.setFileUrl(postRequest.getFileUrl());
         post.setCreatedAt(LocalDateTime.now());
@@ -56,12 +56,17 @@ public class BlumaPostService implements PostService {
     @Override
     public EditPostResponse editPost(Long postId, PostRequest postRequest) throws UserNotFound, PostNotFound {
         Post post = getPostById(postId);
-        post.setContent(postRequest.getText());
+        post.setContent(postRequest.getContent());
         post.setDescription(postRequest.getDescription());
         post.setFileUrl(postRequest.getFileUrl());
         post.setCreatedAt(LocalDateTime.now());
         postRepository.save(post);
         return new EditPostResponse();
+    }
+
+    @Override
+    public Post getPostById(Long id) throws PostNotFound {
+        return null;
     }
 
     @Override
@@ -79,11 +84,20 @@ public class BlumaPostService implements PostService {
 
 =======
     @Override
+<<<<<<< HEAD
 >>>>>>> 71e414f9e9941d7345f32e6d9bb24af78910df8c
+=======
+    public PostResponse saveUserPost(Post post) throws UserNotFound {
+        return null;
+    }
 
-    public Post getPostById(Long id) throws PostNotFound {
-            return postRepository.findById(id)
-                    .orElseThrow(() -> new PostNotFound("Post not found with id: " + id));
+    @Override
+
+    public Post getPostById(String id) throws PostNotFound {
+            return postRepository.findPostById(Long.valueOf(id)).orElseThrow(() -> new PostNotFound("post not found "));
+
+>>>>>>> d18f1b7b128efb1a83aa057e8f7b5e49a6a02e3b
+
         }
 
     @Override
@@ -118,7 +132,7 @@ public class BlumaPostService implements PostService {
 =======
     @Override
     public Post save(Post post) {
-        return null;
+        return postRepository.save(post);
     }
 
 >>>>>>> 71e414f9e9941d7345f32e6d9bb24af78910df8c

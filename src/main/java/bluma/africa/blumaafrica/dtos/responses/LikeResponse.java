@@ -4,10 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-@Setter
 @AllArgsConstructor
 @Getter
-public class DeleteResponse {
+public class LikeResponse {
 
-    String response;
+
+    private String LikeId;
+    private String postId;
 }

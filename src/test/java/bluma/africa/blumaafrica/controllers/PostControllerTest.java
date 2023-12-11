@@ -25,10 +25,10 @@ public class PostControllerTest {
     @BeforeEach
     void setUp(){
         postRequest = new PostRequest();
-        postRequest.setText("Reader are leader");
+        postRequest.setContent("Reader are leader");
         postRequest.setDescription("The leaders");
         postRequest.setFileUrl("C:\\Users\\mr Adio\\IdeaProjects\\BlumafricaBackend\\src\\main\\resources\\assets\\e field.jpeg");
-        postRequest.setPosterId(1L);
+        postRequest.setPosterId("1");
 
     }
 

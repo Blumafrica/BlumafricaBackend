@@ -2,7 +2,9 @@ package bluma.africa.blumaafrica.mapper;
 
 
 import bluma.africa.blumaafrica.data.models.Authority;
+import bluma.africa.blumaafrica.data.models.Likes;
 import bluma.africa.blumaafrica.data.models.Post;
+import bluma.africa.blumaafrica.dtos.requests.LikeRequest;
 import bluma.africa.blumaafrica.dtos.requests.PostRequest;
 import bluma.africa.blumaafrica.exceptions.BlumaException;
 
@@ -11,9 +13,9 @@ import java.time.LocalDateTime;
 public class Mapper {
     public static Post map(PostRequest postRequest) throws BlumaException {
         Post post = new Post();
-        post.setContent(postRequest.getText());
+        post.setContent(postRequest.getContent());
         post.setDescription(postRequest.getDescription());
-        post.setPostOwnerId(postRequest.getPosterId());
+        post.setPostOwnerId(Long.valueOf(postRequest.getPosterId()));
         post.setCreatedAt(LocalDateTime.now());
         setAuthority(postRequest, post);
         post.setFileUrl(postRequest.getFileUrl());
@@ -27,5 +29,11 @@ public class Mapper {
     }
 
 
-
+    public static Likes  map(LikeRequest likeRequest) {
+        Likes likes = new Likes();
+        likes.setUserAUTHORITY(Authority.USER);
+        likes.setUserId(Long.parseLong(likeRequest.getUserId()));
+        likes.setPostId(Long.valueOf(likeRequest.getPostId()));
+      return likes;
+    }
 }

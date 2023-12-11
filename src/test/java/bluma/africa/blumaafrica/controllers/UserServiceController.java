@@ -2,6 +2,7 @@ package bluma.africa.blumaafrica.controllers;
 
 import bluma.africa.blumaafrica.data.models.Authority;
 import bluma.africa.blumaafrica.dtos.requests.FetchUserPostRequest;
+import bluma.africa.blumaafrica.dtos.requests.LikeRequest;
 import bluma.africa.blumaafrica.dtos.requests.PostRequest;
 import bluma.africa.blumaafrica.dtos.requests.UserRequest;
 import bluma.africa.blumaafrica.dtos.responses.PostResponse;
@@ -54,6 +55,22 @@ public class UserServiceController {
             exception.printStackTrace();
         }
 
+    }
+
+    @Test
+    public void testThatUserCanLikePost(){
+        LikeRequest request = new LikeRequest("1",  "201");
+
+        try {
+            byte [] content = objectMapper.writeValueAsBytes(request);
+            mockMvc.perform(post("/api/v1/likePosts")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(content))
+                    .andExpect(status().is2xxSuccessful())
+                    .andDo(print());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }

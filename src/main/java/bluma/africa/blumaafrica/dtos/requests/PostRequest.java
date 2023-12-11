@@ -2,17 +2,21 @@ package bluma.africa.blumaafrica.dtos.requests;
 
 
 import bluma.africa.blumaafrica.data.models.Authority;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
 public class PostRequest {
-
-    private String text;
+    @NotNull
+    private String content;
+    @NotNull
     private String description;
+    @NotNull
     private String fileUrl;
-    private Long id;
+    @NotNull
     private String authority;
-    private Long PosterId;
+    @NotNull
+    private String PosterId;
 }
