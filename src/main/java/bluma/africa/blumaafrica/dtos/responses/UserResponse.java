@@ -8,5 +8,6 @@ import lombok.Setter;
 public class UserResponse {
     private Long id;
     private String message;
+    private String token;
 
 }

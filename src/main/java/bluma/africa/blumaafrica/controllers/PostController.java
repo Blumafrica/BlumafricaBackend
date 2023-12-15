@@ -5,6 +5,7 @@ import bluma.africa.blumaafrica.dtos.requests.PostRequest;
 import bluma.africa.blumaafrica.dtos.responses.EditPostResponse;
 import bluma.africa.blumaafrica.dtos.responses.FetchUserPostResponse;
 import bluma.africa.blumaafrica.dtos.responses.PostResponse;
+import bluma.africa.blumaafrica.exceptions.BlumaException;
 import bluma.africa.blumaafrica.exceptions.PostNotFound;
 import bluma.africa.blumaafrica.exceptions.UserNotFound;
 import bluma.africa.blumaafrica.service.PostService;
@@ -23,7 +24,7 @@ public class PostController {
         try{
             PostResponse response = postService.creatPost(postRequest);
             return new ResponseEntity<>(response.getMessage(), HttpStatus.OK);
-        }catch (UserNotFound userNotFound){
+        }catch (BlumaException userNotFound){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(userNotFound.getMessage());
         }
     }

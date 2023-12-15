@@ -1,25 +1,37 @@
 package bluma.africa.blumaafrica.config.security.Service;
 
+import bluma.africa.blumaafrica.data.models.Authority;
+import bluma.africa.blumaafrica.data.models.User;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2ResourceServerProperties;
+
+import org.springframework.security.config.core.GrantedAuthorityDefaults;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Component
 public class JwtService {
 
-    public String generateAccessToken(String username){
+    public String generateAccessToken(User user){
+        List<String> authorities = user.getAuthorities()
+                .stream()
+                .map(Authority::name)
+                .collect(Collectors.toList());
         String token = JWT.create()
                 .withIssuedAt(Instant.now())
                 .withExpiresAt(Instant.now().plus(86400L, ChronoUnit.SECONDS))
                 .withIssuer("Blumafrica .")
-                .withSubject(username)
+                .withSubject(user.getEmail())
+                .withClaim("claims",authorities)
                 .sign(Algorithm.HMAC256("secret"));
         return token;
 
