@@ -44,6 +44,14 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(userNotFound.getMessage());
         }
 
+    }
+
+    @PostMapping("/login")
+    public void userLogin(@RequestBody LoginRequest loginRequest) throws UserNotFound {
+        throw new UserNotFound("user not found");
+
+
+
 
     }
 }

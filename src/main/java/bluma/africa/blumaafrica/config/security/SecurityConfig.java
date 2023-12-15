@@ -6,6 +6,7 @@ import bluma.africa.blumaafrica.config.security.filter.BlumaAuthorizationFilter;
 import bluma.africa.blumaafrica.config.security.utils.SecurityUtils;
 import bluma.africa.blumaafrica.data.models.Authority;
 import bluma.africa.blumaafrica.service.UserService;
+import jakarta.servlet.Filter;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,35 +26,44 @@ public class SecurityConfig {
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
     private final UserService userService;
-   private final BlumaAuthorizationFilter blumaAuthorizationFilter;
-@Bean
-public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-    return httpSecurity.csrf(c -> c.disable())
-            .sessionManagement(c -> c.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-            .cors(httpSecurityCorsConfigurer -> {
-                CorsConfiguration corsConfiguration = new CorsConfiguration();
-                corsConfiguration.setAllowedMethods(List.of("POST", "PUT", "GET", "DELETE"));
-                corsConfiguration.setAllowedOrigins(List.of("*"));
-            })
-            .addFilterAt(new BlumaAuthenticationFilter(authenticationManager, jwtService, userService), UsernamePasswordAuthenticationFilter.class)
-            .addFilterBefore(blumaAuthorizationFilter, BlumaAuthenticationFilter.class)
-            .authorizeHttpRequests(request ->
-                    request
+    private final BlumaAuthorizationFilter blumaAuthorizationFilter;
 
-                            .requestMatchers(HttpMethod.POST, getPublicEndpoints()).permitAll()
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
 
-                            .requestMatchers(HttpMethod.GET, "/api/v1/user", "/api/v1/user/**").hasAnyAuthority(Authority.USER.name())
+        return httpSecurity.csrf(c -> c.disable())
+                .sessionManagement(c -> c.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .cors(httpSecurityCorsConfigurer -> {
+                    CorsConfiguration corsConfiguration = new CorsConfiguration();
+                    corsConfiguration.setAllowedMethods(List.of("POST", "PUT", "GET", "DELETE"));
+                    corsConfiguration.setAllowedOrigins(List.of("*"));
+                })
+                .addFilterAt(login(), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(blumaAuthorizationFilter, BlumaAuthenticationFilter.class)
+                .authorizeHttpRequests(request ->
+                        request
 
-                            .requestMatchers("/api/v1/user/login", "/api/v1/user/register",
-                                    "/swagger-ui.html",
-                                    "/swagger-ui/**",
-                                    "/v3/api-docs",
-                                    "/v3/api-docs/**").permitAll()
+                                .requestMatchers(HttpMethod.POST, getPublicEndpoints()).permitAll()
 
-                            .anyRequest().authenticated()
-            )
-            .build();
-}
+                                .requestMatchers(HttpMethod.GET, "/api/v1/user", "/api/v1/user/**").hasAnyAuthority(Authority.USER.name())
+
+                                .requestMatchers("/api/v1/user/register",
+                                        "/swagger-ui.html",
+                                        "/swagger-ui/**",
+                                        "/v3/api-docs",
+                                        "/v3/api-docs/**").permitAll()
+
+                                .anyRequest().authenticated()
+                )
+                .build();
+    }
+
+    private BlumaAuthenticationFilter login() {
+        BlumaAuthenticationFilter auth = new BlumaAuthenticationFilter(
+                authenticationManager, jwtService, userService);
+        auth.setFilterProcessesUrl("/api/v1/user/login");
+        return auth;
+    }
 
 
     private static String[] getPublicEndpoints() {
