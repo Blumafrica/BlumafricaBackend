@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.springframework.test.util.AssertionErrors.assertEquals;
 
 @SpringBootTest
@@ -22,13 +23,21 @@ class BlumaLikesServiceTest {
 
    @Test
     public void testThatUserCanLike() throws UserNotFound, PostNotFound {
-       LikeRequest likeRequest = new LikeRequest("1",  "201");
+       LikeRequest likeRequest = new LikeRequest("1",  "1");
        var response = service.userCanLikePost(likeRequest);
        assertNotNull(response.getPostId());
    }
 
   @Test
-    public void testThatUserCanUnlike(){
+    public void testThatUserCanNotLikeMoreThanOne() throws UserNotFound, PostNotFound {
+      LikeRequest likeRequest = new LikeRequest("1","1");
+      var response = service.userCanLikePost(likeRequest);
+
+
+
+
+
+
 
   }
 }
