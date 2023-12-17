@@ -4,6 +4,7 @@ package bluma.africa.blumaafrica.service;
 import bluma.africa.blumaafrica.data.models.Admin;
 import bluma.africa.blumaafrica.data.models.Authority;
 import bluma.africa.blumaafrica.data.models.Post;
+import bluma.africa.blumaafrica.data.models.User;
 import bluma.africa.blumaafrica.data.repositories.AdminRepository;
 import bluma.africa.blumaafrica.dtos.requests.DeletePost;
 import bluma.africa.blumaafrica.dtos.requests.LoginAsAdminRequest;
@@ -15,6 +16,7 @@ import bluma.africa.blumaafrica.dtos.responses.PostResponse;
 import bluma.africa.blumaafrica.exceptions.BlumaException;
 ;
 import bluma.africa.blumaafrica.exceptions.PostNotFound;
+import bluma.africa.blumaafrica.exceptions.UserNotFound;
 import bluma.africa.blumaafrica.mapper.Mapper;
 import bluma.africa.blumaafrica.validators.Validate;
 import lombok.AllArgsConstructor;
@@ -30,6 +32,7 @@ public class BlumaAdminService implements AdminService {
     private final Validate validate;
     private final PostService postService;
     private final AdminRepository repository;
+    private final UserService userService;
 
 
     @PostConstruct
@@ -88,6 +91,11 @@ public class BlumaAdminService implements AdminService {
     @Override
     public Admin findAdminById(String id) {
         return repository.findAdminById(Long.valueOf(id));
+    }
+
+    @Override
+    public User getUserId(String id) throws UserNotFound {
+        return userService.getUserById(Long.valueOf(id));
     }
 
     private FetchAdminPost convertToResponse(List<Post> posts) {

@@ -2,7 +2,9 @@ package bluma.africa.blumaafrica.service;
 
 import bluma.africa.blumaafrica.data.models.Likes;
 import bluma.africa.blumaafrica.dtos.requests.LikeRequest;
+import bluma.africa.blumaafrica.dtos.requests.UnlikeRequest;
 import bluma.africa.blumaafrica.dtos.responses.LikeResponse;
+import bluma.africa.blumaafrica.exceptions.BlumaException;
 import bluma.africa.blumaafrica.exceptions.PostNotFound;
 import bluma.africa.blumaafrica.exceptions.UserNotFound;
 import org.junit.jupiter.api.Test;
@@ -21,14 +23,16 @@ class BlumaLikesServiceTest {
 
 
    @Test
-    public void testThatUserCanLike() throws UserNotFound, PostNotFound {
-       LikeRequest likeRequest = new LikeRequest("1",  "201");
+    public void testThatUserCanLike() throws BlumaException {
+       LikeRequest likeRequest = new LikeRequest("ADMIN",  "1", "1");
        var response = service.userCanLikePost(likeRequest);
        assertNotNull(response.getPostId());
    }
 
   @Test
-    public void testThatUserCanUnlike(){
-
+  public void testThatUserCanUnlike() throws PostNotFound {
+      UnlikeRequest likeRequest = new UnlikeRequest("1",  "1", "1");
+      var response =service.unlikePost(likeRequest);
+      assertNotNull(response);
   }
 }

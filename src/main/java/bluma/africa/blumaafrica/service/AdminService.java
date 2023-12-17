@@ -2,6 +2,7 @@ package bluma.africa.blumaafrica.service;
 
 import bluma.africa.blumaafrica.data.models.Admin;
 import bluma.africa.blumaafrica.data.models.Post;
+import bluma.africa.blumaafrica.data.models.User;
 import bluma.africa.blumaafrica.dtos.requests.DeletePost;
 import bluma.africa.blumaafrica.dtos.requests.LoginAsAdminRequest;
 import bluma.africa.blumaafrica.dtos.requests.LoginAsAdminResponse;
@@ -11,6 +12,7 @@ import bluma.africa.blumaafrica.dtos.responses.FetchAdminPost;
 import bluma.africa.blumaafrica.dtos.responses.PostResponse;
 import bluma.africa.blumaafrica.exceptions.BlumaException;
 import bluma.africa.blumaafrica.exceptions.PostNotFound;
+import bluma.africa.blumaafrica.exceptions.UserNotFound;
 
 
 public interface AdminService {
@@ -28,4 +30,5 @@ public interface AdminService {
     FetchAdminPost fetchAllPost();
 
     Admin findAdminById(String id);
+    User getUserId(String id) throws UserNotFound;
 }
