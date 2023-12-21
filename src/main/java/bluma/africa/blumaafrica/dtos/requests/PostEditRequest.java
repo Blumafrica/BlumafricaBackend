@@ -1,6 +1,7 @@
 package bluma.africa.blumaafrica.dtos.requests;
 
 import jakarta.validation.constraints.NotEmpty;
+
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,7 +18,7 @@ public class PostEditRequest {
     @NotNull
     @NotEmpty
     private String description;
+
     @NotNull
-    @NotEmpty
     private String fileUrl;
 }

@@ -1,6 +1,7 @@
 package bluma.africa.blumaafrica.service;
 
 import bluma.africa.blumaafrica.data.models.Admin;
+import bluma.africa.blumaafrica.data.models.Likes;
 import bluma.africa.blumaafrica.data.models.Post;
 import bluma.africa.blumaafrica.data.models.User;
 import bluma.africa.blumaafrica.dtos.requests.DeletePost;
@@ -31,4 +32,5 @@ public interface AdminService {
 
     Admin findAdminById(String id);
     User getUserId(String id) throws UserNotFound;
+    Likes getLikesById(Long id);
 }
