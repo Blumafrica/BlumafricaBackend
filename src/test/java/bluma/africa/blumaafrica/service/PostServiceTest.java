@@ -6,6 +6,7 @@ import bluma.africa.blumaafrica.dtos.requests.PostRequest;
 import bluma.africa.blumaafrica.dtos.responses.EditPostResponse;
 import bluma.africa.blumaafrica.dtos.responses.FetchUserPostResponse;
 import bluma.africa.blumaafrica.dtos.responses.PostResponse;
+import bluma.africa.blumaafrica.exceptions.BlumaException;
 import bluma.africa.blumaafrica.exceptions.PostNotFound;
 import bluma.africa.blumaafrica.exceptions.UserNotFound;
 import org.junit.jupiter.api.BeforeEach;
@@ -38,7 +39,7 @@ public class PostServiceTest {
     }
 
     @Test
-    public void userPostTest() throws UserNotFound {
+    public void userPostTest() throws BlumaException {
       PostResponse postResponse = postService.creatPost(postRequest);
         assertNotNull(postResponse);
         assertNotNull(postResponse.getMessage());

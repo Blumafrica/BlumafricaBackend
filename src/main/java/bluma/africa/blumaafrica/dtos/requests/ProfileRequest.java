@@ -3,6 +3,7 @@ package bluma.africa.blumaafrica.dtos.requests;
 import bluma.africa.blumaafrica.data.models.Gender;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -45,6 +46,9 @@ public class ProfileRequest {
     @NotBlank(message = "input field can not be blank")
     @NotEmpty(message = "input field can not be empty")
     private String coverPicture;
+
+    @NotNull
+    @NotEmpty
     @NotNull(message = "input field can not be null")
     @NotBlank(message = "input field can not be blank")
     @NotEmpty(message = "input field can not be empty")

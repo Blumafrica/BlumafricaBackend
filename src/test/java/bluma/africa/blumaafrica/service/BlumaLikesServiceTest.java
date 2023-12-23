@@ -1,8 +1,11 @@
 package bluma.africa.blumaafrica.service;
 
+import bluma.africa.blumaafrica.data.models.Admin;
 import bluma.africa.blumaafrica.data.models.Likes;
 import bluma.africa.blumaafrica.dtos.requests.LikeRequest;
+import bluma.africa.blumaafrica.dtos.requests.UnlikeRequest;
 import bluma.africa.blumaafrica.dtos.responses.LikeResponse;
+import bluma.africa.blumaafrica.exceptions.BlumaException;
 import bluma.africa.blumaafrica.exceptions.PostNotFound;
 import bluma.africa.blumaafrica.exceptions.UserNotFound;
 import org.junit.jupiter.api.Test;
@@ -20,24 +23,26 @@ class BlumaLikesServiceTest {
     @Autowired
     private BlumaLikesService service;
 
-
    @Test
-    public void testThatUserCanLike() throws UserNotFound, PostNotFound {
-       LikeRequest likeRequest = new LikeRequest("1",  "1");
-       var response = service.userCanLikePost(likeRequest);
-       assertNotNull(response.getPostId());
+    public void testThatUserCanLike() throws BlumaException {
+       LikeRequest likeRequest = new LikeRequest("ADMIN", "1", "1");
+       LikeResponse response = service.userCanLikePost(likeRequest);
+       assertNotNull(response);
+       assertNotNull(response.getLikeId());
    }
+    @Test
+    public void testThatUserCanNotLikeTwice() {
+        LikeRequest likeRequest = new LikeRequest("ADMIN", "1", "1");
+        assertThrows(BlumaException.class, () -> service.userCanLikePost(likeRequest));
+    }
 
-  @Test
-    public void testThatUserCanNotLikeMoreThanOne() throws UserNotFound, PostNotFound {
-      LikeRequest likeRequest = new LikeRequest("1","1");
-      var response = service.userCanLikePost(likeRequest);
+    @Test
+    public void testThatUserCanLike1() throws BlumaException {
+        LikeRequest likeRequest = new LikeRequest("ADMIN", "1", "1");
+        LikeResponse response = service.userCanLikePost(likeRequest);
+        assertNotNull(response);
+        assertNotNull(response.getLikeId());
+    }
 
 
-
-
-
-
-
-  }
 }
