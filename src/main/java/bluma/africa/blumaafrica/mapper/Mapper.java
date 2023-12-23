@@ -29,11 +29,12 @@ public class Mapper {
     }
 
 
-    public static Likes  map(LikeRequest likeRequest) {
+    public static Likes map(LikeRequest likeRequest, Authority authority) {
         Likes likes = new Likes();
-        likes.setUserAUTHORITY(Authority.USER);
+        likes.setUserAUTHORITY(authority);
         likes.setUserId(Long.parseLong(likeRequest.getUserId()));
         likes.setPostId(Long.valueOf(likeRequest.getPostId()));
+        likes.setLiked(true);
       return likes;
     }
 }
