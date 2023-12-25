@@ -24,7 +24,7 @@ insert into user(id,username,email,password)values
                                             (106,'james077', 'james007@qianhost.com', 'password');
 
 
-insert into post (id, post_owner_id, content, created_at, description, file_url, post_owner_authority, total_of_comment, total_of_like, total_of_share)
+insert into post (id, post_owner_id, content, created_at, description, file_url, post_owner_authority, total_of_comment, total_of_like, `total_of_share`)
 value (101, 100, 'testing', '2023-12-03T08:52:33.075+01:00', 'testing 123', 'www.getFilePath.com', 'ADMIN', 2, 2,2),
       (102, 101, 'testing', '2023-12-03T08:52:33.075+01:00', 'testing 123', 'www.getFilePath.com', 'ADMIN', 2,3 ,3),
     (103, 100, 'testing', '2023-12-03T08:52:33.075+01:00', 'testing 123', 'www.getFilePath.com', 'ADMIN', 3,2, 1),
@@ -44,7 +44,7 @@ value (101, 100, 'testing', '2023-12-03T08:52:33.075+01:00', 'testing 123', 'www
 
 
 
-insert into post (id, post_owner_id, content, created_at, post.`description`, file_url, post_owner_authority)
+insert into post (id, post_owner_id, content, created_at,description, file_url, post_owner_authority)
     value (201, 103, 'testing', '2023-12-03T08:52:33.075+01:00', 'testing 123', 'www.getFilePath.com', 'USER'),
           (291, 103, 'testing', '2023-12-03T08:52:33.075+01:00', 'testing 123', 'www.getFilePath.com', 'USER'),
 (223, 103, 'testing', '2023-12-03T08:52:33.075+01:00', 'testing 123', 'www.getFilePath.com', 'USER'),

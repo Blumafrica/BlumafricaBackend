@@ -13,7 +13,6 @@ public class PostRequest {
     private String content;
     @NotNull
     private String description;
-    @NotNull
     private String fileUrl;
     @NotNull
     private String authority;
