@@ -37,6 +37,8 @@ public class SecurityConfig {
                     CorsConfiguration corsConfiguration = new CorsConfiguration();
                     corsConfiguration.setAllowedMethods(List.of("POST", "PUT", "GET", "DELETE"));
                     corsConfiguration.setAllowedOrigins(List.of("*"));
+                    corsConfiguration.addAllowedHeader("*");
+                    httpSecurityCorsConfigurer.configurationSource(request -> corsConfiguration);
                 })
                 .addFilterAt(login(), UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(blumaAuthorizationFilter, BlumaAuthenticationFilter.class)
