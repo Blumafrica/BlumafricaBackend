@@ -1,2 +1,3 @@
-package bluma.africa.blumaafrica.controllers;public class LikeControllerTest {
+package bluma.africa.blumaafrica.controllers;
+public class LikeControllerTest {
 }
