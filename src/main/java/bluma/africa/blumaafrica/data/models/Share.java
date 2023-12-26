@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 package bluma.africa.blumaafrica.data.models;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -43,4 +44,7 @@ public class Share {
     @OneToOne
     private Post post;
 
+=======
+package bluma.africa.blumaafrica.data.models;public class Share {
+>>>>>>> 9301b9ce747514dde222bdd29dd723ac4584e125
 }

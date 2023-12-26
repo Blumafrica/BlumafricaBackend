@@ -1,5 +1,6 @@
 package bluma.africa.blumaafrica.service;
 
+<<<<<<< HEAD
 
 import bluma.africa.blumaafrica.dtos.requests.ShareRequest;
 import org.junit.jupiter.api.Test;
@@ -21,4 +22,9 @@ class BlumaShareServiceTest {
         request.setTitle("The benin culture");
         request.
     }
+=======
+import static org.junit.jupiter.api.Assertions.*;
+public class BlumaShareServiceTest {
+  
+>>>>>>> 9301b9ce747514dde222bdd29dd723ac4584e125
 }

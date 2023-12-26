@@ -9,6 +9,7 @@ import bluma.africa.blumaafrica.dtos.requests.PostRequest;
 import bluma.africa.blumaafrica.dtos.responses.EditPostResponse;
 import bluma.africa.blumaafrica.dtos.responses.FetchUserPostResponse;
 import bluma.africa.blumaafrica.dtos.responses.PostResponse;
+import bluma.africa.blumaafrica.exceptions.BlumaException;
 import bluma.africa.blumaafrica.exceptions.PostNotFound;
 import bluma.africa.blumaafrica.exceptions.UserNotFound;
 import lombok.AllArgsConstructor;
@@ -16,6 +17,8 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+
+import static bluma.africa.blumaafrica.mapper.Mapper.map;
 
 @Service
 @AllArgsConstructor
@@ -25,17 +28,12 @@ public class BlumaPostService implements PostService {
 
 
     @Override
-    public PostResponse creatPost(PostRequest postRequest) throws UserNotFound {
-        Post post = new Post();
+    public PostResponse creatPost(PostRequest postRequest) throws BlumaException {
+
         var user = userService. getUserById(Long.valueOf(postRequest.getPosterId()));
         Long extractUserId = user.getId();
-
-        post.setContent(postRequest.getContent());
-        post.setDescription(postRequest.getDescription());
-        post.setFileUrl(postRequest.getFileUrl());
-        post.setCreatedAt(LocalDateTime.now());
+        Post post = map(postRequest);
         post.setPostOwnerId(extractUserId);
-        post.setPostOwnerAuthority(Authority.USER);
         var savedPost = postRepository.save(post);
         PostResponse postResponse = new PostResponse();
         postResponse.setTimePosted(savedPost.getCreatedAt());

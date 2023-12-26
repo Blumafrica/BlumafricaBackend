@@ -14,7 +14,7 @@ use bluma_backend;
 #     totalOfLike         int
 #
 # );
-insert into user(id,username,email,password)values
+insert into user user(id,username,email,password)values
                                             (100,'tejohn', 'tejonic399@qianhost.com', 'password'),
                                             (101, 'john399','john399@qianhost.com', 'password'),
                                             (102, 'john499','john499@qianhost.com', 'password'),
@@ -24,7 +24,11 @@ insert into user(id,username,email,password)values
                                             (106,'james077', 'james007@qianhost.com', 'password');
 
 
+<<<<<<< HEAD
 insert into post (id, post_owner_id, content, created_at, description, file_url, post_owner_authority, total_of_comment, total_of_like, `total_of_share`)
+=======
+insert into post( id, post_owner_id, content, created_at, description, file_url, post_owner_authority, total_of_comment, total_of_like, total_of_share)
+>>>>>>> 9301b9ce747514dde222bdd29dd723ac4584e125
 value (101, 100, 'testing', '2023-12-03T08:52:33.075+01:00', 'testing 123', 'www.getFilePath.com', 'ADMIN', 2, 2,2),
       (102, 101, 'testing', '2023-12-03T08:52:33.075+01:00', 'testing 123', 'www.getFilePath.com', 'ADMIN', 2,3 ,3),
     (103, 100, 'testing', '2023-12-03T08:52:33.075+01:00', 'testing 123', 'www.getFilePath.com', 'ADMIN', 3,2, 1),
@@ -44,7 +48,11 @@ value (101, 100, 'testing', '2023-12-03T08:52:33.075+01:00', 'testing 123', 'www
 
 
 
+<<<<<<< HEAD
 insert into post (id, post_owner_id, content, created_at,description, file_url, post_owner_authority)
+=======
+insert into post (id, post_owner_id, content, created_at, description, file_url, post_owner_authority)
+>>>>>>> 9301b9ce747514dde222bdd29dd723ac4584e125
     value (201, 103, 'testing', '2023-12-03T08:52:33.075+01:00', 'testing 123', 'www.getFilePath.com', 'USER'),
           (291, 103, 'testing', '2023-12-03T08:52:33.075+01:00', 'testing 123', 'www.getFilePath.com', 'USER'),
 (223, 103, 'testing', '2023-12-03T08:52:33.075+01:00', 'testing 123', 'www.getFilePath.com', 'USER'),
@@ -61,4 +69,10 @@ insert into profile(id, about, cover_picture, headline, profile_picture, phone_n
 value (102, 'about', 'www.coverPhoto', 'headline', 'www.profilePictures', '0903388338','FEMALE', 'first');
 
 insert into user (id, username, authorities, password, email, profile_id)
-values (101, 'mariam','USER', 'password', 'mariam@gmail.com', 101)
+values (101, 'mariam','USER', 'password', 'mariam@gmail.com', 101);
+
+
+use bluma_backend;
+
+
+insert into  post (id, post_owner_id, content, created_at, description, file_url, post_)

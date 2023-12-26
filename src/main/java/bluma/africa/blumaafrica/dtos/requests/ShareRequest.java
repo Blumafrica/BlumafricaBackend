@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 package bluma.africa.blumaafrica.dtos.requests;
 
 import jakarta.validation.constraints.NotNull;
@@ -20,4 +21,7 @@ public class ShareRequest {
     @NotNull
     private String authority;
 
+=======
+package bluma.africa.blumaafrica.dtos.requests;public class ShareRequest {
+>>>>>>> 9301b9ce747514dde222bdd29dd723ac4584e125
 }

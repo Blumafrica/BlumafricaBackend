@@ -17,6 +17,7 @@ import java.util.List;
 @Entity(name = "post")
 @Setter
 @Getter
+//@ToString
 public class  Post {
 
     @Id
@@ -31,10 +32,11 @@ public class  Post {
     private String fileUrl;
     @Enumerated(EnumType.STRING)
     private Authority postOwnerAuthority;
-    @ElementCollection
+    @ElementCollection( fetch = FetchType.LAZY)
     @CollectionTable(name = " ListOfLikeIds", joinColumns = @JoinColumn(name = "LikesId"))
     @Column(name = " ListOfLikeIds")
-    private List<Long> ListOfLikeIds = new ArrayList<>();
+//    @OneToOne(cascade =  CascadeType.MERGE, fetch = FetchType.LAZY)
+    private List<Long> ListOfLikeIds;
     @ElementCollection
     @CollectionTable(name = "ListOfCommentIds", joinColumns = @JoinColumn(name = "commentId"))
     @Column(name = "ListOfCommentIds")
