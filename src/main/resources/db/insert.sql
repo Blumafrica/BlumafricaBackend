@@ -1,34 +1,8 @@
 use bluma_backend;
 
-# create table post
-# (
-#     id                 int          not null,
-#     postOwnerId        int          not null,
-#     content            varchar(255) not null,
-#     createdAt          varchar(255) not null,
-#     description        varchar(255) not null,
-#     fileUrl            varchar(255) not null,
-#     postOwnerAuthority varchar(255) not null,
-#     totalOfShare        int,
-#     totalOfComment      int,
-#     totalOfLike         int
-#
-# );
-insert into user user(id,username,email,password)values
-                                            (100,'tejohn', 'tejonic399@qianhost.com', 'password'),
-                                            (101, 'john399','john399@qianhost.com', 'password'),
-                                            (102, 'john499','john499@qianhost.com', 'password'),
-                                            (103, 'john599','john599@qianhost.com', 'password'),
-                                            (104,'john699', 'john699@qianhost.com', 'password'),
-                                            (105, 'john799','john799@qianhost.com', 'password'),
-                                            (106,'james077', 'james007@qianhost.com', 'password');
 
-
-<<<<<<< HEAD
 insert into post (id, post_owner_id, content, created_at, description, file_url, post_owner_authority, total_of_comment, total_of_like, `total_of_share`)
-=======
 insert into post( id, post_owner_id, content, created_at, description, file_url, post_owner_authority, total_of_comment, total_of_like, total_of_share)
->>>>>>> 9301b9ce747514dde222bdd29dd723ac4584e125
 value (101, 100, 'testing', '2023-12-03T08:52:33.075+01:00', 'testing 123', 'www.getFilePath.com', 'ADMIN', 2, 2,2),
       (102, 101, 'testing', '2023-12-03T08:52:33.075+01:00', 'testing 123', 'www.getFilePath.com', 'ADMIN', 2,3 ,3),
     (103, 100, 'testing', '2023-12-03T08:52:33.075+01:00', 'testing 123', 'www.getFilePath.com', 'ADMIN', 3,2, 1),
@@ -48,11 +22,8 @@ value (101, 100, 'testing', '2023-12-03T08:52:33.075+01:00', 'testing 123', 'www
 
 
 
-<<<<<<< HEAD
-insert into post (id, post_owner_id, content, created_at,description, file_url, post_owner_authority)
-=======
+insert into post (id, post_owner_id, content, created_at,description, file_url, post_owner_authority);
 insert into post (id, post_owner_id, content, created_at, description, file_url, post_owner_authority)
->>>>>>> 9301b9ce747514dde222bdd29dd723ac4584e125
     value (201, 103, 'testing', '2023-12-03T08:52:33.075+01:00', 'testing 123', 'www.getFilePath.com', 'USER'),
           (291, 103, 'testing', '2023-12-03T08:52:33.075+01:00', 'testing 123', 'www.getFilePath.com', 'USER'),
 (223, 103, 'testing', '2023-12-03T08:52:33.075+01:00', 'testing 123', 'www.getFilePath.com', 'USER'),
@@ -75,4 +46,5 @@ values (101, 'mariam','USER', 'password', 'mariam@gmail.com', 101);
 use bluma_backend;
 
 
-insert into  post (id, post_owner_id, content, created_at, description, file_url, post_)
+# insert into  post (id, post_owner_id, content, created_at, description, file_url, post_)
+insert into likes()

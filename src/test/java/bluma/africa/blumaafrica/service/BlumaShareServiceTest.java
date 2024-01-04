@@ -1,11 +1,21 @@
 package bluma.africa.blumaafrica.service;
 
-<<<<<<< HEAD
 
+import bluma.africa.blumaafrica.dtos.requests.LikeRequest;
+import bluma.africa.blumaafrica.dtos.requests.LikeShareRequest;
 import bluma.africa.blumaafrica.dtos.requests.ShareRequest;
+import bluma.africa.blumaafrica.dtos.responses.LikeResponse;
+import bluma.africa.blumaafrica.dtos.responses.ShareResponse;
+import bluma.africa.blumaafrica.exceptions.AuthorityException;
+import bluma.africa.blumaafrica.exceptions.BlumaException;
+import bluma.africa.blumaafrica.exceptions.PostNotFound;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 
 @SpringBootTest
 class BlumaShareServiceTest {
@@ -13,18 +23,37 @@ class BlumaShareServiceTest {
     @Autowired
     private ShareService shareService;
     @Test
-    public void testThatUserCanSharePost(){
+    public void testThatUserCanSharePost() throws PostNotFound, AuthorityException {
         ShareRequest request = new ShareRequest();
         request.setSharerId("1");
         request.setContent("I love this");
         request.setPostId("1");
         request.setAuthority("USER");
         request.setTitle("The benin culture");
-        request.
+        ShareResponse response = shareService.share(request);
+        assertNotNull(response);
     }
-=======
-import static org.junit.jupiter.api.Assertions.*;
-public class BlumaShareServiceTest {
+    @Test
+    public void testThatExceptionIsThrownWhenUserTryToShareAPostWithWrongIdAnWrongAuthority(){
+        ShareRequest request = new ShareRequest();
+        request.setSharerId("1123");
+        request.setContent("I love this");
+        request.setPostId("1334");
+        request.setAuthority("USER");
+        request.setTitle("The benin culture");
+        assertThrows(PostNotFound.class, ()-> shareService.share(request));
+        request.setPostId("1");
+        request.setAuthority("them");
+        assertThrows(AuthorityException.class, ()-> shareService.share(request));
+    }
+
+    @Test
+    public void testThatUserCanLikeSharePost() throws BlumaException {
+        LikeShareRequest request = new LikeShareRequest("1","user", "1");
+        LikeResponse response = shareService.likeSharedPost(request);
+        assertNotNull(response);
+    }
+
+
   
->>>>>>> 9301b9ce747514dde222bdd29dd723ac4584e125
 }

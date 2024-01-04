@@ -1,6 +1,7 @@
-<<<<<<< HEAD
 package bluma.africa.blumaafrica.data.models;
 
+import bluma.africa.blumaafrica.data.models.Authority;
+import bluma.africa.blumaafrica.data.models.Post;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
@@ -29,22 +30,7 @@ public class Share {
     private String description;
     @Enumerated(EnumType.STRING)
     private Authority shareOwnerAuthority;
-    @ElementCollection
-    @CollectionTable(name = " ListOfLikeIds", joinColumns = @JoinColumn(name = "LikesId"))
-    @Column(name = " ListOfLikeIds")
-    private List<Long> ListOfLikeIds = new ArrayList<>();
-    @ElementCollection
-    @CollectionTable(name = "ListOfCommentIds", joinColumns = @JoinColumn(name = "commentId"))
-    @Column(name = "ListOfCommentIds")
-    private List<Long> listOfCommentIds;
-    @ElementCollection( fetch = FetchType.EAGER)
-    @CollectionTable(name = "ListOfShareIds", joinColumns = @JoinColumn(name = "shareId"))
-    @Column(name = "ListOfShareIds")
-    private List<Long> listOfShareIds;
     @OneToOne
     private Post post;
 
-=======
-package bluma.africa.blumaafrica.data.models;public class Share {
->>>>>>> 9301b9ce747514dde222bdd29dd723ac4584e125
 }
