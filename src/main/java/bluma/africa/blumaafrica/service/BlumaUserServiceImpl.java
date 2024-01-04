@@ -80,17 +80,7 @@ public class BlumaUserServiceImpl implements UserService {
         return null;
     }
 
-//    @Override
-//    public LikeResponse userCanLikePost(LikeRequest likeRequest) {
-//        Post foundPost =   postService.getPostById(likeRequest.getPostId());
-//        Likes likes = likesService.userCanLikePost(likeRequest);
-//        foundPost.setListOfLikeIds(List.of(likes.getId()));
-//        Post saved = postService.save(foundPost);
-//        System.out.println("created like "+likes);
-//        System.out.println("after liking ==> "+saved.getListOfLikeIds().size());
-//        System.out.println("post after liking ==> " + saved);
-//        return new LikeResponse(likes.getId().toString());
-//    }
+
 
 
 

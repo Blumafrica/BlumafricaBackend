@@ -3,15 +3,15 @@ package bluma.africa.blumaafrica.service;
 import bluma.africa.blumaafrica.data.models.Authority;
 import bluma.africa.blumaafrica.data.models.Likes;
 import bluma.africa.blumaafrica.data.models.Post;
+import bluma.africa.blumaafrica.data.models.Share;
 import bluma.africa.blumaafrica.data.repositories.LikesRepository;
+import bluma.africa.blumaafrica.dtos.requests.GetAllPostLikesRequest;
 import bluma.africa.blumaafrica.dtos.requests.LikeRequest;
 import bluma.africa.blumaafrica.dtos.requests.UnlikeRequest;
+import bluma.africa.blumaafrica.dtos.responses.GetAllPostLikesResponse;
 import bluma.africa.blumaafrica.dtos.responses.LikeResponse;
 import bluma.africa.blumaafrica.dtos.responses.ValidateLikeResponse;
-import bluma.africa.blumaafrica.exceptions.BlumaException;
-import bluma.africa.blumaafrica.exceptions.LikeException;
-import bluma.africa.blumaafrica.exceptions.PostNotFound;
-import bluma.africa.blumaafrica.exceptions.UnknownAuthority;
+import bluma.africa.blumaafrica.exceptions.*;
 import bluma.africa.blumaafrica.mapper.Mapper;
 import bluma.africa.blumaafrica.validators.Validate;
 import lombok.AllArgsConstructor;
@@ -29,6 +29,7 @@ public class BlumaLikesService implements LikesService{
     private final LikesRepository likesRepository;
     private final Validate validate;
     private final PostService postService;
+    private final ShareService service;
 
     @Override
     public LikeResponse userCanLikePost(LikeRequest likeRequest) throws BlumaException {
@@ -39,9 +40,7 @@ public class BlumaLikesService implements LikesService{
             Post post = response.getFoundPost();
             Likes createdLike = Mapper.map(likeRequest, authority);
             Likes savedLike = likesRepository.save(createdLike);
-            post.setListOfLikeIds(List.of(savedLike.getId()));
-            Post sa  = postService.save(post);
-            System.out.println(" {} " + sa.getListOfLikeIds());
+            System.out.println(savedLike);
             return new  LikeResponse(savedLike.getId().toString(), post.getId().toString());
         }else {throw new BlumaException("invalid like request");}
     }
@@ -57,8 +56,16 @@ public class BlumaLikesService implements LikesService{
     }
 
     @Override
-    public String unlikePost(UnlikeRequest unlikeRequest) throws PostNotFound {
-        return null;
+    public String unlikePost(UnlikeRequest unlikeRequest) throws PostNotFound, LikeException {
+        Likes response = validate.checkIfUserHasLikePost(new LikeRequest("admin", unlikeRequest.getUserId(), unlikeRequest.getPostId()));
+        if (response != null)
+          return removeLike(response.getId());
+        throw new LikeException("user has not like yet");
+    }
+
+    private String removeLike( Long  likeId) {
+        likesRepository.deleteById(likeId);
+        return  "unlike";
     }
 
     @Override
@@ -69,5 +76,26 @@ public class BlumaLikesService implements LikesService{
     @Override
     public Likes findLikesById(Long id) {
         return likesRepository.findLikesById(id);
+    }
+
+    @Override
+    public LikeResponse likeSharedPost(LikeRequest request) throws BlumaException {
+        ValidateLikeResponse response = validate.validateLikeRequestOnShare(request);
+        if (response.isValidate()) {
+            Share foundShare = response.getFoundShare();
+            Likes like = Mapper.map(request, response.getFoundShare().getShareOwnerAuthority());
+            Likes savedLike = likesRepository.save(like);
+            List<Long> likesIds = null;
+            likesIds.add(savedLike.getId());
+            Share share = service.save(foundShare);
+            System.out.println("list of shareIds {} " + share);
+            return new LikeResponse(savedLike.getId().toString(), share.getId().toString());
+        }else {throw new ShareException("error occurs while share");}
+    }
+
+    @Override
+    public GetAllPostLikesResponse getAllPostLikes(GetAllPostLikesRequest request) {
+      List<Likes> foundLikes = likesRepository.findLikesByPostId(Long.valueOf(request.getPostId()));
+      return new GetAllPostLikesResponse(foundLikes);
     }
 }

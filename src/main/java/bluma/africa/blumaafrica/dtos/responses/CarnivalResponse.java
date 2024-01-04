@@ -5,6 +5,7 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public class ShareResponse {
-    private Long shareId;
+public class CarnivalResponse {
+
+    private String message;
 }

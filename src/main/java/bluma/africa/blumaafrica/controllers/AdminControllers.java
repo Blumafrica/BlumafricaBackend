@@ -10,6 +10,7 @@ import bluma.africa.blumaafrica.dtos.responses.PostResponse;
 import bluma.africa.blumaafrica.exceptions.BlumaException;
 import bluma.africa.blumaafrica.service.AdminService;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,24 +18,29 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping
 @AllArgsConstructor
+@Slf4j
 public class AdminControllers {
 
 
     private AdminService adminService;
 
 
-   @PostMapping("/api/v1/login")
+   @PostMapping("/api/v1/login/")
     public ResponseEntity<?> loginAsAdmin(@RequestBody LoginAsAdminRequest request){
+       System.out.println("e enter the end point ooo ====> ");
+       log.info("response ==> e enter the end point ooo ");
        LoginAsAdminResponse response = null;
        try {
            response = adminService.logInAsAdmin(request);
        } catch (BlumaException e) {
            return new ResponseEntity<>("incorrect details", HttpStatus.BAD_REQUEST);
        }
+       System.out.println("No occurs  ====> ");
+       log.info("passed::  error occurs ");
        return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
    }
 
-   @PostMapping("/api/v1/post")
+   @PostMapping("/api/v1/post/")
     public ResponseEntity<?> post(@RequestBody PostRequest request){
        PostResponse response = null;
        try {

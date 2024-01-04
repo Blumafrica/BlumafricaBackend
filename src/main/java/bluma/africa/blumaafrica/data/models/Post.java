@@ -7,7 +7,6 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -32,19 +31,11 @@ public class  Post {
     private String fileUrl;
     @Enumerated(EnumType.STRING)
     private Authority postOwnerAuthority;
-    @ElementCollection( fetch = FetchType.LAZY)
-    @CollectionTable(name = " ListOfLikeIds", joinColumns = @JoinColumn(name = "LikesId"))
-    @Column(name = " ListOfLikeIds")
-//    @OneToOne(cascade =  CascadeType.MERGE, fetch = FetchType.LAZY)
-    private List<Long> ListOfLikeIds;
     @ElementCollection
-    @CollectionTable(name = "ListOfCommentIds", joinColumns = @JoinColumn(name = "commentId"))
-    @Column(name = "ListOfCommentIds")
+//    @CollectionTable(name = "ListOfCommentIds", joinColumns = @JoinColumn(name = "commentId"))
+//    @Column(name = "ListOfCommentIds")
     private List<Long> listOfCommentIds;
-    @ElementCollection( fetch = FetchType.EAGER)
-    @CollectionTable(name = "ListOfShareIds", joinColumns = @JoinColumn(name = "shareId"))
-    @Column(name = "ListOfShareIds")
-    private List<Long> listOfShareIds;
+
 
 
 }

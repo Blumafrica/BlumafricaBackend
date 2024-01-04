@@ -2,7 +2,6 @@ package bluma.africa.blumaafrica.service;
 
 import bluma.africa.blumaafrica.data.models.Authority;
 import bluma.africa.blumaafrica.data.models.Post;
-import bluma.africa.blumaafrica.data.models.User;
 import bluma.africa.blumaafrica.data.repositories.PostRepository;
 import bluma.africa.blumaafrica.dtos.requests.FetchUserPostRequest;
 import bluma.africa.blumaafrica.dtos.requests.PostRequest;
