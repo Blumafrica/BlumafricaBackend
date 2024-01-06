@@ -1,6 +1,7 @@
 package bluma.africa.blumaafrica.service;
 
 import bluma.africa.blumaafrica.data.models.Share;
+import bluma.africa.blumaafrica.dtos.requests.EditShareRequest;
 import bluma.africa.blumaafrica.dtos.requests.LikeRequest;
 import bluma.africa.blumaafrica.dtos.requests.LikeShareRequest;
 import bluma.africa.blumaafrica.dtos.requests.ShareRequest;
@@ -21,4 +22,6 @@ public interface ShareService {
     Share findShareById(Long id) throws ShareException;
 
     Share save(Share foundShare);
+
+    Long editShare(EditShareRequest request) throws ShareException, AuthorityException;
 }

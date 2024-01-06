@@ -59,7 +59,10 @@ public class UserServiceController {
 
     @Test
     public void testThatUserCanLikePost(){
-        LikeRequest request = new LikeRequest("User","1",  "201");
+        LikeRequest request = new LikeRequest();
+        request.setAuthority("USER");
+        request.setUserId("1");
+        request.setPostId("201");
 
         try {
             byte [] content = objectMapper.writeValueAsBytes(request);

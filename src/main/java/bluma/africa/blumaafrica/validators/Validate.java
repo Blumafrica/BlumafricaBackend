@@ -6,12 +6,10 @@ import bluma.africa.blumaafrica.data.repositories.LikesRepository;
 import bluma.africa.blumaafrica.data.repositories.PostRepository;
 import bluma.africa.blumaafrica.data.repositories.ShareRepository;
 import bluma.africa.blumaafrica.dtos.requests.*;
+import bluma.africa.blumaafrica.dtos.responses.ValidateEditShareResponse;
 import bluma.africa.blumaafrica.dtos.responses.ValidateLikeResponse;
 import bluma.africa.blumaafrica.dtos.responses.ValidateShareResponse;
-import bluma.africa.blumaafrica.exceptions.AuthorityException;
-import bluma.africa.blumaafrica.exceptions.BlumaException;
-import bluma.africa.blumaafrica.exceptions.LikeException;
-import bluma.africa.blumaafrica.exceptions.PostNotFound;
+import bluma.africa.blumaafrica.exceptions.*;
 import bluma.africa.blumaafrica.service.PostService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -146,5 +144,20 @@ public class Validate {
         Authority authority = validateAuthority(request.getAuthority());
         if (authority != Authority.ADMIN)
             throw new AuthorityException("not authorize to post");
+    }
+
+    public ValidateEditShareResponse validateEditShare(EditShareRequest request) throws AuthorityException, ShareException {
+        Share foundShare = shareRepository.findShareById(Long.valueOf(request.getPostId()));
+        Authority authority = validateAuthority(request.getPosterAuthority());
+        if (foundShare != null)
+             if (foundShare.getShareOwnerId() == Long.valueOf(request.getPosterId()) && foundShare.getShareOwnerAuthority() == authority) {
+                 return new ValidateEditShareResponse(foundShare);
+             }else {  throw new ShareException("has not authority to edit post");}
+        throw new ShareException("shared post  not found");
+    }
+
+    public void checkIfUserHasLikeShare(LikeRequest request, String shareId) {
+        Share share = shareRepository.findShareById(Long.valueOf(shareId));
+
     }
 }

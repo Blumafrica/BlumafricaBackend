@@ -9,9 +9,9 @@ import bluma.africa.blumaafrica.dtos.requests.ShareRequest;
 import bluma.africa.blumaafrica.dtos.responses.CarnivalMapperResponse;
 import bluma.africa.blumaafrica.dtos.responses.ValidateShareResponse;
 import bluma.africa.blumaafrica.exceptions.BlumaException;
+import org.jetbrains.annotations.NotNull;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 public class Mapper {
     public static Post map(PostRequest postRequest) throws BlumaException {
@@ -32,11 +32,11 @@ public class Mapper {
     }
 
 
-    public static Likes map(LikeRequest likeRequest, Authority authority) {
+    public static  Likes map(LikeRequest likeRequest, String post, Authority authority) {
         Likes likes = new Likes();
         likes.setUserAUTHORITY(authority);
         likes.setUserId(Long.parseLong(likeRequest.getUserId()));
-        likes.setPostId(Long.valueOf(likeRequest.getPostId()));
+        likes.setShareId(Long.valueOf(post));
         likes.setLiked(true);
       return likes;
     }
@@ -53,11 +53,10 @@ public class Mapper {
     }
 
     public static CarnivalMapperResponse map(CreateCarnivalFestivalRequest request) {
-        Carnival_Festival carnivalFestival = new Carnival_Festival();
+        CarnivalFestival carnivalFestival = new CarnivalFestival();
         Address address = getAddress(request);
         carnivalFestival.setName(request.getName());
         carnivalFestival.setAbout(request.getAbout());
-//        carnivalFestival.setFilesUrl(request.getFilesUrl());
         return new CarnivalMapperResponse(carnivalFestival, address);
     }
 

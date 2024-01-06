@@ -28,7 +28,10 @@ class BlumaLikesServiceTest {
 
    @Test
     public void testThatUserCanLike() throws BlumaException {
-       LikeRequest likeRequest = new LikeRequest("ADMIN", "1", "1");
+       LikeRequest likeRequest = new LikeRequest();
+       likeRequest.setUserId("1");
+       likeRequest.setAuthority("ADMIN");
+       likeRequest.setPostId("1");
        LikeResponse response = service.userCanLikePost(likeRequest);
        assertNotNull(response);
        assertNotNull(response.getLikeId());
@@ -42,13 +45,19 @@ class BlumaLikesServiceTest {
    }
     @Test
     public void testThatUserCanNotLikeTwice() {
-        LikeRequest likeRequest = new LikeRequest("ADMIN", "1", "1");
+        LikeRequest likeRequest = new LikeRequest();
+        likeRequest.setPostId("1");
+        likeRequest.setUserId("1");
+        likeRequest.setAuthority("Admin");
         assertThrows(BlumaException.class, () -> service.userCanLikePost(likeRequest));
     }
 
     @Test
     public void testThatUserCanLike1() throws BlumaException {
-        LikeRequest likeRequest = new LikeRequest("ADMIN", "1", "1");
+        LikeRequest likeRequest = new LikeRequest();
+        likeRequest.setPostId("1");
+        likeRequest.setUserId("1");
+        likeRequest.setAuthority("Admin");
         LikeResponse response = service.userCanLikePost(likeRequest);
         assertNotNull(response);
         assertNotNull(response.getLikeId());
@@ -62,11 +71,21 @@ class BlumaLikesServiceTest {
    }
    @Test
     public void testThatUserCanLikeSharedPost() throws BlumaException {
-       LikeRequest request = new LikeRequest("User","1", "1");
+       LikeRequest request = new LikeRequest();
+       request.setShareId("1");
+       request.setAuthority("user");
+       request.setUserId("1");
        LikeResponse response = service.likeSharedPost(request);
        assertNotNull(response);
        assertNotNull(response.getLikeId());
-
    }
 
+   @Test
+    public void testThatUserCanNotLikeShareTwice(){
+       LikeRequest request = new LikeRequest();
+       request.setShareId("1");
+       request.setAuthority("user");
+       request.setUserId("1");
+       assertThrows(LikeException.class, ()-> service.likeSharedPost(request));
+   }
 }
