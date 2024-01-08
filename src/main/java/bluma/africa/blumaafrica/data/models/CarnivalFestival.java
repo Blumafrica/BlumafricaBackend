@@ -5,13 +5,10 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Entity
 @Setter
 @Getter
-public class Carnival_Festival {
+public class CarnivalFestival {
     private String name;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

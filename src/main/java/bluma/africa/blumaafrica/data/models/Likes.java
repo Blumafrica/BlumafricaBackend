@@ -19,4 +19,5 @@ public class Likes {
     @Enumerated(EnumType.STRING)
     private Authority userAUTHORITY;
     private boolean isLiked;
+    private Long shareId;
 }

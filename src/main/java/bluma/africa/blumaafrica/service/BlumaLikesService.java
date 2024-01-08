@@ -3,7 +3,6 @@ package bluma.africa.blumaafrica.service;
 import bluma.africa.blumaafrica.data.models.Authority;
 import bluma.africa.blumaafrica.data.models.Likes;
 import bluma.africa.blumaafrica.data.models.Post;
-import bluma.africa.blumaafrica.data.models.Share;
 import bluma.africa.blumaafrica.data.repositories.LikesRepository;
 import bluma.africa.blumaafrica.dtos.requests.GetAllPostLikesRequest;
 import bluma.africa.blumaafrica.dtos.requests.LikeRequest;
@@ -38,7 +37,7 @@ public class BlumaLikesService implements LikesService{
         checkIfUserHasLikePost(likeRequest);
         if (response.isValidate()) {
             Post post = response.getFoundPost();
-            Likes createdLike = Mapper.map(likeRequest, authority);
+            Likes createdLike = Mapper.map(likeRequest,likeRequest.getPostId(), authority);
             Likes savedLike = likesRepository.save(createdLike);
             System.out.println(savedLike);
             return new  LikeResponse(savedLike.getId().toString(), post.getId().toString());
@@ -57,7 +56,12 @@ public class BlumaLikesService implements LikesService{
 
     @Override
     public String unlikePost(UnlikeRequest unlikeRequest) throws PostNotFound, LikeException {
-        Likes response = validate.checkIfUserHasLikePost(new LikeRequest("admin", unlikeRequest.getUserId(), unlikeRequest.getPostId()));
+        LikeRequest likeRequest = new LikeRequest();
+        likeRequest.setPostId(unlikeRequest.getPostId());
+        likeRequest.setAuthority("admin");
+        likeRequest.setUserId(unlikeRequest.getUserId());
+        likeRequest.setPostId(unlikeRequest.getPostId());
+        Likes response = validate.checkIfUserHasLikePost(likeRequest);
         if (response != null)
           return removeLike(response.getId());
         throw new LikeException("user has not like yet");
@@ -82,14 +86,10 @@ public class BlumaLikesService implements LikesService{
     public LikeResponse likeSharedPost(LikeRequest request) throws BlumaException {
         ValidateLikeResponse response = validate.validateLikeRequestOnShare(request);
         if (response.isValidate()) {
-            Share foundShare = response.getFoundShare();
-            Likes like = Mapper.map(request, response.getFoundShare().getShareOwnerAuthority());
+            validate.checkIfUserHasLikeShare(request, request.getShareId());
+            Likes like = Mapper.map(request,request.getShareId() , response.getFoundShare().getShareOwnerAuthority());
             Likes savedLike = likesRepository.save(like);
-            List<Long> likesIds = null;
-            likesIds.add(savedLike.getId());
-            Share share = service.save(foundShare);
-            System.out.println("list of shareIds {} " + share);
-            return new LikeResponse(savedLike.getId().toString(), share.getId().toString());
+            return new LikeResponse(savedLike.getId().toString(), "");
         }else {throw new ShareException("error occurs while share");}
     }
 
