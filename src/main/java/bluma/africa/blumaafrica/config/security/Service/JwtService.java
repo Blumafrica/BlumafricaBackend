@@ -1,5 +1,6 @@
 package bluma.africa.blumaafrica.config.security.Service;
 
+import bluma.africa.blumaafrica.data.models.Admin;
 import bluma.africa.blumaafrica.data.models.Authority;
 import bluma.africa.blumaafrica.data.models.User;
 import com.auth0.jwt.JWT;
@@ -31,6 +32,21 @@ public class JwtService {
                 .withExpiresAt(Instant.now().plus(86400L, ChronoUnit.SECONDS))
                 .withIssuer("Blumafrica .")
                 .withSubject(user.getEmail())
+                .withClaim("claims",authorities)
+                .sign(Algorithm.HMAC256("secret"));
+        return token;
+
+    }
+    public String generateAccessTokenForAdmin(Admin admin){
+        List<String> authorities = admin.getAuthority()
+                .stream()
+                .map(Authority::name)
+                .collect(Collectors.toList());
+        String token = JWT.create()
+                .withIssuedAt(Instant.now())
+                .withExpiresAt(Instant.now().plus(86400L, ChronoUnit.SECONDS))
+                .withIssuer("Blumafrica .")
+                .withSubject(admin.getEmail())
                 .withClaim("claims",authorities)
                 .sign(Algorithm.HMAC256("secret"));
         return token;

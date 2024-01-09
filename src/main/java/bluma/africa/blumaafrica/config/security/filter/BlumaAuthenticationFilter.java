@@ -4,6 +4,7 @@ import bluma.africa.blumaafrica.config.security.Service.JwtService;
 import bluma.africa.blumaafrica.data.models.User;
 import bluma.africa.blumaafrica.dtos.requests.LoginRequest;
 import bluma.africa.blumaafrica.dtos.responses.LoginResponse;
+import bluma.africa.blumaafrica.service.AdminService;
 import bluma.africa.blumaafrica.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
@@ -11,14 +12,12 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -31,6 +30,7 @@ public class BlumaAuthenticationFilter extends UsernamePasswordAuthenticationFil
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
     private final UserService userService;
+    private final AdminService adminService;
 
     @Override
     public Authentication attemptAuthentication( HttpServletRequest request,
@@ -58,14 +58,12 @@ public class BlumaAuthenticationFilter extends UsernamePasswordAuthenticationFil
         return null;
     }
 
-
-
     @Override
     protected void successfulAuthentication(HttpServletRequest request,
                                             HttpServletResponse response,
                                             FilterChain chain,
                                             Authentication authResult)
-            throws IOException, ServletException {
+            throws IOException {
 
         ObjectMapper mapper = new ObjectMapper();
         User user = userService.getUserBy(authResult.getPrincipal().toString());

@@ -31,6 +31,7 @@ public interface AdminService {
     FetchAdminPost fetchAllPost();
 
     Admin findAdminById(String id);
+    Admin findAdminByEmail(String email);
     User getUserId(String id) throws UserNotFound;
     Likes getLikesById(Long id);
 }
