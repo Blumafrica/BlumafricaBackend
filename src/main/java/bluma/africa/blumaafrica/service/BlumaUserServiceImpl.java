@@ -35,7 +35,8 @@ public class BlumaUserServiceImpl implements UserService {
     @Override
     public UserResponse createUser(UserRequest request) throws UserAlreadyExist {
         boolean isUserExist = userRepository.findByUsername(request.getUsername()).isPresent();
-        if (isUserExist) throw new UserAlreadyExist("user already exist");
+        boolean isUserExistByEmail = userRepository.findByEmail(request.getEmail()).isPresent();
+        if (isUserExist || isUserExistByEmail) throw new UserAlreadyExist("user already exist");
         User user = new User();
 
         String encodedPassword = passwordEncoder.encode(request.getPassword());
