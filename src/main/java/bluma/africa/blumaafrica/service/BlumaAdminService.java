@@ -1,12 +1,10 @@
 package bluma.africa.blumaafrica.service;
 
 
+import bluma.africa.blumaafrica.config.security.Service.JwtService;
 import bluma.africa.blumaafrica.data.models.*;
 import bluma.africa.blumaafrica.data.repositories.AdminRepository;
-import bluma.africa.blumaafrica.dtos.requests.DeletePost;
-import bluma.africa.blumaafrica.dtos.requests.LoginAsAdminRequest;
-import bluma.africa.blumaafrica.dtos.requests.LoginAsAdminResponse;
-import bluma.africa.blumaafrica.dtos.requests.PostRequest;
+import bluma.africa.blumaafrica.dtos.requests.*;
 import bluma.africa.blumaafrica.dtos.responses.DeleteResponse;
 import bluma.africa.blumaafrica.dtos.responses.FetchAdminPost;
 import bluma.africa.blumaafrica.dtos.responses.PostResponse;
@@ -31,6 +29,7 @@ public class BlumaAdminService implements AdminService {
     private final AdminRepository repository;
     private final UserService userService;
     private final LikesService likesService;
+    private final JwtService jwtService;
 
 
     @PostConstruct
@@ -42,13 +41,16 @@ public class BlumaAdminService implements AdminService {
         admin.setEmail("mariiam22222@gmail.com");
         admin.setPassword("Mariam@21");
         repository.save(admin);
+
     }
 
     @Override
     public LoginAsAdminResponse logInAsAdmin(LoginAsAdminRequest request) throws BlumaException {
         boolean response = validate.validateAdminDetails(request);
         if (response) {
-            return new LoginAsAdminResponse(request.getEmail());
+            Admin admin = repository.findAdminByEmail(request.getEmail());
+            String token = jwtService.generateAccessTokenForAdmin(admin);
+            return new LoginAsAdminResponse(request.getEmail(),token);
         }
         throw new BlumaException("incorrect details");
     }
@@ -89,6 +91,11 @@ public class BlumaAdminService implements AdminService {
     @Override
     public Admin findAdminById(String id) {
         return repository.findAdminById(Long.valueOf(id));
+    }
+
+    @Override
+    public Admin findAdminByEmail(String email) {
+        return repository.findAdminByEmail(email);
     }
 
     @Override

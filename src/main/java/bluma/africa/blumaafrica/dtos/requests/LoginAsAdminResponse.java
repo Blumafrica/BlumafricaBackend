@@ -14,4 +14,5 @@ public class LoginAsAdminResponse {
     @NotNull
     @NotEmpty
     private String email;
+    private String token;
 }
