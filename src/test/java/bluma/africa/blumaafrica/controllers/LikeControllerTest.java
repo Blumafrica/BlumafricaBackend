@@ -2,6 +2,7 @@ package bluma.africa.blumaafrica.controllers;
 
 import bluma.africa.blumaafrica.dtos.requests.GetAllPostLikesRequest;
 import bluma.africa.blumaafrica.dtos.requests.LikeRequest;
+import bluma.africa.blumaafrica.dtos.requests.LikeShareRequest;
 import bluma.africa.blumaafrica.dtos.requests.UnlikeRequest;
 import bluma.africa.blumaafrica.service.LikesService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -67,8 +68,11 @@ public class LikeControllerTest {
 
     @Test
     public void unlikePost(){
-        UnlikeRequest request = new UnlikeRequest("1", "1", "1");
-
+        UnlikeRequest request = new UnlikeRequest();
+           request.setLikeId("1");
+           request.setPostId("1");
+           request.setUserId("1");
+           request.setAuthority("user");
         try {
             byte [] content = mapper.writeValueAsBytes(request);
 
@@ -81,4 +85,41 @@ public class LikeControllerTest {
             e.printStackTrace();
         }
     }
+    @Test
+    public void testThatUserCanLikeShare(){
+        LikeShareRequest likeShareRequest = new LikeShareRequest("1", "user", "234");
+
+        try {
+            byte [] content = mapper.writeValueAsBytes(likeShareRequest);
+
+            mockMvc.perform(post("/api/v1/likeShare/")
+                    .content(content)
+                    .contentType(MediaType.APPLICATION_JSON))
+                    .andExpect(status().is2xxSuccessful())
+                    .andDo(print());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void testThatUserCanUnLike(){
+        UnlikeRequest request = new UnlikeRequest();
+        request.setLikeId("234");
+        request.setShareId("1");
+        request.setUserId("1");
+        request.setAuthority("user");
+        try {
+            byte [] content = mapper.writeValueAsBytes(request);
+
+            mockMvc.perform(delete("/api/v1/unlikeShare/")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(content))
+                    .andExpect(status().is2xxSuccessful())
+                    .andDo(print());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }
