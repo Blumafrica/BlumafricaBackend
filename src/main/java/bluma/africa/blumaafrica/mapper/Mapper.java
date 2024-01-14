@@ -2,14 +2,11 @@ package bluma.africa.blumaafrica.mapper;
 
 
 import bluma.africa.blumaafrica.data.models.*;
-import bluma.africa.blumaafrica.dtos.requests.CreateCarnivalFestivalRequest;
 import bluma.africa.blumaafrica.dtos.requests.LikeRequest;
 import bluma.africa.blumaafrica.dtos.requests.PostRequest;
 import bluma.africa.blumaafrica.dtos.requests.ShareRequest;
-import bluma.africa.blumaafrica.dtos.responses.CarnivalMapperResponse;
 import bluma.africa.blumaafrica.dtos.responses.ValidateShareResponse;
 import bluma.africa.blumaafrica.exceptions.BlumaException;
-import org.jetbrains.annotations.NotNull;
 
 import java.time.LocalDateTime;
 
@@ -52,23 +49,7 @@ public class Mapper {
         return share;
     }
 
-    public static CarnivalMapperResponse map(CreateCarnivalFestivalRequest request) {
-        CarnivalFestival carnivalFestival = new CarnivalFestival();
-        Address address = getAddress(request);
-        carnivalFestival.setName(request.getName());
-        carnivalFestival.setAbout(request.getAbout());
-        return new CarnivalMapperResponse(carnivalFestival, address);
-    }
 
-    private static Address getAddress(CreateCarnivalFestivalRequest request) {
-        Address address = new Address();
-        address.setCity(request.getCity());
-        address.setTime(request.getTime());
-        address.setDay(request.getDay());
-        address.setState(request.getState());
-        address.setStreet(request.getStreet());
-        address.setYear(request.getYear());
-        address.setMonth(request.getMonth());
-        return address;
-    }
+
+
 }

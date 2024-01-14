@@ -11,6 +11,7 @@ import bluma.africa.blumaafrica.dtos.responses.ProfileResponse;
 import bluma.africa.blumaafrica.dtos.responses.UserResponse;
 import bluma.africa.blumaafrica.exceptions.UserAlreadyExist;
 import bluma.africa.blumaafrica.exceptions.UserNotFound;
+import jakarta.annotation.PostConstruct;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -30,6 +31,8 @@ public class BlumaUserServiceImpl implements UserService {
     private JwtService jwtService;
 
     private final ModelMapper mapper;
+
+
 
 
     @Override

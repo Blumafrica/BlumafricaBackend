@@ -140,11 +140,7 @@ public class Validate {
         throw new BlumaException("share not found");
     }
 
-    public void validateCarnivalAndFestivalRequest(CreateCarnivalFestivalRequest request) throws AuthorityException {
-        Authority authority = validateAuthority(request.getAuthority());
-        if (authority != Authority.ADMIN)
-            throw new AuthorityException("not authorize to post");
-    }
+
 
     public ValidateEditShareResponse validateEditShare(EditShareRequest request) throws AuthorityException, ShareException {
         Share foundShare = shareRepository.findShareById(Long.valueOf(request.getPostId()));
@@ -180,10 +176,8 @@ public class Validate {
         Optional<Likes> foundLike = likesList.stream()
                 .filter((x) -> x.getUserId().equals(Long.valueOf(request.getUserId())))
                 .findAny();
-
-        if (foundLike.isPresent())
-            return foundLike.get();
-        return null;
+        System.out.println("found  like at the repository ===> "+ foundLike);
+        return foundLike.orElse(null);
     }
 
 }

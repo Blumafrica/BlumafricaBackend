@@ -69,6 +69,7 @@ public class BlumaLikesService implements LikesService{
 
     private String removeLike( Long  likeId) {
         likesRepository.deleteById(likeId);
+        System.out.println("after removing ==> "+ likesRepository.findLikesById(likeId));
         return  "unlike";
     }
 
@@ -107,6 +108,7 @@ public class BlumaLikesService implements LikesService{
         request.setUserId(unlikeRequest.getShareId());
         Likes foundLike = validate.getUserLikeOnShare(request, unlikeRequest.getShareId());
         if (foundLike != null) {
+            System.out.println("like before removing ==> "+ foundLike);
             removeLike(foundLike.getId());
 
         }

@@ -99,12 +99,12 @@ class BlumaLikesServiceTest {
    @Test
     public void testThatUserCanUnlikeShare() throws PostNotFound, LikeException {
        UnlikeRequest unlikeRequest = new UnlikeRequest();
-       unlikeRequest.setLikeId("302");
+       unlikeRequest.setLikeId("352");
        unlikeRequest.setShareId("1");
        unlikeRequest.setUserId("1");
        unlikeRequest.setAuthority("user");
         service.unLikeShare(unlikeRequest);
-       Likes likes = service.getLikes("302");
+       Likes likes = service.getLikes("352");
        assertEquals("",null, likes);
 
    }
