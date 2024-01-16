@@ -5,7 +5,9 @@ import bluma.africa.blumaafrica.data.models.Authority;
 import bluma.africa.blumaafrica.data.models.Profile;
 import bluma.africa.blumaafrica.data.models.User;
 import bluma.africa.blumaafrica.data.repositories.UserRepository;
+import bluma.africa.blumaafrica.dtos.requests.EmailRequest;
 import bluma.africa.blumaafrica.dtos.requests.ProfileRequest;
+import bluma.africa.blumaafrica.dtos.requests.Recipient;
 import bluma.africa.blumaafrica.dtos.requests.UserRequest;
 import bluma.africa.blumaafrica.dtos.responses.ProfileResponse;
 import bluma.africa.blumaafrica.dtos.responses.UserResponse;
@@ -20,6 +22,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import static bluma.africa.blumaafrica.mapper.Mapper.introductionMessage;
+
 @Service
 @AllArgsConstructor
 @Slf4j
@@ -29,6 +33,7 @@ public class BlumaUserServiceImpl implements UserService {
     private UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private JwtService jwtService;
+    private MailService mailService;
 
     private final ModelMapper mapper;
 
@@ -36,7 +41,7 @@ public class BlumaUserServiceImpl implements UserService {
 
 
     @Override
-    public UserResponse createUser(UserRequest request) throws UserAlreadyExist {
+    public UserResponse createUser(UserRequest request) throws UserAlreadyExist, UserNotFound {
         boolean isUserExist = userRepository.findByUsername(request.getUsername()).isPresent();
         boolean isUserExistByEmail = userRepository.findByEmail(request.getEmail()).isPresent();
         if (isUserExist || isUserExistByEmail) throw new UserAlreadyExist("user already exist");
@@ -48,6 +53,18 @@ public class BlumaUserServiceImpl implements UserService {
         user.setPassword(encodedPassword);
         user.setAuthorities(List.of(Authority.USER));
         var savedUser = userRepository.save(user);
+
+    try {
+        EmailRequest emailRequest = new EmailRequest();
+        emailRequest.setRecipients(List.of(new Recipient(request.getEmail())));
+        emailRequest.setHtmlContent(introductionMessage());
+        emailRequest.setSubject("SignUp");
+        mailService.sendMail(emailRequest);
+    }catch (Exception e){
+        userRepository.delete(user);
+        throw new UserNotFound("invalid email");
+    }
+
         String token = jwtService.generateAccessToken(user);
         UserResponse response = new UserResponse();
         response.setId(savedUser.getId());

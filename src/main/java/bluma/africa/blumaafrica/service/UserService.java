@@ -16,7 +16,7 @@ import bluma.africa.blumaafrica.dtos.responses.*;
 import bluma.africa.blumaafrica.exceptions.*;
 
 public interface UserService {
-    UserResponse createUser(UserRequest request) throws UserAlreadyExist;
+    UserResponse createUser(UserRequest request) throws UserAlreadyExist, UserNotFound;
     User getUserBy(String username);
     User getUserById(Long id) throws UserNotFound;
 
