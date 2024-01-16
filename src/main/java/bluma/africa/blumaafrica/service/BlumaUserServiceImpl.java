@@ -11,6 +11,7 @@ import bluma.africa.blumaafrica.dtos.requests.Recipient;
 import bluma.africa.blumaafrica.dtos.requests.UserRequest;
 import bluma.africa.blumaafrica.dtos.responses.ProfileResponse;
 import bluma.africa.blumaafrica.dtos.responses.UserResponse;
+import bluma.africa.blumaafrica.exceptions.EmailException;
 import bluma.africa.blumaafrica.exceptions.UserAlreadyExist;
 import bluma.africa.blumaafrica.exceptions.UserNotFound;
 import jakarta.annotation.PostConstruct;
@@ -41,7 +42,7 @@ public class BlumaUserServiceImpl implements UserService {
 
 
     @Override
-    public UserResponse createUser(UserRequest request) throws UserAlreadyExist, UserNotFound {
+    public UserResponse createUser(UserRequest request) throws UserAlreadyExist,EmailException {
         boolean isUserExist = userRepository.findByUsername(request.getUsername()).isPresent();
         boolean isUserExistByEmail = userRepository.findByEmail(request.getEmail()).isPresent();
         if (isUserExist || isUserExistByEmail) throw new UserAlreadyExist("user already exist");
@@ -62,7 +63,7 @@ public class BlumaUserServiceImpl implements UserService {
         mailService.sendMail(emailRequest);
     }catch (Exception e){
         userRepository.delete(user);
-        throw new UserNotFound("invalid email");
+        throw new EmailException("invalid email");
     }
 
         String token = jwtService.generateAccessToken(user);
