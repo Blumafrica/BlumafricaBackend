@@ -1,17 +1,26 @@
 package bluma.africa.blumaafrica.data.models;
 
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 
 @Getter
+@Setter
+@Entity(name = "admin")
 @Component
-public class Admin extends Person {
+public class Admin  {
 
     @Id
-    private Long id = 1L;
-    private final String  email = "mariiam22222@gmail.com";
-    private final String password = "password";
+    private Long id;
+    private String  email  ;
+    private String password;
+    @Enumerated(value = EnumType.STRING)
+    private List<Authority> authority;
+
 
 }

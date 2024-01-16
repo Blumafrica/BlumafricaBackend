@@ -8,12 +8,12 @@ import lombok.Setter;
 
 import java.util.List;
 
-@Entity
+@Entity(name = "user")
 @Setter
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class User extends Person{
+public class User{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -22,7 +22,7 @@ public class User extends Person{
     @Column(unique = true, length = 100, nullable = false)
     private String email;
     private String password;
-    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY,optional = true)
+    @OneToOne(cascade = CascadeType.ALL)
     private Profile profile;
     @Enumerated(EnumType.STRING)
     private List<Authority> authorities;
