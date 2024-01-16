@@ -26,12 +26,15 @@ public class Comment {
     @GeneratedValue(strategy = IDENTITY)
     private Long commentId;
     private String commentText;
-    @ManyToOne
-    private User commenterId;
+    private Long commenterId;
     @ManyToOne
     private Post postId;
+    @OneToOne
+    private Share shareId;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    @Enumerated(value = EnumType.STRING)
+    private Authority userAuthority;
 
     @PrePersist
     public void setUpdatedAt(){

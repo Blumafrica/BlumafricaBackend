@@ -55,7 +55,7 @@ public class BlumaPostService implements PostService {
 
     @Override
     public Post getPostById(Long id) throws PostNotFound {
-        return null;
+        return postRepository.findPostById(id).orElseThrow(()-> new  PostNotFound("post with id " + id + " does not exist"));
     }
 
     @Override
@@ -68,10 +68,7 @@ public class BlumaPostService implements PostService {
          return getPostById(postOwnerId).getPostOwnerId();
     }
 
-    @Override
-    public PostResponse saveUserPost(Post post) throws UserNotFound {
-        return null;
-    }
+
 
     @Override
 

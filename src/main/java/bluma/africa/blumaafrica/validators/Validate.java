@@ -1,11 +1,9 @@
 package bluma.africa.blumaafrica.validators;
 
 import bluma.africa.blumaafrica.data.models.*;
-import bluma.africa.blumaafrica.data.repositories.AdminRepository;
-import bluma.africa.blumaafrica.data.repositories.LikesRepository;
-import bluma.africa.blumaafrica.data.repositories.PostRepository;
-import bluma.africa.blumaafrica.data.repositories.ShareRepository;
+import bluma.africa.blumaafrica.data.repositories.*;
 import bluma.africa.blumaafrica.dtos.requests.*;
+import bluma.africa.blumaafrica.dtos.responses.ValidateCommentResponse;
 import bluma.africa.blumaafrica.dtos.responses.ValidateEditShareResponse;
 import bluma.africa.blumaafrica.dtos.responses.ValidateLikeResponse;
 import bluma.africa.blumaafrica.dtos.responses.ValidateShareResponse;
@@ -26,6 +24,7 @@ public class Validate {
     private final PostRepository postService;
     private LikesRepository likesRepository;
     private ShareRepository shareRepository;
+    private UserRepository userRepository;
 
 
     public  boolean validateAdminDetails(LoginAsAdminRequest request){
@@ -179,5 +178,36 @@ public class Validate {
         System.out.println("found  like at the repository ===> "+ foundLike);
         return foundLike.orElse(null);
     }
+    public ValidateCommentResponse validateCommentOnPostRequest(CreateCommentRequest createCommentRequest) throws AuthorityException, PostNotFound, UserNotFound {
+       Post post =  postService.getPostById(Long.valueOf(createCommentRequest.getPostId()));
+       Authority userAuthority = validateAuthority(createCommentRequest.getCommenterAuthority());
+       if (post != null){
+           if (userAuthority.name().equalsIgnoreCase("user"))
+               return mapToValidateCommentResponseUser(createCommentRequest, post, userAuthority);
+       }throw new PostNotFound("post with id "+ createCommentRequest.getPostId() + "does not exist");
+    }
+
+    private ValidateCommentResponse mapToValidateCommentResponseUser(CreateCommentRequest createCommentRequest, Post post, Authority userAuthority) throws UserNotFound {
+        Optional<User> user = Optional.ofNullable(userRepository.findById(Long.valueOf(createCommentRequest.getCommenterId()))
+                .orElseThrow(() -> new UserNotFound("user does not exist")));
+        ValidateCommentResponse response = new ValidateCommentResponse();
+        response.setUser(user.get());
+        response.setPost(post);
+        response.setAuthority(userAuthority);
+        return response;
+    }
+
+
+    public void validateCommentOnShare(CreateCommentRequest createCommentRequest) throws ShareException, AuthorityException {
+        Share share = shareRepository.findShareById(Long.valueOf(createCommentRequest.getPostId()));
+        Authority authority = validateAuthority(createCommentRequest.getCommenterAuthority());
+        if (share != null) {
+            if (authority == Authority.ADMIN){
+                adminService.findAdminById(1L);
+
+            }
+        }throw new ShareException("shared post with id " + createCommentRequest.getPostId() + " does not exist");
+    }
+
 
 }

@@ -15,7 +15,6 @@ import bluma.africa.blumaafrica.exceptions.UserNotFound;
 
 import java.util.List;
 public interface PostService {
-    PostResponse saveUserPost(Post post) throws UserNotFound;
    Post getPostById(String id) throws PostNotFound;
     PostResponse creatPost(PostRequest postRequest) throws BlumaException;
     EditPostResponse editPost(Long postId, PostRequest postRequest) throws UserNotFound, PostNotFound;

@@ -5,6 +5,7 @@ import bluma.africa.blumaafrica.data.models.*;
 import bluma.africa.blumaafrica.dtos.requests.LikeRequest;
 import bluma.africa.blumaafrica.dtos.requests.PostRequest;
 import bluma.africa.blumaafrica.dtos.requests.ShareRequest;
+import bluma.africa.blumaafrica.dtos.responses.ValidateCommentResponse;
 import bluma.africa.blumaafrica.dtos.responses.ValidateShareResponse;
 import bluma.africa.blumaafrica.exceptions.BlumaException;
 
@@ -50,6 +51,13 @@ public class Mapper {
     }
 
 
-
-
+    public static Comment map( ValidateCommentResponse response) {
+        Comment comment =new Comment();
+        comment.setCommenterId(response.getUser().getId());
+        comment.setUserAuthority(response.getAuthority());
+        comment.setPostId(response.getPost());
+        comment.setCreatedAt(LocalDateTime.now());
+        comment.setCommenterId(response.getUser().getId());
+        return comment;
+    }
 }
