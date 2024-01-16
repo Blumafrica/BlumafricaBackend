@@ -10,8 +10,10 @@ import lombok.Setter;
 public class CreateCommentRequest {
     @NotNull
     @NotEmpty
-    private Long commenterId;
+    private String commenterId;
     @NotNull
     @NotEmpty
     private String commentText;
+    private String postId;
+    private String commenterAuthority;
 }

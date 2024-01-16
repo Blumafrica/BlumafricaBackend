@@ -27,7 +27,7 @@ public class PostServiceTest {
     void setUp(){
         postRequest = new PostRequest();
         postEditRequest = new PostEditRequest();
-
+        postRequest.setAuthority("user");
         postRequest.setContent(" Reaction lead to action.");
         postRequest.setDescription("Action");
         postRequest.setFileUrl("C:\\Users\\mr Adio\\IdeaProjects\\BlumafricaBackend\\src\\main\\resources\\assets\\e field.jpeg");

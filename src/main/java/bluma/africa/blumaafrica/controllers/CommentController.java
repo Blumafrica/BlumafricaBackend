@@ -18,20 +18,26 @@ public class CommentController {
 
 
     @PostMapping("createComment")
-    public ResponseEntity<?>creatComment(@RequestParam Long commenterId, @RequestBody CreateCommentRequest createCommentRequest){
-        try{
-            ResponseApi<?> response = commentService.createComment(commenterId ,createCommentRequest);
-            return ResponseEntity.ok(response);
-        }
-        catch (CommentNotFoundException | PostNotFoundException | UserNotFound | PostNotFound message) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(message.getMessage());
+    public ResponseEntity<?>creatComment( @RequestBody CreateCommentRequest createCommentRequest){
 
+        ResponseApi<?> response = null;
+        try {
+            response = commentService.createComment(createCommentRequest);
+            return ResponseEntity.ok(response);
+
+        } catch (CommentNotFoundException | UserNotFound | PostNotFound | AuthorityException | PostNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
+
+
+
+
+
     }
 
     @PostMapping("/updateComment")
     public ResponseEntity<ResponseApi<?>> updateComment(@RequestParam Long commentTextId, @RequestParam Long commenterId, @RequestBody UpdateCommentRequest updateCommentRequest) throws BlumaException {
-        ResponseApi<?> response = commentService.updateComment(commentTextId, commenterId, updateCommentRequest);
+        ResponseApi<?> response = commentService.updateComment(updateCommentRequest);
         return ResponseEntity.ok(response);
     }
 }

@@ -9,10 +9,13 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockPart;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -21,27 +24,42 @@ public class CommentControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
-    private ObjectMapper mapper ;
+    private ObjectMapper mapper  = new ObjectMapper();
 
     private  CreateCommentRequest createCommentRequest;
     @BeforeEach
     void setUp(){
         CreateCommentRequest createCommentRequest = new CreateCommentRequest();
-        createCommentRequest.setCommenterId(12L);
+        createCommentRequest.setCommenterId("1");
         createCommentRequest.setCommentText("Ok");
-        mapper = new ObjectMapper();
 
     }
 
-//    @Test
-//    public void userCanCreatCommentTest() throws JsonProcessingException {
-//        Long postId= 1L;
-//        Part part= new MockPart(String.valueOf(postId), new byte[]{49});
-//        try{
-//            mockMvc.perform(post("/ap1/v1/comment").
-//                    content(mapper.writeValueAsBytes(createCommentRequest))
-//            )
-//        }
-//
-//    }
+    @Test
+    public void userCanCreatCommentTest() {
+
+        CreateCommentRequest createCommentRequest = new CreateCommentRequest();
+        createCommentRequest.setCommenterId("1");
+        createCommentRequest.setCommentText("Ok");
+        createCommentRequest.setCommenterAuthority("ADMIN");
+        createCommentRequest.setPostId("1");
+
+
+        try {
+
+            byte [] content = mapper.writeValueAsBytes(createCommentRequest);
+
+            mockMvc.perform(post("/ap1/v1/comment")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(content))
+                    .andExpect(status().is2xxSuccessful())
+                    .andDo(print());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
+
+
+    }
 }
