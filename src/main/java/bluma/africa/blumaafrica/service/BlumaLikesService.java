@@ -69,6 +69,7 @@ public class BlumaLikesService implements LikesService{
 
     private String removeLike( Long  likeId) {
         likesRepository.deleteById(likeId);
+        System.out.println("after removing ==> "+ likesRepository.findLikesById(likeId));
         return  "unlike";
     }
 
@@ -85,11 +86,11 @@ public class BlumaLikesService implements LikesService{
     @Override
     public LikeResponse likeSharedPost(LikeRequest request) throws BlumaException {
         ValidateLikeResponse response = validate.validateLikeRequestOnShare(request);
+        validate.checkIfUserHasLikeShare(request, request.getShareId());
         if (response.isValidate()) {
-            validate.checkIfUserHasLikeShare(request, request.getShareId());
             Likes like = Mapper.map(request,request.getShareId() , response.getFoundShare().getShareOwnerAuthority());
             Likes savedLike = likesRepository.save(like);
-            return new LikeResponse(savedLike.getId().toString(), "");
+            return new LikeResponse(savedLike.getId().toString(), savedLike.getShareId().toString());
         }else {throw new ShareException("error occurs while share");}
     }
 
@@ -97,5 +98,23 @@ public class BlumaLikesService implements LikesService{
     public GetAllPostLikesResponse getAllPostLikes(GetAllPostLikesRequest request) {
       List<Likes> foundLikes = likesRepository.findLikesByPostId(Long.valueOf(request.getPostId()));
       return new GetAllPostLikesResponse(foundLikes);
+    }
+
+    @Override
+    public void unLikeShare(UnlikeRequest unlikeRequest) throws PostNotFound, LikeException {
+        LikeRequest request = new LikeRequest();
+        request.setShareId(request.getShareId());
+        request.setAuthority(unlikeRequest.getAuthority());
+        request.setUserId(unlikeRequest.getShareId());
+        Likes foundLike = validate.getUserLikeOnShare(request, unlikeRequest.getShareId());
+        if (foundLike != null) {
+            System.out.println("like before removing ==> "+ foundLike);
+            removeLike(foundLike.getId());
+
+        }
+
+    }
+    public Likes getLikes(String id){
+        return likesRepository.findLikesById(Long.valueOf(id));
     }
 }

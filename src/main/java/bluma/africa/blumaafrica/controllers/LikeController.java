@@ -3,6 +3,7 @@ package bluma.africa.blumaafrica.controllers;
 import bluma.africa.blumaafrica.data.models.Likes;
 import bluma.africa.blumaafrica.dtos.requests.GetAllPostLikesRequest;
 import bluma.africa.blumaafrica.dtos.requests.LikeRequest;
+import bluma.africa.blumaafrica.dtos.requests.LikeShareRequest;
 import bluma.africa.blumaafrica.dtos.requests.UnlikeRequest;
 import bluma.africa.blumaafrica.dtos.responses.GetAllPostLikesResponse;
 import bluma.africa.blumaafrica.dtos.responses.LikeResponse;
@@ -48,6 +49,23 @@ public class LikeController {
             return new ResponseEntity<>(e, HttpStatus.CONFLICT);
         }
         return new ResponseEntity<>(response, HttpStatus.FOUND);
+    }
+
+    @PostMapping("/api/v1/likeShare/")
+    private ResponseEntity<?> likeShare(@RequestBody LikeRequest request){
+
+        try {
+            LikeResponse response =likesService.likeSharedPost(request);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (BlumaException e) {
+            return new ResponseEntity<>(e, HttpStatus.CONFLICT);
+        }
+    }
+
+    @DeleteMapping("/api/v1/unlikeShare/")
+    private ResponseEntity<?> unlikeShare(@RequestBody UnlikeRequest request){
+
+        return null;
     }
 
 

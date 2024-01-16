@@ -9,7 +9,6 @@ import bluma.africa.blumaafrica.dtos.responses.LikeResponse;
 import bluma.africa.blumaafrica.exceptions.BlumaException;
 import bluma.africa.blumaafrica.exceptions.LikeException;
 import bluma.africa.blumaafrica.exceptions.PostNotFound;
-import bluma.africa.blumaafrica.exceptions.UserNotFound;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -24,4 +23,6 @@ public interface LikesService {
     LikeResponse likeSharedPost(LikeRequest request) throws BlumaException;
 
     GetAllPostLikesResponse getAllPostLikes(GetAllPostLikesRequest request);
+
+    void unLikeShare(UnlikeRequest unlikeRequest) throws PostNotFound, LikeException;
 }

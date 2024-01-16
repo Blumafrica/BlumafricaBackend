@@ -32,17 +32,19 @@ public class BlumaAdminService implements AdminService {
     private final JwtService jwtService;
 
 
-    @PostConstruct
-    @Override
-    public void createAdmin() {
-        Admin admin = new Admin();
-        admin.setAuthority(List.of(Authority.ADMIN));
-        admin.setId(1L);
-        admin.setEmail("mariiam22222@gmail.com");
-        admin.setPassword("Mariam@21");
-        repository.save(admin);
+//    @PostConstruct
+//    @Override
+//    public void createAdmin() {
+//        Admin admin = new Admin();
+//        admin.setAuthority(List.of(Authority.ADMIN));
+//        admin.setId(1L);
+//        admin.setEmail("mariiam22222@gmail.com");
+//        admin.setPassword("Mariam@21");
+//        repository.save(admin);
+//
+//    }
 
-    }
+
 
     @Override
     public LoginAsAdminResponse logInAsAdmin(LoginAsAdminRequest request) throws BlumaException {

@@ -134,17 +134,13 @@ public class Validate {
     }
 
     private Share checkIfShareExit(LikeRequest request) throws BlumaException {
-        Share share = shareRepository.findShareById(Long.valueOf(request.getPostId()));
+        Share share = shareRepository.findShareById(Long.valueOf(request.getShareId()));
         if (share != null)
             return share;
         throw new BlumaException("share not found");
     }
 
-    public void validateCarnivalAndFestivalRequest(CreateCarnivalFestivalRequest request) throws AuthorityException {
-        Authority authority = validateAuthority(request.getAuthority());
-        if (authority != Authority.ADMIN)
-            throw new AuthorityException("not authorize to post");
-    }
+
 
     public ValidateEditShareResponse validateEditShare(EditShareRequest request) throws AuthorityException, ShareException {
         Share foundShare = shareRepository.findShareById(Long.valueOf(request.getPostId()));
@@ -156,8 +152,32 @@ public class Validate {
         throw new ShareException("shared post  not found");
     }
 
-    public void checkIfUserHasLikeShare(LikeRequest request, String shareId) {
+    public void checkIfUserHasLikeShare(LikeRequest request, String shareId) throws LikeException {
         Share share = shareRepository.findShareById(Long.valueOf(shareId));
+        List<Likes> foundLikes = likesRepository.findAll();
+        List<Likes> likesList = foundLikes.stream()
+                .filter((x) -> Objects.equals(x.getShareId(), Long.valueOf(shareId)))
+                .toList();
 
+        Optional<Likes> foundLike = likesList.stream()
+                .filter((x) -> x.getUserId().equals(Long.valueOf(request.getUserId())))
+                .findAny();
+
+        if (foundLike.isPresent())
+            throw new LikeException("user already like");
     }
+    public Likes getUserLikeOnShare(LikeRequest request, String shareId){
+
+        List<Likes> foundLikes = likesRepository.findAll();
+        List<Likes> likesList = foundLikes.stream()
+                .filter((x) -> Objects.equals(x.getShareId(), Long.valueOf(shareId)))
+                .toList();
+
+        Optional<Likes> foundLike = likesList.stream()
+                .filter((x) -> x.getUserId().equals(Long.valueOf(request.getUserId())))
+                .findAny();
+        System.out.println("found  like at the repository ===> "+ foundLike);
+        return foundLike.orElse(null);
+    }
+
 }

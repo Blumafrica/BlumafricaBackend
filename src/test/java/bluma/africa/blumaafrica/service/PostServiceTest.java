@@ -72,6 +72,14 @@ public class PostServiceTest {
         FetchUserPostResponse response = postService.findUserPosts(request);
         assertEquals(10, response.getUserPost().size());
     }
-
+     @Test
+    public void testIfUserCanPostWithOutRegistering() throws BlumaException {
+        PostRequest request = new PostRequest();
+        request.setContent("just testing");
+        request.setPosterId("1");
+        request.setDescription("let's see");
+        request.setAuthority("master");
+        var response  = postService.creatPost(request);
+     }
 
 }

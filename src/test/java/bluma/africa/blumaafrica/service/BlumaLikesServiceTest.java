@@ -18,6 +18,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.springframework.test.util.AssertionErrors.assertEquals;
+import static org.springframework.test.util.AssertionErrors.assertNull;
 
 @SpringBootTest
 class BlumaLikesServiceTest {
@@ -65,9 +66,15 @@ class BlumaLikesServiceTest {
 
     @Test
     public void testThatUserCanUnlike() throws PostNotFound, LikeException {
-       UnlikeRequest request = new UnlikeRequest("1", "1", "1");
+       UnlikeRequest request = new UnlikeRequest();
+       request.setLikeId("1");
+       request.setUserId("1");
+       request.setPostId("1");
+       request.setAuthority("user");
        var response = service.unlikePost(request);
-       assertNotNull(response);
+       Likes likes = service.getLikes("1");
+
+       assertEquals("", null, likes);
    }
    @Test
     public void testThatUserCanLikeSharedPost() throws BlumaException {
@@ -88,4 +95,20 @@ class BlumaLikesServiceTest {
        request.setUserId("1");
        assertThrows(LikeException.class, ()-> service.likeSharedPost(request));
    }
+
+   @Test
+    public void testThatUserCanUnlikeShare() throws PostNotFound, LikeException {
+       UnlikeRequest unlikeRequest = new UnlikeRequest();
+       unlikeRequest.setLikeId("352");
+       unlikeRequest.setShareId("1");
+       unlikeRequest.setUserId("1");
+       unlikeRequest.setAuthority("user");
+        service.unLikeShare(unlikeRequest);
+       Likes likes = service.getLikes("352");
+       assertEquals("",null, likes);
+
+   }
+
+
+
 }

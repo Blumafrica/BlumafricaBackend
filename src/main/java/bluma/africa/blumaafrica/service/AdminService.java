@@ -17,7 +17,6 @@ import bluma.africa.blumaafrica.exceptions.UserNotFound;
 
 
 public interface AdminService {
-    void createAdmin();
 
     LoginAsAdminResponse logInAsAdmin(LoginAsAdminRequest request) throws BlumaException;
 
