@@ -13,7 +13,6 @@ import bluma.africa.blumaafrica.exceptions.PostNotFound;
 import bluma.africa.blumaafrica.exceptions.ShareException;
 import org.springframework.stereotype.Service;
 
-@Service
 public interface ShareService {
 
     ShareResponse share(ShareRequest request) throws PostNotFound, AuthorityException;
