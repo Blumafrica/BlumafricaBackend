@@ -2,16 +2,26 @@ package bluma.africa.blumaafrica.config.security;
 
 import bluma.africa.blumaafrica.config.security.Service.JwtService;
 import bluma.africa.blumaafrica.config.security.filter.BlumaAuthenticationFilter;
+import bluma.africa.blumaafrica.config.security.filter.BlumaAuthorizationFilter;
 import bluma.africa.blumaafrica.config.security.utils.SecurityUtils;
+import bluma.africa.blumaafrica.data.models.Authority;
+import bluma.africa.blumaafrica.service.AdminService;
+import bluma.africa.blumaafrica.service.UserService;
+import jakarta.servlet.Filter;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.List;
 
@@ -20,27 +30,41 @@ import java.util.List;
 public class SecurityConfig {
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
-//    private final BlumaAuthorizationFilter blumaAuthorizationFilter;
+    private final UserService userService;
+    private final AdminService adminService;
+    private final BlumaAuthorizationFilter blumaAuthorizationFilter;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-        return httpSecurity.csrf(c -> c.disable())
-                .sessionManagement(c -> c.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .cors(httpSecurityCorsConfigurer -> {
-                    CorsConfiguration corsConfiguration = new CorsConfiguration();
-                    corsConfiguration.setAllowedMethods(List.of("POST", "PUT", "GET","DELETE"));
-                    corsConfiguration.setAllowedOrigins(List.of("*"));
-                })
-                .addFilterAt(new BlumaAuthenticationFilter(authenticationManager, jwtService), UsernamePasswordAuthenticationFilter.class)
-//                .addFilterBefore(blumaAuthorizationFilter, BlumaAuthorizationFilter.class)
-//                .authorizeHttpRequests(c -> c.requestMatchers(HttpMethod.POST, getPublicEndpoints()).permitAll())
-////                        requestMatchers(HttpMethod.GET, "/api/v1/user", "/api/v1/user/**").hasAnyAuthority(Authority.USER.name()))
-                .authorizeHttpRequests(request ->
-                        request.requestMatchers("/login", "/api/v1/user/register","/api/v1/user/post").permitAll().anyRequest().authenticated())
-                .build();
 
+        return httpSecurity.csrf(AbstractHttpConfigurer::disable)
+                .sessionManagement(c -> c.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .cors(Customizer.withDefaults())
+                .addFilterAt(login(), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(blumaAuthorizationFilter, BlumaAuthenticationFilter.class)
+                .authorizeHttpRequests(request -> request
+                                .requestMatchers(HttpMethod.POST, getPublicEndpoints()).permitAll()
+                                .requestMatchers(HttpMethod.GET, "/api/v1/user", "/api/v1/user/**").hasAnyAuthority(Authority.USER.name())
+
+                                .requestMatchers("/api/v1/user/register",
+
+                                        "/swagger-ui.html",
+                                        "/swagger-ui/**",
+                                        "/v3/api-docs",
+                                        "/v3/api-docs/**").permitAll()
+
+                                .anyRequest().authenticated()
+                )
+                .build();
     }
 
+    private BlumaAuthenticationFilter login() {
+        BlumaAuthenticationFilter auth = new BlumaAuthenticationFilter(
+                authenticationManager, jwtService, userService,adminService);
+        auth.setFilterProcessesUrl("/api/v1/user/login");
+        auth.setFilterProcessesUrl("/api/v1/login");
+        return auth;
+    }
     private static String[] getPublicEndpoints() {
         return SecurityUtils.getPublicEndpoints()
                 .toArray(String[]::new);

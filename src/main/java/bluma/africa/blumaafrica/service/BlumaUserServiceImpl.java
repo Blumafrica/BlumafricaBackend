@@ -1,33 +1,29 @@
 package bluma.africa.blumaafrica.service;
 
+import bluma.africa.blumaafrica.config.security.Service.JwtService;
 import bluma.africa.blumaafrica.data.models.Authority;
-import bluma.africa.blumaafrica.data.models.Likes;
-import bluma.africa.blumaafrica.data.models.Post;
+import bluma.africa.blumaafrica.data.models.Profile;
 import bluma.africa.blumaafrica.data.models.User;
 import bluma.africa.blumaafrica.data.repositories.UserRepository;
-import bluma.africa.blumaafrica.dtos.requests.FetchUserPostRequest;
-import bluma.africa.blumaafrica.dtos.requests.LikeRequest;
-import bluma.africa.blumaafrica.dtos.requests.PostRequest;
+import bluma.africa.blumaafrica.dtos.requests.EmailRequest;
+import bluma.africa.blumaafrica.dtos.requests.ProfileRequest;
+import bluma.africa.blumaafrica.dtos.requests.Recipient;
 import bluma.africa.blumaafrica.dtos.requests.UserRequest;
-import bluma.africa.blumaafrica.dtos.responses.*;
-import bluma.africa.blumaafrica.exceptions.PostNotFound;
+import bluma.africa.blumaafrica.dtos.responses.ProfileResponse;
+import bluma.africa.blumaafrica.dtos.responses.UserResponse;
+import bluma.africa.blumaafrica.exceptions.EmailException;
 import bluma.africa.blumaafrica.exceptions.UserAlreadyExist;
 import bluma.africa.blumaafrica.exceptions.UserNotFound;
-
-import bluma.africa.blumaafrica.data.models.*;
-import bluma.africa.blumaafrica.data.repositories.UserRepository;
-import bluma.africa.blumaafrica.dtos.requests.*;
-import bluma.africa.blumaafrica.dtos.responses.*;
-import bluma.africa.blumaafrica.exceptions.*;
-
+import jakarta.annotation.PostConstruct;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
+
+import static bluma.africa.blumaafrica.mapper.Mapper.introductionMessage;
 
 @Service
 @AllArgsConstructor
@@ -37,14 +33,19 @@ import java.util.List;
 public class BlumaUserServiceImpl implements UserService {
     private UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private JwtService jwtService;
+    private MailService mailService;
 
     private final ModelMapper mapper;
 
 
+
+
     @Override
-    public UserResponse createUser(UserRequest request) throws UserAlreadyExist {
+    public UserResponse createUser(UserRequest request) throws UserAlreadyExist,EmailException {
         boolean isUserExist = userRepository.findByUsername(request.getUsername()).isPresent();
-        if (isUserExist) throw new UserAlreadyExist("user already exist");
+        boolean isUserExistByEmail = userRepository.findByEmail(request.getEmail()).isPresent();
+        if (isUserExist || isUserExistByEmail) throw new UserAlreadyExist("user already exist");
         User user = new User();
 
         String encodedPassword = passwordEncoder.encode(request.getPassword());
@@ -53,8 +54,22 @@ public class BlumaUserServiceImpl implements UserService {
         user.setPassword(encodedPassword);
         user.setAuthorities(List.of(Authority.USER));
         var savedUser = userRepository.save(user);
+
+    try {
+        EmailRequest emailRequest = new EmailRequest();
+        emailRequest.setRecipients(List.of(new Recipient(request.getEmail())));
+        emailRequest.setHtmlContent(introductionMessage());
+        emailRequest.setSubject("SignUp");
+        mailService.sendMail(emailRequest);
+    }catch (Exception e){
+        userRepository.delete(user);
+        throw new EmailException("invalid email");
+    }
+
+        String token = jwtService.generateAccessToken(user);
         UserResponse response = new UserResponse();
         response.setId(savedUser.getId());
+        response.setToken(token);
         response.setMessage("Successfully created");
         return response;
     }
@@ -87,17 +102,7 @@ public class BlumaUserServiceImpl implements UserService {
         return null;
     }
 
-//    @Override
-//    public LikeResponse userCanLikePost(LikeRequest likeRequest) {
-//        Post foundPost =   postService.getPostById(likeRequest.getPostId());
-//        Likes likes = likesService.userCanLikePost(likeRequest);
-//        foundPost.setListOfLikeIds(List.of(likes.getId()));
-//        Post saved = postService.save(foundPost);
-//        System.out.println("created like "+likes);
-//        System.out.println("after liking ==> "+saved.getListOfLikeIds().size());
-//        System.out.println("post after liking ==> " + saved);
-//        return new LikeResponse(likes.getId().toString());
-//    }
+
 
 
 

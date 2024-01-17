@@ -6,6 +6,7 @@ import bluma.africa.blumaafrica.dtos.requests.PostRequest;
 import bluma.africa.blumaafrica.dtos.responses.EditPostResponse;
 import bluma.africa.blumaafrica.dtos.responses.FetchUserPostResponse;
 import bluma.africa.blumaafrica.dtos.responses.PostResponse;
+import bluma.africa.blumaafrica.exceptions.BlumaException;
 import bluma.africa.blumaafrica.exceptions.PostNotFound;
 import bluma.africa.blumaafrica.exceptions.UserNotFound;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,7 +27,7 @@ public class PostServiceTest {
     void setUp(){
         postRequest = new PostRequest();
         postEditRequest = new PostEditRequest();
-
+        postRequest.setAuthority("user");
         postRequest.setContent(" Reaction lead to action.");
         postRequest.setDescription("Action");
         postRequest.setFileUrl("C:\\Users\\mr Adio\\IdeaProjects\\BlumafricaBackend\\src\\main\\resources\\assets\\e field.jpeg");
@@ -38,7 +39,7 @@ public class PostServiceTest {
     }
 
     @Test
-    public void userPostTest() throws UserNotFound {
+    public void userPostTest() throws BlumaException {
       PostResponse postResponse = postService.creatPost(postRequest);
         assertNotNull(postResponse);
         assertNotNull(postResponse.getMessage());
@@ -71,6 +72,14 @@ public class PostServiceTest {
         FetchUserPostResponse response = postService.findUserPosts(request);
         assertEquals(10, response.getUserPost().size());
     }
-
+     @Test
+    public void testIfUserCanPostWithOutRegistering() throws BlumaException {
+        PostRequest request = new PostRequest();
+        request.setContent("just testing");
+        request.setPosterId("1");
+        request.setDescription("let's see");
+        request.setAuthority("master");
+        var response  = postService.creatPost(request);
+     }
 
 }

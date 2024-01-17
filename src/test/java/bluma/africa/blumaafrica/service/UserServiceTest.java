@@ -26,7 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-public class UserServiceTest {
+public class  UserServiceTest {
     @Autowired
     private UserService userService;
     private UserRequest userRequest;
@@ -75,7 +75,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void create_User_Account_Test() throws UserAlreadyExist {
+    public void create_User_Account_Test() throws UserAlreadyExist, UserNotFound, EmailException {
         userResponse = userService.createUser(userRequest);
         assertNotNull(userResponse);
         assertNotNull(userResponse.getMessage());

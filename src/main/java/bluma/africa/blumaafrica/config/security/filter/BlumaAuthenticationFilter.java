@@ -1,8 +1,11 @@
 package bluma.africa.blumaafrica.config.security.filter;
 
 import bluma.africa.blumaafrica.config.security.Service.JwtService;
+import bluma.africa.blumaafrica.data.models.User;
 import bluma.africa.blumaafrica.dtos.requests.LoginRequest;
 import bluma.africa.blumaafrica.dtos.responses.LoginResponse;
+import bluma.africa.blumaafrica.service.AdminService;
+import bluma.africa.blumaafrica.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -22,11 +25,15 @@ import java.io.InputStream;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @AllArgsConstructor
+
 public class BlumaAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
+    private final UserService userService;
+    private final AdminService adminService;
+
     @Override
-    public Authentication attemptAuthentication(HttpServletRequest request,
+    public Authentication attemptAuthentication( HttpServletRequest request,
                                                 HttpServletResponse response) throws AuthenticationException {
         ObjectMapper mapper = new ObjectMapper();
 
@@ -51,17 +58,16 @@ public class BlumaAuthenticationFilter extends UsernamePasswordAuthenticationFil
         return null;
     }
 
-
-
     @Override
     protected void successfulAuthentication(HttpServletRequest request,
                                             HttpServletResponse response,
                                             FilterChain chain,
                                             Authentication authResult)
-            throws IOException, ServletException {
+            throws IOException {
 
         ObjectMapper mapper = new ObjectMapper();
-        String token = jwtService.generateAccessToken(authResult.getPrincipal().toString());
+        User user = userService.getUserBy(authResult.getPrincipal().toString());
+        String token = jwtService.generateAccessToken(user);
         LoginResponse loginResponse = new LoginResponse(token);
         response.setContentType(APPLICATION_JSON_VALUE);
         mapper.writeValue(response.getOutputStream(), loginResponse);

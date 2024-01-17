@@ -18,4 +18,6 @@ public class Likes {
     private Long postId;
     @Enumerated(EnumType.STRING)
     private Authority userAUTHORITY;
+    private boolean isLiked;
+    private Long shareId;
 }

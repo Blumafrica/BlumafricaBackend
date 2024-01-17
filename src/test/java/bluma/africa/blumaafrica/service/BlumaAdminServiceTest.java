@@ -35,7 +35,7 @@ class BlumaAdminServiceTest {
     public void testThatAdminCanLoginAs() throws BlumaException {
         LoginAsAdminRequest request = new LoginAsAdminRequest();
         request.setEmail("mariiam22222@gmail.com");
-        request.setPassword("@Ahhaj(JJI");
+        request.setPassword("Mariam@21");
         LoginAsAdminResponse response = adminService.logInAsAdmin(request);
         assertEquals("mariiam22222@gmail.com",response.getEmail());
 

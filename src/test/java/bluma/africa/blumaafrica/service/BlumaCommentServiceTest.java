@@ -19,26 +19,36 @@ public class BlumaCommentServiceTest {
     private CommentService commentService;
 
     @Test
-    public void addCommentTest() throws CommentNotFoundException, UserNotFound, PostNotFoundException, PostNotFound {
+    public void addCommentTest() throws CommentNotFoundException, UserNotFound, PostNotFoundException, PostNotFound, AuthorityException {
         CreateCommentRequest createCommentRequest = new CreateCommentRequest();
-        createCommentRequest.setCommenterId(2L);
+        createCommentRequest.setCommenterId("1");
+        createCommentRequest.setPostId("1");
+        createCommentRequest.setCommenterAuthority("user");
         createCommentRequest.setCommentText("This is a test");
-        var response = commentService.createComment(1L, createCommentRequest);
+        var response = commentService.createComment( createCommentRequest);
         assertThat(response).isNotNull();
     }
     @Test
     public void updateCommentTest() throws BlumaException {
        UpdateCommentRequest updateCommentRequest = new UpdateCommentRequest();
-//        CreateCommentRequest createCommentRequest = new CreateCommentRequest();
-//        createCommentRequest.setCommenterId(2L);
-//        createCommentRequest.setCommentText("This is an updated test.");
-
         updateCommentRequest.setCommentId(1L);
+        updateCommentRequest.setCommenterId(1L);;
         updateCommentRequest.setNewCommentText("This should be updated please");
-        var response =commentService.updateComment(1L,1L,updateCommentRequest);
+        var response =commentService.updateComment(updateCommentRequest);
         assertNotNull(response);
         AssertionsForClassTypes.assertThat(response).isInstanceOf(ResponseApi.class);
 
     }
+    @Test
+    public void testThatUserCanCommentOnShare() throws ShareException, AuthorityException {
+        CreateCommentRequest createCommentRequest = new CreateCommentRequest();
+        createCommentRequest.setCommenterId("1");
+        createCommentRequest.setCommenterAuthority("admin");
+        createCommentRequest.setPostId("1");
+        String commentId = commentService.commentOnShare(createCommentRequest);
+
+    }
+
+
 
 }
