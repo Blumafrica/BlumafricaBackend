@@ -32,17 +32,16 @@ public class BlumaAdminService implements AdminService {
     private final JwtService jwtService;
 
 
-//    @PostConstruct
-//    @Override
-//    public void createAdmin() {
-//        Admin admin = new Admin();
-//        admin.setAuthority(List.of(Authority.ADMIN));
-//        admin.setId(1L);
-//        admin.setEmail("mariiam22222@gmail.com");
-//        admin.setPassword("Mariam@21");
-//        repository.save(admin);
-//
-//    }
+    @PostConstruct
+    public void createAdmin() {
+        Admin admin = new Admin();
+        admin.setAuthority(List.of(Authority.ADMIN));
+        admin.setId(1L);
+        admin.setEmail("mariiam22222@gmail.com");
+        admin.setPassword("Mariam@21");
+        repository.save(admin);
+
+    }
 
 
 
@@ -87,6 +86,9 @@ public class BlumaAdminService implements AdminService {
     @Override
     public FetchAdminPost fetchAllPost() {
         List<Post> foundPost = postService.findByPostOwnerAuthority(Authority.ADMIN);
+        if(foundPost.size() > 30){
+            return convertToResponse(foundPost.subList(1, 30));
+        }
         return convertToResponse(foundPost);
     }
 

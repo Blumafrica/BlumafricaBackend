@@ -14,8 +14,9 @@ import bluma.africa.blumaafrica.dtos.responses.PostResponse;
 import bluma.africa.blumaafrica.exceptions.BlumaException;
 import bluma.africa.blumaafrica.exceptions.PostNotFound;
 import bluma.africa.blumaafrica.exceptions.UserNotFound;
+import org.springframework.stereotype.Service;
 
-
+@Service
 public interface AdminService {
 
     LoginAsAdminResponse logInAsAdmin(LoginAsAdminRequest request) throws BlumaException;

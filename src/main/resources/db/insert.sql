@@ -40,6 +40,14 @@ value (102, 'about', 'www.coverPhoto', 'headline', 'www.profilePictures', '09033
 insert into user (id, username, authorities, password, email, profile_id)
 values (101, 'mariam','USER', 'password', 'mariam@gmail.com', 101);
 
+insert into post(id, post_owner_id, content, created_at, description, file_url)
+  value (101, 1, 'i love nigeria','2024-01-18T14:35:19.939+01:00', 'testing','C:\Users\mariam\Desktop\BlumafricaBackend\src\main\resources\assets\e field.jpeg'  ),
+    (201, 1, 'i love nigeria','2024-01-18T14:35:19.939+01:00', 'testing','C:\Users\mariam\Desktop\BlumafricaBackend\src\main\resources\assets\e field.jpeg'  ),
+    (301, 1, 'i love nigeria','2024-01-18T14:35:19.939+01:00', 'testing','C:\Users\mariam\Desktop\BlumafricaBackend\src\main\resources\assets\e field.jpeg'  ),
+    (401, 1, 'i love nigeria','2024-01-18T14:35:19.939+01:00', 'testing','C:\Users\mariam\Desktop\BlumafricaBackend\src\main\resources\assets\e field.jpeg'  ),
+    (501, 1, 'i love nigeria','2024-01-18T14:35:19.939+01:00', 'testing','C:\Users\mariam\Desktop\BlumafricaBackend\src\main\resources\assets\e field.jpeg'  ),
+    (601, 1, 'i love nigeria','2024-01-18T14:35:19.939+01:00', 'testing','C:\Users\mariam\Desktop\BlumafricaBackend\src\main\resources\assets\e field.jpeg'  );
+
 
 use bluma_backend;
 
