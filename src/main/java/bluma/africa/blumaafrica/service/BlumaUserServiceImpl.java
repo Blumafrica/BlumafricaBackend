@@ -53,16 +53,22 @@ public class BlumaUserServiceImpl implements UserService {
         user.setAuthorities(List.of(Authority.USER));
         var savedUser = userRepository.save(user);
 
-//    try {
-//        EmailRequest emailRequest = new EmailRequest();
-//        emailRequest.setRecipients(List.of(new Recipient(request.getEmail())));
-//        emailRequest.setHtmlContent(introductionMessage());
-//        emailRequest.setSubject("SignUp");
-//        mailService.sendMail(emailRequest);
-//    }catch (Exception e){
-//        userRepository.delete(user);
-//        throw new EmailException("invalid email");
-//    }
+   try {
+       Recipient recipient = new Recipient();
+       recipient.setName(user.getUsername());
+       recipient.setEmail(user.getEmail());
+       List<Recipient> recipients = List.of(
+               recipient);
+
+        EmailRequest emailRequest = new EmailRequest();
+        emailRequest.setRecipients(recipients);
+        emailRequest.setHtmlContent(introductionMessage());
+        emailRequest.setSubject("SignUp");
+        mailService.sendMail(emailRequest);
+    }catch (Exception e){
+        userRepository.delete(user);
+        throw new EmailException("invalid email");
+    }
 
         String token = jwtService.generateAccessToken(user);
         UserResponse response = new UserResponse();
