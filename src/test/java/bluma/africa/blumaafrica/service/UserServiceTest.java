@@ -13,12 +13,16 @@ import bluma.africa.blumaafrica.exceptions.UserNotFound;
 import bluma.africa.blumaafrica.dtos.requests.*;
 import bluma.africa.blumaafrica.dtos.responses.*;
 import bluma.africa.blumaafrica.exceptions.*;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 
+import java.util.List;
+
+import static bluma.africa.blumaafrica.mapper.Mapper.introductionMessage;
 import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
 
 import static bluma.africa.blumaafrica.data.models.Gender.MALE;
@@ -37,10 +41,12 @@ public class  UserServiceTest {
     @Autowired
     private PostService postService;
 
-
+    @Autowired
+    private MailService mailService;
     private EditPostResponse editPostResponse;
     private ProfileRequest profileRequest;
     private CreateCommentRequest commentRequest;
+    private  EmailRequest emailRequest;
 
 
     @BeforeEach
@@ -52,9 +58,22 @@ public class  UserServiceTest {
         profileRequest = new ProfileRequest();
         commentRequest = new CreateCommentRequest();
 
-        userRequest.setUsername("Honorable");
-        userRequest.setEmail("honorable@gmail.com");
+        userRequest.setUsername("Nanny");
+        userRequest.setEmail("adioldmj@gmail.com");
         userRequest.setPassword("honorable");
+        Recipient recipient = new Recipient();
+        recipient.setName(userRequest.getUsername());
+        recipient.setEmail(userRequest.getEmail());
+        List<Recipient> recipients = List.of(
+                recipient);
+
+
+
+        emailRequest = new EmailRequest();
+        emailRequest.setRecipients(recipients);
+        emailRequest.setHtmlContent(introductionMessage());
+        emailRequest.setSubject("SignUp");
+
 
 
 //
@@ -75,10 +94,16 @@ public class  UserServiceTest {
     }
 
     @Test
-    public void create_User_Account_Test() throws UserAlreadyExist, UserNotFound, EmailException {
+    public void createUserAccountTest() throws UserAlreadyExist, UserNotFound, EmailException {
         userResponse = userService.createUser(userRequest);
         assertNotNull(userResponse);
         assertNotNull(userResponse.getMessage());
+        EmailResponse emailResponse = mailService.sendMail(emailRequest);
+        Assertions.assertNotNull(emailResponse);
+        Assertions.assertNotNull(emailResponse.getMessageId());
+        Assertions.assertNotNull(emailResponse.getCode());
+        assertEquals(201,emailResponse.getCode());
+
 
     }
 
