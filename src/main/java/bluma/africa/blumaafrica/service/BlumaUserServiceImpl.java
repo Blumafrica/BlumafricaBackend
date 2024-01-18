@@ -28,10 +28,8 @@ import static bluma.africa.blumaafrica.mapper.Mapper.introductionMessage;
 @Service
 @AllArgsConstructor
 @Slf4j
-
-
 public class BlumaUserServiceImpl implements UserService {
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private JwtService jwtService;
     private MailService mailService;
