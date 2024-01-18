@@ -9,6 +9,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -23,6 +24,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON;
 @AllArgsConstructor
 public class BlumaMailService implements MailService{
     private final MailConfig mailConfig;
+    @Async
     @Override
     public EmailResponse sendMail(EmailRequest emailRequest) {
         RestTemplate restTemplate = new RestTemplate();
