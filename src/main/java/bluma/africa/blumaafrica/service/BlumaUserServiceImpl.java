@@ -28,10 +28,8 @@ import static bluma.africa.blumaafrica.mapper.Mapper.introductionMessage;
 @Service
 @AllArgsConstructor
 @Slf4j
-
-
 public class BlumaUserServiceImpl implements UserService {
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private JwtService jwtService;
     private MailService mailService;
@@ -55,16 +53,16 @@ public class BlumaUserServiceImpl implements UserService {
         user.setAuthorities(List.of(Authority.USER));
         var savedUser = userRepository.save(user);
 
-    try {
-        EmailRequest emailRequest = new EmailRequest();
-        emailRequest.setRecipients(List.of(new Recipient(request.getEmail())));
-        emailRequest.setHtmlContent(introductionMessage());
-        emailRequest.setSubject("SignUp");
-        mailService.sendMail(emailRequest);
-    }catch (Exception e){
-        userRepository.delete(user);
-        throw new EmailException("invalid email");
-    }
+//    try {
+//        EmailRequest emailRequest = new EmailRequest();
+//        emailRequest.setRecipients(List.of(new Recipient(request.getEmail())));
+//        emailRequest.setHtmlContent(introductionMessage());
+//        emailRequest.setSubject("SignUp");
+//        mailService.sendMail(emailRequest);
+//    }catch (Exception e){
+//        userRepository.delete(user);
+//        throw new EmailException("invalid email");
+//    }
 
         String token = jwtService.generateAccessToken(user);
         UserResponse response = new UserResponse();
