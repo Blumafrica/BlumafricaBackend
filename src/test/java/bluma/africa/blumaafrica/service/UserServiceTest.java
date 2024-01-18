@@ -75,7 +75,7 @@ public class  UserServiceTest {
     }
 
     @Test
-    public void create_User_Account_Test() throws UserAlreadyExist {
+    public void create_User_Account_Test() throws UserAlreadyExist, UserNotFound, EmailException {
         userResponse = userService.createUser(userRequest);
         assertNotNull(userResponse);
         assertNotNull(userResponse.getMessage());

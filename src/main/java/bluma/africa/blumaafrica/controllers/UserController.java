@@ -6,6 +6,7 @@ import bluma.africa.blumaafrica.dtos.requests.UserRequest;
 import bluma.africa.blumaafrica.dtos.responses.LoginResponse;
 import bluma.africa.blumaafrica.dtos.responses.ProfileResponse;
 import bluma.africa.blumaafrica.dtos.responses.UserResponse;
+import bluma.africa.blumaafrica.exceptions.EmailException;
 import bluma.africa.blumaafrica.exceptions.UserAlreadyExist;
 import bluma.africa.blumaafrica.exceptions.UserNotFound;
 import bluma.africa.blumaafrica.service.UserService;
@@ -28,7 +29,7 @@ public class UserController {
         try {
             UserResponse response = userService.createUser(userRequest);
             return new ResponseEntity<>(response, HttpStatus.OK);
-        } catch (UserAlreadyExist exception) {
+        } catch (UserAlreadyExist | UserNotFound | EmailException exception) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
         }
 

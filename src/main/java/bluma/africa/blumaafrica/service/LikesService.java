@@ -11,7 +11,7 @@ import bluma.africa.blumaafrica.exceptions.LikeException;
 import bluma.africa.blumaafrica.exceptions.PostNotFound;
 import org.springframework.stereotype.Service;
 
-@Service
+
 public interface LikesService {
 
     LikeResponse userCanLikePost(LikeRequest likeRequest) throws BlumaException;

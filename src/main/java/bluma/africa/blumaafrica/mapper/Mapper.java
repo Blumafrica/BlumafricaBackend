@@ -60,4 +60,9 @@ public class Mapper {
         comment.setCommenterId(response.getUser().getId());
         return comment;
     }
+    public static String introductionMessage(){
+        return "<p>Hello and a warm welcome to Blumafrica!</p>"
+                + "<p>I'm [Your Name], and I'm thrilled to be a part of this vibrant community. With a background in [your field or relevant experience], I'm eager to contribute and learn from all of you. Outside of [your professional life], you'll often find me [a hobby or personal interest]. Let's embark on this journey together, and I look forward to engaging with each of you in meaningful discussions.</p>"
+                + "<p>Feel free to connect or reach out—I'm excited to get to know everyone here!</p>";
+    }
 }
