@@ -8,7 +8,7 @@ target/
 # Ignore configuration files
 /application.properties
 /InsertIntoDatabase
-
+/secret.properties
 
 ### STS ###
 .apt_generated
@@ -37,3 +37,4 @@ build/
 
 ### VS Code ###
 .vscode/
+./
