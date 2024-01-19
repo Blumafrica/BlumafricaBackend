@@ -58,7 +58,7 @@ public class  UserServiceTest {
         profileRequest = new ProfileRequest();
         commentRequest = new CreateCommentRequest();
 
-        userRequest.setUsername("classic");
+        userRequest.setUsername("classics");
         userRequest.setEmail("classidios03@gmail.com");
         userRequest.setPassword("honorable");
         Recipient recipient = new Recipient();
