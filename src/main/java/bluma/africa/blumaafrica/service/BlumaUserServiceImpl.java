@@ -45,13 +45,24 @@ public class BlumaUserServiceImpl implements UserService {
         boolean isUserExistByEmail = userRepository.findByEmail(request.getEmail()).isPresent();
         if (isUserExist || isUserExistByEmail) throw new UserAlreadyExist("user already exist");
         User user = new User();
-
         String encodedPassword = passwordEncoder.encode(request.getPassword());
         user.setUsername(request.getUsername());
         user.setEmail(request.getEmail());
         user.setPassword(encodedPassword);
         user.setAuthorities(List.of(Authority.USER));
         var savedUser = userRepository.save(user);
+
+
+//    try {
+//        EmailRequest emailRequest = new EmailRequest();
+//        emailRequest.setRecipients(List.of(new Recipient(request.getEmail())));
+//        emailRequest.setHtmlContent(introductionMessage());
+//        emailRequest.setSubject("SignUp");
+//        mailService.sendMail(emailRequest);
+//    }catch (Exception e){
+//        userRepository.delete(user);
+//        throw new EmailException("invalid email");
+//    }
 
    try {
        Recipient recipient = new Recipient();

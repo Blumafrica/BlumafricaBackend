@@ -7,7 +7,9 @@ import bluma.africa.blumaafrica.data.repositories.AdminRepository;
 import bluma.africa.blumaafrica.dtos.requests.*;
 import bluma.africa.blumaafrica.dtos.responses.DeleteResponse;
 import bluma.africa.blumaafrica.dtos.responses.FetchAdminPost;
+import bluma.africa.blumaafrica.dtos.responses.FindUserResponse;
 import bluma.africa.blumaafrica.dtos.responses.PostResponse;
+import bluma.africa.blumaafrica.exceptions.AuthorityException;
 import bluma.africa.blumaafrica.exceptions.BlumaException;
 ;
 import bluma.africa.blumaafrica.exceptions.PostNotFound;
@@ -32,17 +34,16 @@ public class BlumaAdminService implements AdminService {
     private final JwtService jwtService;
 
 
-//    @PostConstruct
-//    @Override
-//    public void createAdmin() {
-//        Admin admin = new Admin();
-//        admin.setAuthority(List.of(Authority.ADMIN));
-//        admin.setId(1L);
-//        admin.setEmail("mariiam22222@gmail.com");
-//        admin.setPassword("Mariam@21");
-//        repository.save(admin);
-//
-//    }
+    @PostConstruct
+    public void createAdmin() {
+        Admin admin = new Admin();
+        admin.setAuthority(List.of(Authority.ADMIN));
+        admin.setId(1L);
+        admin.setEmail("mariiam22222@gmail.com");
+        admin.setPassword("Mariam@21");
+        repository.save(admin);
+
+    }
 
 
 
@@ -87,6 +88,9 @@ public class BlumaAdminService implements AdminService {
     @Override
     public FetchAdminPost fetchAllPost() {
         List<Post> foundPost = postService.findByPostOwnerAuthority(Authority.ADMIN);
+        if(foundPost.size() > 30){
+            return convertToResponse(foundPost.subList(1, 30));
+        }
         return convertToResponse(foundPost);
     }
 
@@ -108,6 +112,12 @@ public class BlumaAdminService implements AdminService {
     @Override
     public Likes getLikesById(Long id) {
         return likesService.findLikesById(id);
+    }
+
+    @Override
+    public FindUserResponse findUser(FindUserRequest findUser) throws UserNotFound, AuthorityException {
+       return validate.validateFindUserRequest(findUser);
+
     }
 
     private FetchAdminPost convertToResponse(List<Post> posts) {
