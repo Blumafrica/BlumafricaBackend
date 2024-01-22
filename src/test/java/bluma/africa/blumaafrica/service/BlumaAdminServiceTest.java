@@ -3,14 +3,15 @@ package bluma.africa.blumaafrica.service;
 
 import bluma.africa.blumaafrica.data.models.Admin;
 import bluma.africa.blumaafrica.data.models.Post;
-import bluma.africa.blumaafrica.dtos.requests.DeletePost;
-import bluma.africa.blumaafrica.dtos.requests.LoginAsAdminRequest;
-import bluma.africa.blumaafrica.dtos.requests.LoginAsAdminResponse;
-import bluma.africa.blumaafrica.dtos.requests.PostRequest;
+import bluma.africa.blumaafrica.data.models.User;
+import bluma.africa.blumaafrica.dtos.requests.*;
 import bluma.africa.blumaafrica.dtos.responses.DeleteResponse;
 import bluma.africa.blumaafrica.dtos.responses.FetchAdminPost;
+import bluma.africa.blumaafrica.dtos.responses.FindUserResponse;
 import bluma.africa.blumaafrica.dtos.responses.PostResponse;
+import bluma.africa.blumaafrica.exceptions.AuthorityException;
 import bluma.africa.blumaafrica.exceptions.BlumaException;
+import bluma.africa.blumaafrica.exceptions.UserNotFound;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -90,10 +91,18 @@ class BlumaAdminServiceTest {
     }
 
     @Test
-    public void testThatAdminCanFindUserById(){
+    public void testThatAdminCanFindUserByIdAndAuthority() throws UserNotFound, AuthorityException {
+        FindUserRequest findUser = new FindUserRequest("1", "admin");
+        FindUserResponse response = adminService.findUser(findUser);
+        assertEquals(response.getFoundAdmin().getClass(), Admin.class );
 
     }
-
+    @Test
+    public void testThatUserCanFindUserByIdAndAuthority() throws UserNotFound, AuthorityException {
+        FindUserRequest request = new FindUserRequest("102", "user");
+        FindUserResponse response = adminService.findUser(request);
+        assertEquals(response.getUserFoundUser().getClass(), User.class);
+    }
 
 
 

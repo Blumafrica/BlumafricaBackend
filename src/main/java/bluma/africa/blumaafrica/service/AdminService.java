@@ -4,13 +4,12 @@ import bluma.africa.blumaafrica.data.models.Admin;
 import bluma.africa.blumaafrica.data.models.Likes;
 import bluma.africa.blumaafrica.data.models.Post;
 import bluma.africa.blumaafrica.data.models.User;
-import bluma.africa.blumaafrica.dtos.requests.DeletePost;
-import bluma.africa.blumaafrica.dtos.requests.LoginAsAdminRequest;
-import bluma.africa.blumaafrica.dtos.requests.LoginAsAdminResponse;
-import bluma.africa.blumaafrica.dtos.requests.PostRequest;
+import bluma.africa.blumaafrica.dtos.requests.*;
 import bluma.africa.blumaafrica.dtos.responses.DeleteResponse;
 import bluma.africa.blumaafrica.dtos.responses.FetchAdminPost;
+import bluma.africa.blumaafrica.dtos.responses.FindUserResponse;
 import bluma.africa.blumaafrica.dtos.responses.PostResponse;
+import bluma.africa.blumaafrica.exceptions.AuthorityException;
 import bluma.africa.blumaafrica.exceptions.BlumaException;
 import bluma.africa.blumaafrica.exceptions.PostNotFound;
 import bluma.africa.blumaafrica.exceptions.UserNotFound;
@@ -34,4 +33,6 @@ public interface AdminService {
     Admin findAdminByEmail(String email);
     User getUserId(String id) throws UserNotFound;
     Likes getLikesById(Long id);
+
+    FindUserResponse findUser(FindUserRequest findUser) throws UserNotFound, AuthorityException;
 }

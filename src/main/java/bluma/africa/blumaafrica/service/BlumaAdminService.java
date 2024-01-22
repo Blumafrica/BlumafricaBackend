@@ -7,7 +7,9 @@ import bluma.africa.blumaafrica.data.repositories.AdminRepository;
 import bluma.africa.blumaafrica.dtos.requests.*;
 import bluma.africa.blumaafrica.dtos.responses.DeleteResponse;
 import bluma.africa.blumaafrica.dtos.responses.FetchAdminPost;
+import bluma.africa.blumaafrica.dtos.responses.FindUserResponse;
 import bluma.africa.blumaafrica.dtos.responses.PostResponse;
+import bluma.africa.blumaafrica.exceptions.AuthorityException;
 import bluma.africa.blumaafrica.exceptions.BlumaException;
 ;
 import bluma.africa.blumaafrica.exceptions.PostNotFound;
@@ -110,6 +112,12 @@ public class BlumaAdminService implements AdminService {
     @Override
     public Likes getLikesById(Long id) {
         return likesService.findLikesById(id);
+    }
+
+    @Override
+    public FindUserResponse findUser(FindUserRequest findUser) throws UserNotFound, AuthorityException {
+       return validate.validateFindUserRequest(findUser);
+
     }
 
     private FetchAdminPost convertToResponse(List<Post> posts) {

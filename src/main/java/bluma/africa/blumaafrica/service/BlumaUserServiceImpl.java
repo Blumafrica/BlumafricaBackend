@@ -28,10 +28,8 @@ import static bluma.africa.blumaafrica.mapper.Mapper.introductionMessage;
 @Service
 @AllArgsConstructor
 @Slf4j
-
-
 public class BlumaUserServiceImpl implements UserService {
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private JwtService jwtService;
     private MailService mailService;
@@ -47,13 +45,13 @@ public class BlumaUserServiceImpl implements UserService {
         boolean isUserExistByEmail = userRepository.findByEmail(request.getEmail()).isPresent();
         if (isUserExist || isUserExistByEmail) throw new UserAlreadyExist("user already exist");
         User user = new User();
-
         String encodedPassword = passwordEncoder.encode(request.getPassword());
         user.setUsername(request.getUsername());
         user.setEmail(request.getEmail());
         user.setPassword(encodedPassword);
         user.setAuthorities(List.of(Authority.USER));
         var savedUser = userRepository.save(user);
+
 
 //    try {
 //        EmailRequest emailRequest = new EmailRequest();
@@ -65,6 +63,23 @@ public class BlumaUserServiceImpl implements UserService {
 //        userRepository.delete(user);
 //        throw new EmailException("invalid email");
 //    }
+
+   try {
+       Recipient recipient = new Recipient();
+       recipient.setName(user.getUsername());
+       recipient.setEmail(user.getEmail());
+       List<Recipient> recipients = List.of(
+               recipient);
+
+        EmailRequest emailRequest = new EmailRequest();
+        emailRequest.setRecipients(recipients);
+        emailRequest.setHtmlContent(introductionMessage());
+        emailRequest.setSubject("SignUp");
+        mailService.sendMail(emailRequest);
+    }catch (Exception e){
+        userRepository.delete(user);
+        throw new EmailException("invalid email");
+    }
 
         String token = jwtService.generateAccessToken(user);
         UserResponse response = new UserResponse();

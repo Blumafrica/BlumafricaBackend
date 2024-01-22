@@ -3,12 +3,8 @@ package bluma.africa.blumaafrica.validators;
 import bluma.africa.blumaafrica.data.models.*;
 import bluma.africa.blumaafrica.data.repositories.*;
 import bluma.africa.blumaafrica.dtos.requests.*;
-import bluma.africa.blumaafrica.dtos.responses.ValidateCommentResponse;
-import bluma.africa.blumaafrica.dtos.responses.ValidateEditShareResponse;
-import bluma.africa.blumaafrica.dtos.responses.ValidateLikeResponse;
-import bluma.africa.blumaafrica.dtos.responses.ValidateShareResponse;
+import bluma.africa.blumaafrica.dtos.responses.*;
 import bluma.africa.blumaafrica.exceptions.*;
-import bluma.africa.blumaafrica.service.PostService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -16,11 +12,14 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import static bluma.africa.blumaafrica.data.models.Authority.ADMIN;
+import static bluma.africa.blumaafrica.data.models.Authority.USER;
+
 @Component
 @AllArgsConstructor
 public class Validate {
     
-    private final AdminRepository adminService;
+    private final AdminRepository adminRepository;
     private final PostRepository postService;
     private LikesRepository likesRepository;
     private ShareRepository shareRepository;
@@ -28,12 +27,12 @@ public class Validate {
 
 
     public  boolean validateAdminDetails(LoginAsAdminRequest request){
-        Admin admin = adminService.findAdminById(1L);
+        Admin admin = adminRepository.findAdminById(1L);
         return admin.getPassword().equals(request.getPassword()) && admin.getEmail().equals(request.getEmail());
     }
 
     public Boolean validatePostDetails(PostRequest postRequest) throws BlumaException {
-        Admin admin = adminService.findAdminById(1L);
+        Admin admin = adminRepository.findAdminById(1L);
         if (postRequest.getPosterId().equals(admin.getId().toString()) && postRequest.getAuthority().equals(Authority.ADMIN.toString()))
             return true;
         throw new BlumaException("incorrect credentials");
@@ -57,7 +56,7 @@ public class Validate {
     }
 
     private ValidateLikeResponse validateAdminLikeRequest(LikeRequest likeRequest) throws BlumaException {
-        Admin admin = adminService.findAdminById(1L);
+        Admin admin = adminRepository.findAdminById(1L);
         Post foundPost = postService.getPostById(Long.valueOf(likeRequest.getPostId()));
         System.out.println("at validatingLike request  foundPost ==> " + foundPost);
         if (likeRequest.getUserId().equals(admin.getId().toString()) && foundPost != null )
@@ -108,18 +107,18 @@ public class Validate {
     }
 
     private Authority validateAuthority(String authority) throws AuthorityException {
-        if (Authority.USER.name().equalsIgnoreCase(authority) || Authority.ADMIN.name().equalsIgnoreCase(authority))
+        if (USER.name().equalsIgnoreCase(authority) || Authority.ADMIN.name().equalsIgnoreCase(authority))
             if (Authority.ADMIN.name().equalsIgnoreCase(authority))
                 return Authority.ADMIN;
-            if (Authority.USER.name().equalsIgnoreCase(authority))
-                return Authority.USER;
+            if (USER.name().equalsIgnoreCase(authority))
+                return USER;
         throw new AuthorityException("unknown authority");
     }
 
     public ValidateLikeResponse validateLikeRequestOnShare(LikeRequest request) throws BlumaException {
         Share share = checkIfShareExit(request);
         ValidateLikeResponse response = new ValidateLikeResponse();
-        if (Authority.USER.name().equalsIgnoreCase(request.getAuthority())) {
+        if (USER.name().equalsIgnoreCase(request.getAuthority())) {
             response.setValidate(true);
             response.setFoundShare(share);
             response.setUserId(share.getShareOwnerId());
@@ -203,11 +202,30 @@ public class Validate {
         Authority authority = validateAuthority(createCommentRequest.getCommenterAuthority());
         if (share != null) {
             if (authority == Authority.ADMIN){
-                adminService.findAdminById(1L);
+                adminRepository.findAdminById(1L);
 
             }
         }throw new ShareException("shared post with id " + createCommentRequest.getPostId() + " does not exist");
     }
 
 
+    public FindUserResponse validateFindUserRequest(FindUserRequest findUser) throws AuthorityException, UserNotFound {
+        Authority authority = validateAuthority(findUser.getUserAuthority());
+        if (authority.equals(USER)){
+            User user = userRepository.getUserById(Long.valueOf(findUser.getUserId()));
+            FindUserResponse response = new FindUserResponse();
+            if (user != null)
+               response.setUserFoundUser(user);
+            else {throw  new UserNotFound("user not found");}
+            return response;
+        }else if (authority.equals(ADMIN)){
+            Admin admin = adminRepository.findAdminById(Long.valueOf(findUser.getUserId()));
+            FindUserResponse response = new FindUserResponse();
+            if (admin != null)
+                response.setFoundAdmin(admin);
+            else {throw  new UserNotFound("user not found");}
+            response.setFoundAdmin(admin);
+            return  response;
+        }else { throw new AuthorityException("unknown authority");}
+    }
 }
