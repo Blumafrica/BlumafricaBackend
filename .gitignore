@@ -8,6 +8,7 @@ target/
 # Ignore configuration files
 /application.properties
 /InsertIntoDatabase
+secrets.properties
 
 
 ### STS ###
@@ -37,3 +38,4 @@ build/
 
 ### VS Code ###
 .vscode/
+./

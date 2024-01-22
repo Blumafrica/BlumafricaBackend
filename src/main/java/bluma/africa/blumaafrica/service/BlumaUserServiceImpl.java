@@ -89,6 +89,7 @@ public class BlumaUserServiceImpl implements UserService {
         return response;
     }
 
+
     @Override
     public User getUserBy(String email) {
         return userRepository.findByEmail(email).orElseThrow(() ->
