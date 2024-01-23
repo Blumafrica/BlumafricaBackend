@@ -15,7 +15,7 @@ public class CorsConfigurations {
                 @Override
                 public void addCorsMappings(@NotNull CorsRegistry registry) {
                     registry.addMapping("/**")
-                            .allowedOriginPatterns("*", "http://localhost:3000", "https://blumafrica-production.up.railway.app")
+                            .allowedOriginPatterns("*", "http://localhost:3000", "http://localhost:8080/api/v1/user/register")
                             .allowedMethods("HEAD", "GET", "PUT", "POST", "DELETE", "PATCH", "OPTIONS")
                             .allowedHeaders("Origin", "Content-Type", "Accept", "Authorization",
                                     "SECRET_KEY", "Access-Control-Allow-Credentials")

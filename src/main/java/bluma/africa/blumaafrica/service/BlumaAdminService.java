@@ -61,7 +61,7 @@ public class BlumaAdminService implements AdminService {
     public PostResponse post(PostRequest postRequest) throws BlumaException {
         validate.validatePostDetails(postRequest);
         Post post = Mapper.map(postRequest);
-        Post savedPost  = postService.save(post);
+        Post savedPost  = postService. save(post);
         System.out.println("created post " + post);
         System.out.println("post id" + post.getId());
         return convertToResponse(savedPost);

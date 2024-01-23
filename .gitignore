@@ -8,6 +8,7 @@ target/
 # Ignore configuration files
 /application.properties
 /InsertIntoDatabase
+/secret.properties
 
 
 ### STS ###
