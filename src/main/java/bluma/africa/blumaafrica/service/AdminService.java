@@ -1,9 +1,6 @@
 package bluma.africa.blumaafrica.service;
 
-import bluma.africa.blumaafrica.data.models.Admin;
-import bluma.africa.blumaafrica.data.models.Likes;
-import bluma.africa.blumaafrica.data.models.Post;
-import bluma.africa.blumaafrica.data.models.User;
+import bluma.africa.blumaafrica.data.models.*;
 import bluma.africa.blumaafrica.dtos.requests.*;
 import bluma.africa.blumaafrica.dtos.responses.DeleteResponse;
 import bluma.africa.blumaafrica.dtos.responses.FetchAdminPost;
@@ -35,4 +32,6 @@ public interface AdminService {
     Likes getLikesById(Long id);
 
     FindUserResponse findUser(FindUserRequest findUser) throws UserNotFound, AuthorityException;
+
+    Profile getUserProfile(GetUserProfile request) throws AuthorityException, UserNotFound;
 }
