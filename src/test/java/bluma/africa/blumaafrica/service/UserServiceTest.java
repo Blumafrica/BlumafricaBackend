@@ -13,6 +13,7 @@ import bluma.africa.blumaafrica.exceptions.UserNotFound;
 import bluma.africa.blumaafrica.dtos.requests.*;
 import bluma.africa.blumaafrica.dtos.responses.*;
 import bluma.africa.blumaafrica.exceptions.*;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -30,6 +31,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
+@Slf4j
 public class  UserServiceTest {
     @Autowired
     private UserService userService;
@@ -76,7 +78,7 @@ public class  UserServiceTest {
 
 
 
-//
+
         profileRequest.setFirstname("John");
         profileRequest.setLastname("Mavens");
         profileRequest.setPhoneNumber("+234123454");
@@ -98,6 +100,12 @@ public class  UserServiceTest {
         userResponse = userService.createUser(userRequest);
         assertNotNull(userResponse);
         assertNotNull(userResponse.getMessage());
+
+        String token = userResponse.getToken();
+        assertNotNull(token);
+        log.info("token ::{}",token);
+
+
         EmailResponse emailResponse = mailService.sendMail(emailRequest);
         Assertions.assertNotNull(emailResponse);
         Assertions.assertNotNull(emailResponse.getMessageId());

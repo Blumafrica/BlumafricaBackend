@@ -65,7 +65,7 @@ public class Mapper {
 
     public static String introductionMessage() {
         return "<p>Hello and a warm welcome to Blumafrica!</p>"
-                + "<p>We’re honored to have on our platform. It’s our utmost priority to ensure you have an excellent experience. </p>";
+                + "<p>We’re honored to have you on our platform. It’s our utmost priority to ensure you have an excellent experience. </p>";
 
     }
 

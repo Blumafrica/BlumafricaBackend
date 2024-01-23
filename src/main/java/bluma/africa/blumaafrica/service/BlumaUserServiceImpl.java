@@ -33,7 +33,6 @@ public class BlumaUserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
     private JwtService jwtService;
     private MailService mailService;
-
     private final ModelMapper mapper;
 
 
@@ -69,7 +68,6 @@ public class BlumaUserServiceImpl implements UserService {
         userRepository.delete(user);
         throw new EmailException("invalid email");
     }
-
         String token = jwtService.generateAccessToken(user);
         UserResponse response = new UserResponse();
         response.setId(savedUser.getId());

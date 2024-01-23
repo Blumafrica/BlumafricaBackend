@@ -26,7 +26,6 @@ import java.io.IOException;
 
 @Component
 @AllArgsConstructor
-//@Order(Ordered.HIGHEST_PRECEDENCE)
 @Slf4j
 public class BlumaAuthorizationFilter extends OncePerRequestFilter {
     private final JwtService jwtService;

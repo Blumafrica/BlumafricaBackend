@@ -23,7 +23,7 @@ public class CloudConfig {
                 "api_key", apiKey,
                 "api_secret", apiSecret,
                 "secure", "true",
-                "folder", "gemstube"
+                "folder", "blumafrica"
         ));
     }
 }
