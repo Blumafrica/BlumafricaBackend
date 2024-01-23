@@ -3,6 +3,7 @@ package bluma.africa.blumaafrica.service;
 
 import bluma.africa.blumaafrica.data.models.Admin;
 import bluma.africa.blumaafrica.data.models.Post;
+import bluma.africa.blumaafrica.data.models.Profile;
 import bluma.africa.blumaafrica.data.models.User;
 import bluma.africa.blumaafrica.dtos.requests.*;
 import bluma.africa.blumaafrica.dtos.responses.DeleteResponse;
@@ -90,19 +91,28 @@ class BlumaAdminServiceTest {
         assertEquals(0, response.getPosts().size());
     }
 
+
     @Test
     public void testThatAdminCanFindUserByIdAndAuthority() throws UserNotFound, AuthorityException {
-        FindUserRequest findUser = new FindUserRequest("1", "admin");
-        FindUserResponse response = adminService.findUser(findUser);
-        assertEquals(response.getFoundAdmin().getClass(), Admin.class );
-
+        FindUserRequest request = new FindUserRequest("1", "admin");
+        FindUserResponse response = adminService.findUser(request);
+        assertEquals(response.getFoundAdmin().getClass(), Admin.class);
     }
     @Test
     public void testThatUserCanFindUserByIdAndAuthority() throws UserNotFound, AuthorityException {
-        FindUserRequest request = new FindUserRequest("102", "user");
+        FindUserRequest request = new FindUserRequest("107", "user");
         FindUserResponse response = adminService.findUser(request);
         assertEquals(response.getUserFoundUser().getClass(), User.class);
     }
+
+        @Test
+        public void testThatUserProfileCanBeFound() throws UserNotFound, AuthorityException {
+            GetUserProfile request = new GetUserProfile("107", "user");
+            Profile response = adminService.getUserProfile(request);
+            assertNotNull(response);
+        }
+
+
 
 
 

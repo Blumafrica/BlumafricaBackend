@@ -47,7 +47,8 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public void userLogin(@RequestBody LoginRequest loginRequest) throws UserNotFound {
+    public ResponseEntity<?> userLogin(@RequestBody LoginRequest loginRequest) throws UserNotFound {
+
         throw new UserNotFound("user not found");
 
 

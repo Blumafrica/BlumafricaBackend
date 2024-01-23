@@ -22,6 +22,9 @@ import org.springframework.stereotype.Service;
 import javax.annotation.PostConstruct;
 import java.util.List;
 
+import static bluma.africa.blumaafrica.data.models.Authority.ADMIN;
+import static bluma.africa.blumaafrica.data.models.Authority.USER;
+
 @Service
 @AllArgsConstructor
 public class BlumaAdminService implements AdminService {
@@ -34,10 +37,11 @@ public class BlumaAdminService implements AdminService {
     private final JwtService jwtService;
 
 
+
     @PostConstruct
     public void createAdmin() {
         Admin admin = new Admin();
-        admin.setAuthority(List.of(Authority.ADMIN));
+        admin.setAuthority(List.of(ADMIN));
         admin.setId(1L);
         admin.setEmail("mariiam22222@gmail.com");
         admin.setPassword("Mariam@21");
@@ -76,7 +80,7 @@ public class BlumaAdminService implements AdminService {
     @Override
     public DeleteResponse deletePost(DeletePost deletePost) throws BlumaException {
         postService.getPostById(deletePost.getPostId());
-        if (deletePost.getUserAuthority().equals(Authority.ADMIN.toString())) {
+        if (deletePost.getUserAuthority().equals(ADMIN.toString())) {
             postService.deletePostById(Long.parseLong(deletePost.getPostId()));
             return new DeleteResponse("POST was deleted successfully");
         }
@@ -87,7 +91,7 @@ public class BlumaAdminService implements AdminService {
 
     @Override
     public FetchAdminPost fetchAllPost() {
-        List<Post> foundPost = postService.findByPostOwnerAuthority(Authority.ADMIN);
+        List<Post> foundPost = postService.findByPostOwnerAuthority(ADMIN);
         if(foundPost.size() > 30){
             return convertToResponse(foundPost.subList(1, 30));
         }
@@ -116,8 +120,42 @@ public class BlumaAdminService implements AdminService {
 
     @Override
     public FindUserResponse findUser(FindUserRequest findUser) throws UserNotFound, AuthorityException {
-       return validate.validateFindUserRequest(findUser);
+        Authority authority = validate.validateAuthority(findUser.getUserAuthority());
+        if (authority == ADMIN) {
+            return getAdmin(findUser.getUserId());
+        }else { return getUser(findUser.getUserId());}
 
+
+    }
+
+    @Override
+    public Profile getUserProfile(GetUserProfile request) throws AuthorityException, UserNotFound {
+        Authority authority = validate.validateAuthority(request.getUserAuthority());
+        if (authority == USER){
+           return findProfile(request);
+        }else {return null;}
+
+    }
+
+    private Profile findProfile(GetUserProfile request) throws UserNotFound {
+        User user = userService.getUserById(Long.valueOf(request.getUserId()));
+        return user.getProfile();
+    }
+
+    private FindUserResponse getUser(String userId) throws UserNotFound {
+        User foundUser = userService.getUserById(Long.valueOf(userId));
+            FindUserResponse response = new FindUserResponse();
+            response.setUserFoundUser(foundUser);
+            return response;
+    }
+
+    private FindUserResponse getAdmin(String userId) throws UserNotFound {
+        Admin foundAdmin = repository.findAdminById(Long.valueOf(userId));
+        if (foundAdmin != null){
+            FindUserResponse response = new FindUserResponse();
+            response.setFoundAdmin(foundAdmin);
+            return response;
+        }else{ throw new UserNotFound("user not found");}
     }
 
     private FetchAdminPost convertToResponse(List<Post> posts) {

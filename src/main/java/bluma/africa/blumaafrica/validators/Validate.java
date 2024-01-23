@@ -5,6 +5,7 @@ import bluma.africa.blumaafrica.data.repositories.*;
 import bluma.africa.blumaafrica.dtos.requests.*;
 import bluma.africa.blumaafrica.dtos.responses.*;
 import bluma.africa.blumaafrica.exceptions.*;
+import bluma.africa.blumaafrica.service.ValidateFindUserResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -106,7 +107,7 @@ public class Validate {
        return new ValidateShareResponse(foundPost, authority);
     }
 
-    private Authority validateAuthority(String authority) throws AuthorityException {
+    public Authority validateAuthority(String authority) throws AuthorityException {
         if (USER.name().equalsIgnoreCase(authority) || Authority.ADMIN.name().equalsIgnoreCase(authority))
             if (Authority.ADMIN.name().equalsIgnoreCase(authority))
                 return Authority.ADMIN;
@@ -209,23 +210,7 @@ public class Validate {
     }
 
 
-    public FindUserResponse validateFindUserRequest(FindUserRequest findUser) throws AuthorityException, UserNotFound {
-        Authority authority = validateAuthority(findUser.getUserAuthority());
-        if (authority.equals(USER)){
-            User user = userRepository.getUserById(Long.valueOf(findUser.getUserId()));
-            FindUserResponse response = new FindUserResponse();
-            if (user != null)
-               response.setUserFoundUser(user);
-            else {throw  new UserNotFound("user not found");}
-            return response;
-        }else if (authority.equals(ADMIN)){
-            Admin admin = adminRepository.findAdminById(Long.valueOf(findUser.getUserId()));
-            FindUserResponse response = new FindUserResponse();
-            if (admin != null)
-                response.setFoundAdmin(admin);
-            else {throw  new UserNotFound("user not found");}
-            response.setFoundAdmin(admin);
-            return  response;
-        }else { throw new AuthorityException("unknown authority");}
-    }
+
+
+
 }

@@ -1,10 +1,7 @@
 package bluma.africa.blumaafrica.controllers;
 
 import bluma.africa.blumaafrica.data.models.Authority;
-import bluma.africa.blumaafrica.dtos.requests.FetchUserPostRequest;
-import bluma.africa.blumaafrica.dtos.requests.LikeRequest;
-import bluma.africa.blumaafrica.dtos.requests.PostRequest;
-import bluma.africa.blumaafrica.dtos.requests.UserRequest;
+import bluma.africa.blumaafrica.dtos.requests.*;
 import bluma.africa.blumaafrica.dtos.responses.PostResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -75,5 +72,6 @@ public class UserServiceController {
             e.printStackTrace();
         }
     }
+
 
 }
