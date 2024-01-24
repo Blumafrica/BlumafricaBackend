@@ -1,12 +1,7 @@
 package bluma.africa.blumaafrica.controllers;
 
-import bluma.africa.blumaafrica.data.models.Authority;
-import bluma.africa.blumaafrica.dtos.requests.FetchUserPostRequest;
-import bluma.africa.blumaafrica.dtos.requests.LikeRequest;
-import bluma.africa.blumaafrica.dtos.requests.PostRequest;
-import bluma.africa.blumaafrica.dtos.requests.UserRequest;
+import bluma.africa.blumaafrica.dtos.requests.*;
 import bluma.africa.blumaafrica.dtos.responses.PostResponse;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,16 +11,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.List;
-
-import static bluma.africa.blumaafrica.data.models.Authority.USER;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class UserServiceController {
+public class UserServiceControllerTest {
     @Autowired
     private MockMvc mockMvc;
     private UserRequest userRequest;
@@ -75,5 +67,25 @@ public class UserServiceController {
             e.printStackTrace();
         }
     }
+
+    @Test
+    public void testThatUserCanLogin(){
+        LoginRequest request = new LoginRequest();
+        request.setEmail("mariiam22222@gmail.com");
+        request.setPassword("mariam");
+
+        try {
+            byte [] content = objectMapper.writeValueAsBytes(request);
+
+            mockMvc.perform(get("/api/login/")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(content))
+                    .andExpect(status().is3xxRedirection())
+                    .andDo(print());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
 }

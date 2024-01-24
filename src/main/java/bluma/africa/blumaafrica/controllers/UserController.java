@@ -1,5 +1,6 @@
 package bluma.africa.blumaafrica.controllers;
 
+import bluma.africa.blumaafrica.config.security.filter.BlumaAuthenticationFilter;
 import bluma.africa.blumaafrica.dtos.requests.LoginRequest;
 import bluma.africa.blumaafrica.dtos.requests.ProfileRequest;
 import bluma.africa.blumaafrica.dtos.requests.UserRequest;
@@ -7,6 +8,7 @@ import bluma.africa.blumaafrica.dtos.responses.LoginResponse;
 import bluma.africa.blumaafrica.dtos.responses.ProfileResponse;
 import bluma.africa.blumaafrica.dtos.responses.UserResponse;
 import bluma.africa.blumaafrica.exceptions.EmailException;
+import bluma.africa.blumaafrica.exceptions.IncorrectCredentials;
 import bluma.africa.blumaafrica.exceptions.UserAlreadyExist;
 import bluma.africa.blumaafrica.exceptions.UserNotFound;
 import bluma.africa.blumaafrica.service.UserService;
@@ -21,7 +23,6 @@ import org.springframework.web.bind.annotation.*;
 @AllArgsConstructor
 public class UserController {
     private UserService userService;
-
 
 
     @PostMapping("/register")
@@ -45,13 +46,15 @@ public class UserController {
         }
 
     }
+    @GetMapping("/api/login/")
+    public  ResponseEntity<?> login(@RequestBody LoginRequest request){
 
-    @PostMapping("/login")
-    public void userLogin(@RequestBody LoginRequest loginRequest) throws UserNotFound {
-        throw new UserNotFound("user not found");
-
-
-
-
+        try {
+            LoginResponse response = userService.login(request);
+            return new ResponseEntity<>(response, HttpStatus.FOUND);
+        } catch (UserNotFound | IncorrectCredentials e) {
+            return new ResponseEntity<>(e, HttpStatus.CONFLICT);
+        }
     }
+
 }

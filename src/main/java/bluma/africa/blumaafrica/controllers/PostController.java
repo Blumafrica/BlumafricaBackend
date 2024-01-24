@@ -18,7 +18,9 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/post/")
 @AllArgsConstructor
 public class PostController {
+
     private PostService postService;
+
     @PostMapping("/post")
     public ResponseEntity<?> userPost(@RequestBody PostRequest postRequest){
         try{
@@ -28,6 +30,7 @@ public class PostController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(userNotFound.getMessage());
         }
     }
+
     @PostMapping("/{postId}/editPost/")
     public  ResponseEntity<?> editPost(@PathVariable Long postId, @RequestBody PostRequest postRequest){
         try{
@@ -37,6 +40,8 @@ public class PostController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
         }
     }
+
+
     @DeleteMapping("/{postId}/deletePost")
     public ResponseEntity<?> deletePost (@PathVariable Long postId) {
         try {
@@ -46,6 +51,7 @@ public class PostController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(postNotFound.getMessage());
         }
     }
+
     @GetMapping("api/v1/getPosts")
     public ResponseEntity<?> getUserPost(@RequestBody FetchUserPostRequest request){
 

@@ -21,6 +21,8 @@ public class Admin  {
     private String password;
     @Enumerated(value = EnumType.STRING)
     private List<Authority> authority;
+    @OneToOne
+    private Profile profile;
 
 
 }

@@ -5,15 +5,16 @@ import bluma.africa.blumaafrica.data.models.Authority;
 import bluma.africa.blumaafrica.data.models.Profile;
 import bluma.africa.blumaafrica.data.models.User;
 import bluma.africa.blumaafrica.data.repositories.UserRepository;
-import bluma.africa.blumaafrica.dtos.requests.EmailRequest;
-import bluma.africa.blumaafrica.dtos.requests.ProfileRequest;
-import bluma.africa.blumaafrica.dtos.requests.Recipient;
-import bluma.africa.blumaafrica.dtos.requests.UserRequest;
+import bluma.africa.blumaafrica.dtos.requests.*;
+import bluma.africa.blumaafrica.dtos.responses.LoginResponse;
 import bluma.africa.blumaafrica.dtos.responses.ProfileResponse;
 import bluma.africa.blumaafrica.dtos.responses.UserResponse;
+import bluma.africa.blumaafrica.dtos.responses.ValidateUserLoginRequest;
 import bluma.africa.blumaafrica.exceptions.EmailException;
+import bluma.africa.blumaafrica.exceptions.IncorrectCredentials;
 import bluma.africa.blumaafrica.exceptions.UserAlreadyExist;
 import bluma.africa.blumaafrica.exceptions.UserNotFound;
+import bluma.africa.blumaafrica.validators.Validate;
 import jakarta.annotation.PostConstruct;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,6 +23,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 import static bluma.africa.blumaafrica.mapper.Mapper.introductionMessage;
 
@@ -29,10 +31,13 @@ import static bluma.africa.blumaafrica.mapper.Mapper.introductionMessage;
 @AllArgsConstructor
 @Slf4j
 public class BlumaUserServiceImpl implements UserService {
-    private final UserRepository userRepository;
+    private  UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private JwtService jwtService;
     private MailService mailService;
+
+
+    private Validate validate;
 
     private final ModelMapper mapper;
 
@@ -45,7 +50,6 @@ public class BlumaUserServiceImpl implements UserService {
         boolean isUserExistByEmail = userRepository.findByEmail(request.getEmail()).isPresent();
         if (isUserExist || isUserExistByEmail) throw new UserAlreadyExist("user already exist");
         User user = new User();
-
         String encodedPassword = passwordEncoder.encode(request.getPassword());
         user.setUsername(request.getUsername());
         user.setEmail(request.getEmail());
@@ -53,22 +57,24 @@ public class BlumaUserServiceImpl implements UserService {
         user.setAuthorities(List.of(Authority.USER));
         var savedUser = userRepository.save(user);
 
-   try {
-       Recipient recipient = new Recipient();
-       recipient.setName(user.getUsername());
-       recipient.setEmail(user.getEmail());
-       List<Recipient> recipients = List.of(
-               recipient);
 
-        EmailRequest emailRequest = new EmailRequest();
-        emailRequest.setRecipients(recipients);
-        emailRequest.setHtmlContent(introductionMessage());
-        emailRequest.setSubject("SignUp");
-        mailService.sendMail(emailRequest);
-    }catch (Exception e){
-        userRepository.delete(user);
-        throw new EmailException("invalid email");
-    }
+//   try {
+//       Recipient recipient = new Recipient();
+//       recipient.setName(user.getUsername());
+//       recipient.setEmail(user.getEmail());
+//       List<Recipient> recipients = List.of(
+//               recipient);
+//
+//        EmailRequest emailRequest = new EmailRequest();
+//        emailRequest.setRecipients(recipients);
+//        emailRequest.setHtmlContent(introductionMessage());
+//        emailRequest.setSubject("SignUp");
+//        mailService.sendMail(emailRequest);
+//    }catch (Exception e){
+//        userRepository.delete(user);
+//        throw new EmailException("invalid email");
+//    }
+
 
         String token = jwtService.generateAccessToken(user);
         UserResponse response = new UserResponse();
@@ -88,8 +94,9 @@ public class BlumaUserServiceImpl implements UserService {
 
     @Override
     public User getUserById(Long id) throws UserNotFound {
-        return userRepository.findById(id).orElseThrow(() -> new UserNotFound("user not found"));
+        return userRepository.findUserById(id).orElseThrow(() -> new UserNotFound("user not found"));
     }
+
 
     @Override
 
@@ -107,11 +114,18 @@ public class BlumaUserServiceImpl implements UserService {
         return null;
     }
 
-
-
-
-
-
-
+    @Override
+    public LoginResponse login(LoginRequest request) throws UserNotFound, IncorrectCredentials {
+        User user = validate.userLoginRequest(request);
+        if (passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+            LoginResponse response = new LoginResponse();
+            response.setUserAuthority(user.getAuthorities().get(0).toString());
+            response.setUserId(user.getId().toString());
+            return response;
+        }
+        throw  new IncorrectCredentials("incorrect password ");
     }
+
+
+}
 

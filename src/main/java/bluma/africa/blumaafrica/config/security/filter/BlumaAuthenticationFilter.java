@@ -4,6 +4,8 @@ import bluma.africa.blumaafrica.config.security.Service.JwtService;
 import bluma.africa.blumaafrica.data.models.User;
 import bluma.africa.blumaafrica.dtos.requests.LoginRequest;
 import bluma.africa.blumaafrica.dtos.responses.LoginResponse;
+import bluma.africa.blumaafrica.exceptions.UserAlreadyExist;
+import bluma.africa.blumaafrica.exceptions.UserNotFound;
 import bluma.africa.blumaafrica.service.AdminService;
 import bluma.africa.blumaafrica.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -18,6 +20,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -25,6 +28,7 @@ import java.io.InputStream;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @AllArgsConstructor
+
 
 public class BlumaAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     private final AuthenticationManager authenticationManager;
@@ -67,8 +71,15 @@ public class BlumaAuthenticationFilter extends UsernamePasswordAuthenticationFil
 
         ObjectMapper mapper = new ObjectMapper();
         User user = userService.getUserBy(authResult.getPrincipal().toString());
+        if(user == null)
+            try {
+                throw new UserNotFound("user does not exist kindly sign up");
+            } catch (UserNotFound e) {
+                throw new RuntimeException(e);
+            }
         String token = jwtService.generateAccessToken(user);
-        LoginResponse loginResponse = new LoginResponse(token);
+        LoginResponse loginResponse = new LoginResponse();
+        loginResponse.setAccessToken(token);
         response.setContentType(APPLICATION_JSON_VALUE);
         mapper.writeValue(response.getOutputStream(), loginResponse);
     }
