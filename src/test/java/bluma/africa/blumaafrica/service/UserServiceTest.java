@@ -111,7 +111,7 @@ public class  UserServiceTest {
         Assertions.assertNotNull(emailResponse);
         Assertions.assertNotNull(emailResponse.getMessageId());
         Assertions.assertNotNull(emailResponse.getCode());
-        assertEquals(201,emailResponse.getCode())
+        assertEquals(201,emailResponse.getCode());
 
     }
 
