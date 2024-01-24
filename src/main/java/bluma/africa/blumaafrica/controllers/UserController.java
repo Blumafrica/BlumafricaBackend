@@ -1,5 +1,6 @@
 package bluma.africa.blumaafrica.controllers;
 
+import bluma.africa.blumaafrica.config.security.filter.BlumaAuthenticationFilter;
 import bluma.africa.blumaafrica.dtos.requests.LoginRequest;
 import bluma.africa.blumaafrica.dtos.requests.ProfileRequest;
 import bluma.africa.blumaafrica.dtos.requests.UserRequest;
@@ -21,7 +22,6 @@ import org.springframework.web.bind.annotation.*;
 @AllArgsConstructor
 public class UserController {
     private UserService userService;
-
 
 
     @PostMapping("/register")
@@ -46,12 +46,5 @@ public class UserController {
 
     }
 
-    @PostMapping("/login")
-    public void userLogin(@RequestBody LoginRequest loginRequest) throws UserNotFound {
-        throw new UserNotFound("user not found");
 
-
-
-
-    }
 }

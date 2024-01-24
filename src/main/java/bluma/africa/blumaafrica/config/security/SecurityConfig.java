@@ -7,7 +7,6 @@ import bluma.africa.blumaafrica.config.security.utils.SecurityUtils;
 import bluma.africa.blumaafrica.data.models.Authority;
 import bluma.africa.blumaafrica.service.AdminService;
 import bluma.africa.blumaafrica.service.UserService;
-import jakarta.servlet.Filter;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,11 +18,6 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-
-import java.util.List;
 
 @Configuration
 @AllArgsConstructor
@@ -40,8 +34,7 @@ public class SecurityConfig {
         return httpSecurity.csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(c -> c.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .cors(Customizer.withDefaults())
-                .addFilterAt(login(), UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(blumaAuthorizationFilter, BlumaAuthenticationFilter.class)
+                .addFilterAt(login(), UsernamePasswordAuthenticationFilter.class).addFilterBefore(blumaAuthorizationFilter, BlumaAuthenticationFilter.class)
                 .authorizeHttpRequests(request -> request
                                 .requestMatchers(HttpMethod.POST, getPublicEndpoints()).permitAll()
                                 .requestMatchers(HttpMethod.GET, "/api/v1/user", "/api/v1/user/**").hasAnyAuthority(Authority.USER.name())
@@ -59,11 +52,8 @@ public class SecurityConfig {
     }
 
     private BlumaAuthenticationFilter login() {
-        BlumaAuthenticationFilter auth = new BlumaAuthenticationFilter(
+        return new BlumaAuthenticationFilter(
                 authenticationManager, jwtService, userService,adminService);
-        auth.setFilterProcessesUrl("/api/v1/user/login");
-        auth.setFilterProcessesUrl("/api/v1/login");
-        return auth;
     }
     private static String[] getPublicEndpoints() {
         return SecurityUtils.getPublicEndpoints()

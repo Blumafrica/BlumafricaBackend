@@ -23,7 +23,7 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @RequiredArgsConstructor
 public class Comment {
     @Id
-    @GeneratedValue(strategy = IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long commentId;
     private String commentText;
     private Long commenterId;

@@ -9,13 +9,10 @@ import lombok.Setter;
 @Setter
 @Getter
 @AllArgsConstructor
-@RequiredArgsConstructor
 public class LoginResponse {
-    private String email;
-    private String accessToke;
-    private Long id;
-    private Authority authority;
 
-    public LoginResponse(String token) {
-    }
+    private String accessToken;
+
+
+
 }
