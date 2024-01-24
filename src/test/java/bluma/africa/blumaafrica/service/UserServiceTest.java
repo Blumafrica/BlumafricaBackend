@@ -128,6 +128,14 @@ public class  UserServiceTest {
     public void getUserByIdTest(){
         Long userId = 1L;
     }
+    @Test
+    public void addingUser() throws UserNotFound, EmailException, UserAlreadyExist {
+        UserRequest request = new UserRequest();
+        request.setEmail("mariiam22222@gmail.com");
+        request.setUsername("maryam");
+        request.setPassword("mariam");
+        userService.createUser(request);
+    }
 //    @Test
 //    public void userEditPostTest() throws UserNotFound, PostNotFound {
 //
@@ -179,8 +187,8 @@ public class  UserServiceTest {
     @Test
     public void testThatUserCanLogin() throws UserNotFound, IncorrectCredentials {
         LoginRequest request = new LoginRequest();
-        request.setPassword("password");
-        request.setEmail("classidios03@gmail.com");
+        request.setPassword("mariam");
+        request.setEmail("mariiam22222@gmail.com");
         LoginResponse response = userService.login(request);
         assertNotNull(response);
     }
