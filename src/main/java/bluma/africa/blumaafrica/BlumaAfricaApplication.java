@@ -10,6 +10,8 @@ import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.annotations.servers.Server;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
+
 @OpenAPIDefinition(
         info = @Info(
                 title = "Blumafrica",
@@ -41,7 +43,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
         bearerFormat = "JWT",
         in = SecuritySchemeIn.HEADER
 )
-@SpringBootApplication
+@SpringBootApplication(exclude={DataSourceAutoConfiguration.class})
 public class  BlumaAfricaApplication {
 
     public static void main(String[] args) {
