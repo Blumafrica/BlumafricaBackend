@@ -1,8 +1,11 @@
 package bluma.africa.blumaafrica.controllers;
 
+import bluma.africa.blumaafrica.dtos.requests.FindUserRequest;
 import bluma.africa.blumaafrica.dtos.requests.LoginAsAdminRequest;
 import bluma.africa.blumaafrica.dtos.requests.PostRequest;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,16 +21,16 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
- @AutoConfigureMockMvc
+@AutoConfigureMockMvc
 @Slf4j
+//@AllArgsConstructor
 class AdminControllersTest {
-
 
 
     @Autowired
     private  MockMvc mockMvc ;
 
-    private ObjectMapper mapper = new ObjectMapper();
+    private final  ObjectMapper mapper = new ObjectMapper();
 
     @Test
     public void testThatAdminCanLogin(){
@@ -86,8 +89,9 @@ class AdminControllersTest {
     @Test
     public void testThatAdminPostCanBeFetch(){
         try {
-            mockMvc.perform(get("/api/v1/getAdminPost"))
-                    .andExpect(status().is2xxSuccessful())
+            mockMvc.perform(get("/api/v1/getAdminPost")
+                    )
+                    .andExpect(status().is3xxRedirection())
                     .andDo(print());
         } catch (Exception e) {
             e.printStackTrace();
@@ -95,7 +99,35 @@ class AdminControllersTest {
     }
 
     @Test
-    public void testThatUserPostCanBeFetch(){
+    public void testThatUserCanBeFetch(){
+        FindUserRequest request = new FindUserRequest("107", "user");
 
+        try {
+            byte [] content = mapper.writeValueAsBytes(request);
+            mockMvc.perform(get("/api/getUser/")
+                            .content(content)
+                            .contentType(MediaType.APPLICATION_JSON))
+                    .andExpect(status().is2xxSuccessful())
+                    .andDo(print());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    @Test
+    public void testThatAdminCanBeFetch(){
+        FindUserRequest request = new FindUserRequest("1", "admin");
+
+        try {
+            byte [] content = mapper.writeValueAsBytes(request);
+            mockMvc.perform(get("/api/getUser/")
+                            .content(content)
+                            .contentType(MediaType.APPLICATION_JSON))
+                    .andExpect(status().is2xxSuccessful())
+                    .andDo(print());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
