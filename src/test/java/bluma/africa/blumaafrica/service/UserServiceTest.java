@@ -101,6 +101,7 @@ public class  UserServiceTest {
         assertNotNull(userResponse);
         assertNotNull(userResponse.getMessage());
 
+
         String token = userResponse.getToken();
         assertNotNull(token);
         log.info("token ::{}",token);
@@ -110,8 +111,7 @@ public class  UserServiceTest {
         Assertions.assertNotNull(emailResponse);
         Assertions.assertNotNull(emailResponse.getMessageId());
         Assertions.assertNotNull(emailResponse.getCode());
-        assertEquals(201,emailResponse.getCode());
-
+        assertEquals(201,emailResponse.getCode())
 
     }
 
@@ -173,6 +173,7 @@ public class  UserServiceTest {
         ProfileResponse response = userService.updateProfile(profileRequest);
         assertNotNull(response.getMessage());
     }
+
 
 
 }

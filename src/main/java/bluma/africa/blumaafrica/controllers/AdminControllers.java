@@ -1,13 +1,13 @@
 package bluma.africa.blumaafrica.controllers;
 
-import bluma.africa.blumaafrica.dtos.requests.DeletePost;
-import bluma.africa.blumaafrica.dtos.requests.LoginAsAdminRequest;
-import bluma.africa.blumaafrica.dtos.requests.LoginAsAdminResponse;
-import bluma.africa.blumaafrica.dtos.requests.PostRequest;
+import bluma.africa.blumaafrica.dtos.requests.*;
 import bluma.africa.blumaafrica.dtos.responses.DeleteResponse;
 import bluma.africa.blumaafrica.dtos.responses.FetchAdminPost;
+import bluma.africa.blumaafrica.dtos.responses.FindUserResponse;
 import bluma.africa.blumaafrica.dtos.responses.PostResponse;
+import bluma.africa.blumaafrica.exceptions.AuthorityException;
 import bluma.africa.blumaafrica.exceptions.BlumaException;
+import bluma.africa.blumaafrica.exceptions.UserNotFound;
 import bluma.africa.blumaafrica.service.AdminService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -69,6 +69,17 @@ public class AdminControllers {
            return new ResponseEntity<>(e, HttpStatus.CONFLICT);
        }
        return new ResponseEntity<>(response, HttpStatus.OK);
+   }
+
+   @GetMapping("/api/getUser/")
+    public ResponseEntity<?> getUser(@RequestBody FindUserRequest request ){
+
+       try {
+           FindUserResponse response = adminService.findUser(request);
+           return new ResponseEntity<>(response, HttpStatus.FOUND);
+       } catch (UserNotFound | AuthorityException e) {
+           return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
+       }
    }
 
 
