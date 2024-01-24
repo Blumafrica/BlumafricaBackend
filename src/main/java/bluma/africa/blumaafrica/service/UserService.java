@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 
-@Component
+@Service
 public interface UserService {
     UserResponse createUser(UserRequest request) throws UserAlreadyExist, UserNotFound, EmailException;
     User getUserBy(String username);
@@ -28,4 +28,5 @@ public interface UserService {
     ProfileResponse setProfile(ProfileRequest profileRequest) throws UserNotFound;
     ProfileResponse updateProfile(ProfileRequest profileRequest) throws UserNotFound;
 
+    LoginResponse login(LoginRequest request) throws UserNotFound, IncorrectCredentials;
 }

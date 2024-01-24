@@ -9,7 +9,9 @@ import bluma.africa.blumaafrica.dtos.requests.*;
 import bluma.africa.blumaafrica.dtos.responses.LoginResponse;
 import bluma.africa.blumaafrica.dtos.responses.ProfileResponse;
 import bluma.africa.blumaafrica.dtos.responses.UserResponse;
+import bluma.africa.blumaafrica.dtos.responses.ValidateUserLoginRequest;
 import bluma.africa.blumaafrica.exceptions.EmailException;
+import bluma.africa.blumaafrica.exceptions.IncorrectCredentials;
 import bluma.africa.blumaafrica.exceptions.UserAlreadyExist;
 import bluma.africa.blumaafrica.exceptions.UserNotFound;
 import bluma.africa.blumaafrica.validators.Validate;
@@ -112,7 +114,17 @@ public class BlumaUserServiceImpl implements UserService {
         return null;
     }
 
-
+    @Override
+    public LoginResponse login(LoginRequest request) throws UserNotFound, IncorrectCredentials {
+        User user = validate.userLoginRequest(request);
+        if (passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+            LoginResponse response = new LoginResponse();
+            response.setUserAuthority(user.getAuthorities().get(0).toString());
+            response.setUserId(user.getId().toString());
+            return response;
+        }
+        throw  new IncorrectCredentials("incorrect password ");
+    }
 
 
 }

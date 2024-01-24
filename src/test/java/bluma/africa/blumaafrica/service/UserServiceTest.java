@@ -19,6 +19,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 
 import java.util.List;
@@ -49,6 +50,8 @@ public class  UserServiceTest {
     private ProfileRequest profileRequest;
     private CreateCommentRequest commentRequest;
     private  EmailRequest emailRequest;
+    @Autowired
+    private PasswordEncoder encoder;
 
 
     @BeforeEach
@@ -173,7 +176,20 @@ public class  UserServiceTest {
         ProfileResponse response = userService.updateProfile(profileRequest);
         assertNotNull(response.getMessage());
     }
+    @Test
+    public void testThatUserCanLogin() throws UserNotFound, IncorrectCredentials {
+        LoginRequest request = new LoginRequest();
+        request.setPassword("password");
+        request.setEmail("classidios03@gmail.com");
+        LoginResponse response = userService.login(request);
+        assertNotNull(response);
+    }
 
+    @Test
+    public void test(){
+        String pass = encoder.encode("password");
+        assertTrue(encoder.matches("password", pass));
+    }
 
 
 }
