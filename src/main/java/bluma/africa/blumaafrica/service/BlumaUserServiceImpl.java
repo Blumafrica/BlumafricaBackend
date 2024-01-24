@@ -33,7 +33,10 @@ public class BlumaUserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
     private JwtService jwtService;
     private MailService mailService;
+
+
     private Validate validate;
+
     private final ModelMapper mapper;
 
 
@@ -53,33 +56,23 @@ public class BlumaUserServiceImpl implements UserService {
         var savedUser = userRepository.save(user);
 
 
-//    try {
-//        EmailRequest emailRequest = new EmailRequest();
-//        emailRequest.setRecipients(List.of(new Recipient(request.getEmail())));
-//        emailRequest.setHtmlContent(introductionMessage());
-//        emailRequest.setSubject("SignUp");
-//        mailService.sendMail(emailRequest);
-//    }catch (Exception e){
-//        userRepository.delete(user);
-//        throw new EmailException("invalid email");
-//    }
+   try {
+       Recipient recipient = new Recipient();
+       recipient.setName(user.getUsername());
+       recipient.setEmail(user.getEmail());
+       List<Recipient> recipients = List.of(
+               recipient);
 
-//   try {
-//       Recipient recipient = new Recipient();
-//       recipient.setName(user.getUsername());
-//       recipient.setEmail(user.getEmail());
-//       List<Recipient> recipients = List.of(
-//               recipient);
-//
-//        EmailRequest emailRequest = new EmailRequest();
-//        emailRequest.setRecipients(recipients);
-//        emailRequest.setHtmlContent(introductionMessage());
-//        emailRequest.setSubject("SignUp");
-//        mailService.sendMail(emailRequest);
-//    }catch (Exception e){
-//        userRepository.delete(user);
-//        throw new EmailException("invalid email");
-//    }
+        EmailRequest emailRequest = new EmailRequest();
+        emailRequest.setRecipients(recipients);
+        emailRequest.setHtmlContent(introductionMessage());
+        emailRequest.setSubject("SignUp");
+        mailService.sendMail(emailRequest);
+    }catch (Exception e){
+        userRepository.delete(user);
+        throw new EmailException("invalid email");
+    }
+
 
         String token = jwtService.generateAccessToken(user);
         UserResponse response = new UserResponse();
@@ -99,7 +92,7 @@ public class BlumaUserServiceImpl implements UserService {
 
     @Override
     public User getUserById(Long id) throws UserNotFound {
-        return userRepository.findById(id).orElseThrow(() -> new UserNotFound("user not found"));
+        return userRepository.findUserById(id).orElseThrow(() -> new UserNotFound("user not found"));
     }
 
 

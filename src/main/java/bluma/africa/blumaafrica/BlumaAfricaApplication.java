@@ -1,5 +1,6 @@
 package bluma.africa.blumaafrica;
 
+import io.github.cdimascio.dotenv.Dotenv;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
@@ -10,6 +11,8 @@ import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.annotations.servers.Server;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
+
 @OpenAPIDefinition(
         info = @Info(
                 title = "Blumafrica",
@@ -46,6 +49,7 @@ public class  BlumaAfricaApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(BlumaAfricaApplication.class, args);
+        Dotenv dotenv = Dotenv.load();
     }
 
 }
