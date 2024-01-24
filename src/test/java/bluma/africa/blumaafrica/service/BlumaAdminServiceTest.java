@@ -107,7 +107,7 @@ class BlumaAdminServiceTest {
 
         @Test
         public void testThatUserProfileCanBeFound() throws UserNotFound, AuthorityException {
-            GetUserProfile request = new GetUserProfile("107", "user");
+            GetUserProfile request = new GetUserProfile("104", "user");
             Profile response = adminService.getUserProfile(request);
             assertNotNull(response);
         }

@@ -9,7 +9,9 @@ import bluma.africa.blumaafrica.dtos.requests.*;
 import bluma.africa.blumaafrica.dtos.responses.LoginResponse;
 import bluma.africa.blumaafrica.dtos.responses.ProfileResponse;
 import bluma.africa.blumaafrica.dtos.responses.UserResponse;
+import bluma.africa.blumaafrica.dtos.responses.ValidateUserLoginRequest;
 import bluma.africa.blumaafrica.exceptions.EmailException;
+import bluma.africa.blumaafrica.exceptions.IncorrectCredentials;
 import bluma.africa.blumaafrica.exceptions.UserAlreadyExist;
 import bluma.africa.blumaafrica.exceptions.UserNotFound;
 import bluma.africa.blumaafrica.validators.Validate;
@@ -56,22 +58,22 @@ public class BlumaUserServiceImpl implements UserService {
         var savedUser = userRepository.save(user);
 
 
-   try {
-       Recipient recipient = new Recipient();
-       recipient.setName(user.getUsername());
-       recipient.setEmail(user.getEmail());
-       List<Recipient> recipients = List.of(
-               recipient);
-
-        EmailRequest emailRequest = new EmailRequest();
-        emailRequest.setRecipients(recipients);
-        emailRequest.setHtmlContent(introductionMessage());
-        emailRequest.setSubject("SignUp");
-        mailService.sendMail(emailRequest);
-    }catch (Exception e){
-        userRepository.delete(user);
-        throw new EmailException("invalid email");
-    }
+//   try {
+//       Recipient recipient = new Recipient();
+//       recipient.setName(user.getUsername());
+//       recipient.setEmail(user.getEmail());
+//       List<Recipient> recipients = List.of(
+//               recipient);
+//
+//        EmailRequest emailRequest = new EmailRequest();
+//        emailRequest.setRecipients(recipients);
+//        emailRequest.setHtmlContent(introductionMessage());
+//        emailRequest.setSubject("SignUp");
+//        mailService.sendMail(emailRequest);
+//    }catch (Exception e){
+//        userRepository.delete(user);
+//        throw new EmailException("invalid email");
+//    }
 
 
         String token = jwtService.generateAccessToken(user);
@@ -112,7 +114,17 @@ public class BlumaUserServiceImpl implements UserService {
         return null;
     }
 
-
+    @Override
+    public LoginResponse login(LoginRequest request) throws UserNotFound, IncorrectCredentials {
+        User user = validate.userLoginRequest(request);
+        if (passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+            LoginResponse response = new LoginResponse();
+            response.setUserAuthority(user.getAuthorities().get(0).toString());
+            response.setUserId(user.getId().toString());
+            return response;
+        }
+        throw  new IncorrectCredentials("incorrect password ");
+    }
 
 
 }

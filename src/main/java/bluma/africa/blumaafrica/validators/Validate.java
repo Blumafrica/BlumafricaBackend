@@ -210,7 +210,11 @@ public class Validate {
     }
 
 
+    public User userLoginRequest(LoginRequest request) throws UserNotFound {
+        Optional<User> user = userRepository.findByEmail(request.getEmail());
+        if (user.isPresent()){
+             return user.get();
+        }else {throw new UserNotFound("user   email %s does not exist ");}
 
-
-
+    }
 }
