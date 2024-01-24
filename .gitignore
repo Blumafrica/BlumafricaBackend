@@ -6,13 +6,11 @@ target/
 
 
 # Ignore configuration files
-/application.properties
 /InsertIntoDatabase
-<<<<<<< HEAD
+
 /secret.properties
-=======
-secrets.properties
->>>>>>> 297616a1fa521c98c2f34aa5a7d0eb5fb97d069b
+
+
 
 
 ### STS ###
