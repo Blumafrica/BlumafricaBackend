@@ -54,7 +54,9 @@ public class BlumaUserServiceImpl implements UserService {
         user.setAuthorities(List.of(Authority.USER));
         var savedUser = userRepository.save(user);
 
+
         sendRegistrationMessage(user);
+
 
         String token = jwtService.generateAccessToken(user);
         UserResponse response = new UserResponse();
