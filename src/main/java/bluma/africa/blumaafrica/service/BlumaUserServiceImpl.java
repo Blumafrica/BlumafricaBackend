@@ -72,8 +72,6 @@ public class BlumaUserServiceImpl implements UserService {
         userRepository.delete(user);
         throw new EmailException("invalid email");
     }
-
-
         String token = jwtService.generateAccessToken(user);
         UserResponse response = new UserResponse();
         response.setId(savedUser.getId());
@@ -97,7 +95,6 @@ public class BlumaUserServiceImpl implements UserService {
 
 
     @Override
-
     public ProfileResponse setProfile(ProfileRequest profileRequest) throws UserNotFound {
         var getUser = getUserById(profileRequest.getUserId());
         Profile userProfile = mapper.map(profileRequest, Profile.class);
