@@ -14,7 +14,6 @@ import org.springframework.lang.NonNull;
 @Setter
 public class PostRequest {
 
-
     @NotNull
     private String content;
     @NotNull
@@ -23,5 +22,5 @@ public class PostRequest {
     @NotNull
     private String authority;
     @NotNull
-    private String PosterId;
+    private Long posterId;
 }

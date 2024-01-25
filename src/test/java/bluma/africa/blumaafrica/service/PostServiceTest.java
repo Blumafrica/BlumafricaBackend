@@ -31,7 +31,7 @@ public class PostServiceTest {
         postRequest.setContent(" Reaction lead to action.");
         postRequest.setDescription("Action");
         postRequest.setFileUrl("C:\\Users\\mr Adio\\IdeaProjects\\BlumafricaBackend\\src\\main\\resources\\assets\\e field.jpeg");
-        postRequest.setPosterId("1");
+        postRequest.setPosterId(1L);
 
         postRequest.setContent("Gin Jin Sin");
         postRequest.setDescription("The sinner");
@@ -76,7 +76,7 @@ public class PostServiceTest {
     public void testIfUserCanPostWithOutRegistering() throws BlumaException {
         PostRequest request = new PostRequest();
         request.setContent("just testing");
-        request.setPosterId("1");
+        request.setPosterId(1L);
         request.setDescription("let's see");
         request.setAuthority("master");
         var response  = postService.creatPost(request);

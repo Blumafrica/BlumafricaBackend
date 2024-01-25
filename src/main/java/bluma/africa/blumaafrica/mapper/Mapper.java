@@ -16,7 +16,7 @@ public class Mapper {
         Post post = new Post();
         post.setContent(postRequest.getContent());
         post.setDescription(postRequest.getDescription());
-        post.setPostOwnerId(Long.valueOf(postRequest.getPosterId()));
+        post.setPostOwnerId(postRequest.getPosterId());
         post.setCreatedAt(LocalDateTime.now());
         setAuthority(postRequest, post);
         post.setFileUrl(postRequest.getFileUrl());
@@ -32,11 +32,11 @@ public class Mapper {
     }
 
 
-    public static Likes map(LikeRequest likeRequest, String post, Authority authority) {
+    public static Likes map(LikeRequest likeRequest, Long postId, Authority authority) {
         Likes likes = new Likes();
         likes.setUserAUTHORITY(authority);
-        likes.setUserId(Long.parseLong(likeRequest.getUserId()));
-        likes.setShareId(Long.valueOf(post));
+        likes.setUserId(likeRequest.getUserId());
+        likes.setShareId(postId);
         likes.setLiked(true);
         return likes;
     }

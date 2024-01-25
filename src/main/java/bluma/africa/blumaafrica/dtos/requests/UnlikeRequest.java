@@ -9,8 +9,8 @@ import lombok.Setter;
 public class UnlikeRequest {
 
     private String likeId;
-    private String userId;
-    private String postId;
-    private String shareId;
+    private Long userId;
+    private Long postId;
+    private Long shareId;
     private String authority;
 }

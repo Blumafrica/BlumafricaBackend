@@ -12,7 +12,7 @@ public class ShareRequest {
     @NotNull
     private String sharerId;
     @NotNull
-    private String postId;
+    private Long postId;
     @NotNull
     private String title;
     @NotNull

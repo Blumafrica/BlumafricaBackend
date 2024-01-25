@@ -26,8 +26,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 //@AllArgsConstructor
 class AdminControllersTest {
 
-
-    @Autowired
     private  MockMvc mockMvc ;
 
     private final  ObjectMapper mapper = new ObjectMapper();
@@ -55,7 +53,7 @@ class AdminControllersTest {
     public void testThatUserCanPost(){
         PostRequest request =  new PostRequest();
         request.setAuthority("ADMIN");
-        request.setPosterId("1");
+        request.setPosterId(1L);
         request.setContent("Test admin");
         request.setDescription("description");
         request.setFileUrl("C:\\Users\\mariam\\Desktop\\BlumafricaBackend\\src\\main\\resources\\assets\\the cat.jpeg");

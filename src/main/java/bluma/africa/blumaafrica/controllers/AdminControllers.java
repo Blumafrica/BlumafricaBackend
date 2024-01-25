@@ -16,7 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping
+@RequestMapping("/api/v1/admin/")
 @AllArgsConstructor
 @Slf4j
 public class AdminControllers {
@@ -25,7 +25,7 @@ public class AdminControllers {
     private AdminService adminService;
 
 
-   @PostMapping("/api/v1/login/")
+   @PostMapping("/login")
     public ResponseEntity<?> loginAsAdmin(@RequestBody LoginAsAdminRequest request){
        System.out.println("e enter the end point ooo ====> ");
        log.info("response ==> e enter the end point ooo ");
@@ -40,7 +40,7 @@ public class AdminControllers {
        return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
    }
 
-   @PostMapping("/api/v1/post/")
+   @PostMapping("/post")
     public ResponseEntity<?> post(@RequestBody PostRequest request){
        PostResponse response = null;
        try {
@@ -52,14 +52,14 @@ public class AdminControllers {
        return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
    }
 
-   @GetMapping("/api/v1/getAdminPost")
+   @GetMapping("/getAdminPost")
    public ResponseEntity<?> getAllAdminPost(){
        FetchAdminPost response = adminService.fetchAllPost();
        return new ResponseEntity<>(response, HttpStatus.ACCEPTED );
 
    }
 
-   @DeleteMapping("/api/v1/deletePost/")
+   @DeleteMapping("/deletePost")
     public ResponseEntity<?> deletePost(@RequestBody DeletePost deletePost){
      DeleteResponse response = null;
 
@@ -71,7 +71,7 @@ public class AdminControllers {
        return new ResponseEntity<>(response, HttpStatus.OK);
    }
 
-   @GetMapping("/api/getUser/")
+   @GetMapping("/getUser")
     public ResponseEntity<?> getUser(@RequestBody FindUserRequest request ){
 
        try {

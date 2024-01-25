@@ -34,7 +34,7 @@ public class BlumaAuthenticationFilter extends UsernamePasswordAuthenticationFil
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
     private final UserService userService;
-    private final AdminService adminService;
+
 
     @Override
     public Authentication attemptAuthentication( HttpServletRequest request,
