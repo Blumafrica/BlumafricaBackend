@@ -10,6 +10,6 @@ import lombok.Getter;
 public class GetAllPostLikesRequest {
     @NotEmpty
     @NotNull
-    private String postId;
+    private Long postId;
 
 }

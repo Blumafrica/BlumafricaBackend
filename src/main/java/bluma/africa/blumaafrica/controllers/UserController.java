@@ -46,7 +46,7 @@ public class UserController {
         }
 
     }
-    @GetMapping("/api/login/")
+    @PostMapping("/login")
     public  ResponseEntity<?> login(@RequestBody LoginRequest request){
 
         try {

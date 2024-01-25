@@ -13,9 +13,9 @@ public class LikeRequest {
     private String authority;
     @NotNull
     @NotEmpty
-    private String userId;
+    private Long userId;
 
-    private String postId;
-    private String shareId;
+    private Long postId;
+    private Long shareId;
 
 }

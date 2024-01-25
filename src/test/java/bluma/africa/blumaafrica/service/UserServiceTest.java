@@ -63,8 +63,8 @@ public class  UserServiceTest {
         profileRequest = new ProfileRequest();
         commentRequest = new CreateCommentRequest();
 
-        userRequest.setUsername("classics");
-        userRequest.setEmail("classidios03@gmail.com");
+        userRequest.setUsername("classicsss");
+        userRequest.setEmail("classidiosss03@gmail.com");
         userRequest.setPassword("password");
         Recipient recipient = new Recipient();
         recipient.setName(userRequest.getUsername());
@@ -81,7 +81,6 @@ public class  UserServiceTest {
 
 
 
-
         profileRequest.setFirstname("John");
         profileRequest.setLastname("Mavens");
         profileRequest.setPhoneNumber("+234123454");
@@ -91,10 +90,7 @@ public class  UserServiceTest {
         profileRequest.setProfilePicture("C:\\Users\\mr Adio\\IdeaProjects\\BlumafricaBackend\\src\\main\\resources\\assets\\e field.jpeg");
         profileRequest.setCoverPicture("C:\\Users\\mr Adio\\IdeaProjects\\BlumafricaBackend\\src\\main\\resources\\assets\\e field.jpeg");
         profileRequest.setUserId(1L);
-        postRequest.setPosterId("1");
-
-
-
+        postRequest.setPosterId(1L);
 
     }
 

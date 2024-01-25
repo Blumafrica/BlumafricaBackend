@@ -29,7 +29,7 @@ class BlumaShareServiceTest {
         ShareRequest request = new ShareRequest();
         request.setSharerId("1");
         request.setContent("I love this");
-        request.setPostId("1");
+        request.setPostId(1L);
         request.setAuthority("USER");
         request.setTitle("The benin culture");
         ShareResponse response = shareService.share(request);
@@ -40,11 +40,11 @@ class BlumaShareServiceTest {
         ShareRequest request = new ShareRequest();
         request.setSharerId("1123");
         request.setContent("I love this");
-        request.setPostId("1334");
+        request.setPostId(1334L);
         request.setAuthority("USER");
         request.setTitle("The benin culture");
         assertThrows(PostNotFound.class, ()-> shareService.share(request));
-        request.setPostId("1");
+        request.setPostId(1L);
         request.setAuthority("them");
         assertThrows(AuthorityException.class, ()-> shareService.share(request));
     }

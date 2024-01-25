@@ -30,16 +30,16 @@ class BlumaLikesServiceTest {
    @Test
     public void testThatUserCanLike() throws BlumaException {
        LikeRequest likeRequest = new LikeRequest();
-       likeRequest.setUserId("1");
+       likeRequest.setUserId(1L);
        likeRequest.setAuthority("ADMIN");
-       likeRequest.setPostId("1");
+       likeRequest.setPostId(1L);
        LikeResponse response = service.userCanLikePost(likeRequest);
        assertNotNull(response);
        assertNotNull(response.getLikeId());
    }
    @Test
    public void testThatUserCanGetLikesOnAPost(){
-       GetAllPostLikesRequest request = new GetAllPostLikesRequest("1");
+       GetAllPostLikesRequest request = new GetAllPostLikesRequest(1L);
        GetAllPostLikesResponse response = service.getAllPostLikes(request);
        assertNotNull(response.getFoundLikes());
        assertEquals("working",1, response.getFoundLikes().size());
@@ -47,8 +47,8 @@ class BlumaLikesServiceTest {
     @Test
     public void testThatUserCanNotLikeTwice() {
         LikeRequest likeRequest = new LikeRequest();
-        likeRequest.setPostId("1");
-        likeRequest.setUserId("1");
+        likeRequest.setPostId(1L);
+        likeRequest.setUserId(1L);
         likeRequest.setAuthority("Admin");
         assertThrows(BlumaException.class, () -> service.userCanLikePost(likeRequest));
     }
@@ -56,8 +56,8 @@ class BlumaLikesServiceTest {
     @Test
     public void testThatUserCanLike1() throws BlumaException {
         LikeRequest likeRequest = new LikeRequest();
-        likeRequest.setPostId("1");
-        likeRequest.setUserId("1");
+        likeRequest.setPostId(1L);
+        likeRequest.setUserId(1L);
         likeRequest.setAuthority("Admin");
         LikeResponse response = service.userCanLikePost(likeRequest);
         assertNotNull(response);
@@ -68,8 +68,8 @@ class BlumaLikesServiceTest {
     public void testThatUserCanUnlike() throws PostNotFound, LikeException {
        UnlikeRequest request = new UnlikeRequest();
        request.setLikeId("1");
-       request.setUserId("1");
-       request.setPostId("1");
+       request.setUserId(1L);
+       request.setPostId(1L);
        request.setAuthority("user");
        var response = service.unlikePost(request);
        Likes likes = service.getLikes("1");
@@ -79,9 +79,9 @@ class BlumaLikesServiceTest {
    @Test
     public void testThatUserCanLikeSharedPost() throws BlumaException {
        LikeRequest request = new LikeRequest();
-       request.setShareId("1");
+       request.setShareId(1L);
        request.setAuthority("user");
-       request.setUserId("1");
+       request.setUserId(1L);
        LikeResponse response = service.likeSharedPost(request);
        assertNotNull(response);
        assertNotNull(response.getLikeId());
@@ -90,9 +90,9 @@ class BlumaLikesServiceTest {
    @Test
     public void testThatUserCanNotLikeShareTwice(){
        LikeRequest request = new LikeRequest();
-       request.setShareId("1");
+       request.setShareId(1L);
        request.setAuthority("user");
-       request.setUserId("1");
+       request.setUserId(1L);
        assertThrows(LikeException.class, ()-> service.likeSharedPost(request));
    }
 
@@ -100,8 +100,8 @@ class BlumaLikesServiceTest {
     public void testThatUserCanUnlikeShare() throws PostNotFound, LikeException {
        UnlikeRequest unlikeRequest = new UnlikeRequest();
        unlikeRequest.setLikeId("352");
-       unlikeRequest.setShareId("1");
-       unlikeRequest.setUserId("1");
+       unlikeRequest.setShareId(1L);
+       unlikeRequest.setUserId(1L);
        unlikeRequest.setAuthority("user");
         service.unLikeShare(unlikeRequest);
        Likes likes = service.getLikes("352");

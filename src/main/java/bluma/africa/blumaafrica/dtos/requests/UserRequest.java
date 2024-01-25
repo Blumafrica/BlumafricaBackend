@@ -11,8 +11,7 @@ import lombok.Setter;
 @Setter
 @Getter
 public class UserRequest {
-    @NotNull
-    @NotEmpty
+
     @NotNull(message = "input field can not be null")
     @NotBlank(message = "input field can not be blank")
     @NotEmpty(message = "input field can not be empty")
@@ -20,12 +19,8 @@ public class UserRequest {
     @NotNull(message = "input field can not be null")
     @NotBlank(message = "input field can not be blank")
     @NotEmpty(message = "input field can not be empty")
-    @Email
-    @NotNull
-    @NotEmpty
+    @Email(message = "invalid email address",regexp = "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?")
     private String email;
-    @NotNull
-    @NotEmpty
     @NotNull(message = "input field can not be null")
     @NotBlank(message = "input field can not be blank")
     @NotEmpty(message = "input field can not be empty")

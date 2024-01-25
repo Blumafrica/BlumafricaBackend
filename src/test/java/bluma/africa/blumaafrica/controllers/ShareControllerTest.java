@@ -27,7 +27,7 @@ public class ShareControllerTest {
     public void testThatUserCanSharePost(){
         ShareRequest request = new ShareRequest();
         request.setAuthority("user");
-        request.setPostId("1");
+        request.setPostId(1L);
         request.setContent("content");
         request.setTitle("burhr");
         request.setSharerId("1");

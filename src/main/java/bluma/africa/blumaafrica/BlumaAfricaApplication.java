@@ -49,7 +49,7 @@ public class  BlumaAfricaApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(BlumaAfricaApplication.class, args);
-        Dotenv dotenv = Dotenv.load();
+
     }
 
 }

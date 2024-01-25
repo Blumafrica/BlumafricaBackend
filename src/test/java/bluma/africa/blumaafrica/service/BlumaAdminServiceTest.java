@@ -58,7 +58,7 @@ class BlumaAdminServiceTest {
         postRequest.setDescription("about nigeria");
         postRequest.setContent("I love nigerian");
         postRequest.setFileUrl("C:\\Users\\mariam\\capstone-backend\\BlumafricaBackend\\src\\main\\resources\\assets\\e field.jpeg");
-        postRequest.setPosterId("1");
+        postRequest.setPosterId(1L);
         postRequest.setAuthority("ADMIN");
         PostResponse response = adminService.post(postRequest);
         assertNotNull(response);
@@ -70,7 +70,7 @@ class BlumaAdminServiceTest {
         postRequest.setDescription("about nigeria");
         postRequest.setContent("I love nigerian");
         postRequest.setFileUrl("C:\\Users\\mariam\\capstone-backend\\BlumafricaBackend\\src\\main\\resources\\assets\\e field.jpeg");
-        postRequest.setPosterId("1L");
+        postRequest.setPosterId(1L);
         postRequest.setAuthority("ADMIN");
         assertThrows(BlumaException.class, ()-> adminService.post(postRequest));
 

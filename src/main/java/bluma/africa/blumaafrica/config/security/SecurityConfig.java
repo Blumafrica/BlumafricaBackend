@@ -53,7 +53,7 @@ public class SecurityConfig {
 
     private BlumaAuthenticationFilter login() {
         return new BlumaAuthenticationFilter(
-                authenticationManager, jwtService, userService,adminService);
+                authenticationManager, jwtService, userService);
     }
     private static String[] getPublicEndpoints() {
         return SecurityUtils.getPublicEndpoints()

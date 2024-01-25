@@ -29,7 +29,7 @@ public class BlumaPostService implements PostService {
     @Override
     public PostResponse creatPost(PostRequest postRequest) throws BlumaException {
 
-        var user = userService. getUserById(Long.valueOf(postRequest.getPosterId()));
+        var user = userService. getUserById(postRequest.getPosterId());
         Long extractUserId = user.getId();
         Post post = map(postRequest);
         post.setPostOwnerId(extractUserId);
@@ -43,7 +43,7 @@ public class BlumaPostService implements PostService {
     }
 
     @Override
-    public EditPostResponse editPost(Long postId, PostRequest postRequest) throws UserNotFound, PostNotFound {
+    public EditPostResponse editPost(Long postId, PostRequest postRequest) throws PostNotFound {
         Post post = getPostById(postId);
         post.setContent(postRequest.getContent());
         post.setDescription(postRequest.getDescription());

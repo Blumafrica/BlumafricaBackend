@@ -9,13 +9,11 @@ import bluma.africa.blumaafrica.dtos.requests.*;
 import bluma.africa.blumaafrica.dtos.responses.LoginResponse;
 import bluma.africa.blumaafrica.dtos.responses.ProfileResponse;
 import bluma.africa.blumaafrica.dtos.responses.UserResponse;
-import bluma.africa.blumaafrica.dtos.responses.ValidateUserLoginRequest;
 import bluma.africa.blumaafrica.exceptions.EmailException;
 import bluma.africa.blumaafrica.exceptions.IncorrectCredentials;
 import bluma.africa.blumaafrica.exceptions.UserAlreadyExist;
 import bluma.africa.blumaafrica.exceptions.UserNotFound;
 import bluma.africa.blumaafrica.validators.Validate;
-import jakarta.annotation.PostConstruct;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -23,7 +21,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 import static bluma.africa.blumaafrica.mapper.Mapper.introductionMessage;
 
@@ -58,22 +55,7 @@ public class BlumaUserServiceImpl implements UserService {
         var savedUser = userRepository.save(user);
 
 
-  try {
-      Recipient recipient = new Recipient();
-      recipient.setName(user.getUsername());
-      recipient.setEmail(user.getEmail());
-      List<Recipient> recipients = List.of(
-              recipient);
-
-       EmailRequest emailRequest = new EmailRequest();
-       emailRequest.setRecipients(recipients);
-       emailRequest.setHtmlContent(introductionMessage());
-       emailRequest.setSubject("SignUp");
-       mailService.sendMail(emailRequest);
-   }catch (Exception e){
-       userRepository.delete(user);
-       throw new EmailException("invalid email");
-   }
+        sendRegistrationMessage(user);
 
 
         String token = jwtService.generateAccessToken(user);
@@ -82,6 +64,25 @@ public class BlumaUserServiceImpl implements UserService {
         response.setToken(token);
         response.setMessage("Successfully created");
         return response;
+    }
+
+    private void sendRegistrationMessage(User user) throws EmailException {
+        try {
+            Recipient recipient = new Recipient();
+            recipient.setName(user.getUsername());
+            recipient.setEmail(user.getEmail());
+            List<Recipient> recipients = List.of(
+                    recipient);
+
+             EmailRequest emailRequest = new EmailRequest();
+             emailRequest.setRecipients(recipients);
+             emailRequest.setHtmlContent(introductionMessage());
+             emailRequest.setSubject("SignUp");
+             mailService.sendMail(emailRequest);
+         }catch (Exception e){
+             userRepository.delete(user);
+             throw new EmailException("invalid email");
+         }
     }
 
 
@@ -99,7 +100,6 @@ public class BlumaUserServiceImpl implements UserService {
 
 
     @Override
-
     public ProfileResponse setProfile(ProfileRequest profileRequest) throws UserNotFound {
         var getUser = getUserById(profileRequest.getUserId());
         Profile userProfile = mapper.map(profileRequest, Profile.class);
@@ -118,9 +118,11 @@ public class BlumaUserServiceImpl implements UserService {
     public LoginResponse login(LoginRequest request) throws UserNotFound, IncorrectCredentials {
         User user = validate.userLoginRequest(request);
         if (passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+            String token = jwtService.generateAccessToken(user);
             LoginResponse response = new LoginResponse();
             response.setUserAuthority(user.getAuthorities().get(0).toString());
             response.setUserId(user.getId().toString());
+            response.setAccessToken(token);
             return response;
         }
         throw  new IncorrectCredentials("incorrect password ");
