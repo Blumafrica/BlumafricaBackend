@@ -8,6 +8,7 @@ import bluma.africa.blumaafrica.dtos.responses.LoginResponse;
 import bluma.africa.blumaafrica.dtos.responses.ProfileResponse;
 import bluma.africa.blumaafrica.dtos.responses.UserResponse;
 import bluma.africa.blumaafrica.exceptions.EmailException;
+import bluma.africa.blumaafrica.exceptions.IncorrectCredentials;
 import bluma.africa.blumaafrica.exceptions.UserAlreadyExist;
 import bluma.africa.blumaafrica.exceptions.UserNotFound;
 import bluma.africa.blumaafrica.service.UserService;
@@ -44,6 +45,16 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(userNotFound.getMessage());
         }
 
+    }
+    @PostMapping("/login")
+    public  ResponseEntity<?> login(@RequestBody LoginRequest request){
+
+        try {
+            LoginResponse response = userService.login(request);
+            return new ResponseEntity<>(response, HttpStatus.FOUND);
+        } catch (UserNotFound | IncorrectCredentials e) {
+            return new ResponseEntity<>(e, HttpStatus.CONFLICT);
+        }
     }
 
 }

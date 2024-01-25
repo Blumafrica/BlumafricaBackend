@@ -49,8 +49,6 @@ public class BlumaAdminService implements AdminService {
 
     }
 
-
-
     @Override
     public LoginAsAdminResponse logInAsAdmin(LoginAsAdminRequest request) throws BlumaException {
         boolean response = validate.validateAdminDetails(request);
@@ -86,8 +84,6 @@ public class BlumaAdminService implements AdminService {
         }
         throw  new BlumaException("No authority to delete");
     }
-
-
 
     @Override
     public FetchAdminPost fetchAllPost() {
@@ -149,8 +145,8 @@ public class BlumaAdminService implements AdminService {
             return response;
     }
 
-    private FindUserResponse getAdmin(String userId) throws UserNotFound {
-        Admin foundAdmin = repository.findAdminById(Long.valueOf(userId));
+    private FindUserResponse getAdmin(String adminId) throws UserNotFound {
+        Admin foundAdmin = repository.findAdminById(Long.valueOf(adminId));
         if (foundAdmin != null){
             FindUserResponse response = new FindUserResponse();
             response.setFoundAdmin(foundAdmin);

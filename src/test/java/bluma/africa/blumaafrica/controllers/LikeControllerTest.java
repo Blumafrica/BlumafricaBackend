@@ -35,8 +35,8 @@ public class LikeControllerTest {
     @Test
     public void testThatUserCanLikePost(){
         LikeRequest request = new LikeRequest();
-          request.setUserId("1");
-          request.setPostId("1");
+          request.setUserId(1L);
+          request.setPostId(1L);
           request.setAuthority("ADMIN");
         try {
             byte [] content = mapper.writeValueAsBytes(request);
@@ -52,7 +52,7 @@ public class LikeControllerTest {
 
     @Test
     public void testThatAllPostLikes(){
-        GetAllPostLikesRequest request = new GetAllPostLikesRequest("1");
+        GetAllPostLikesRequest request = new GetAllPostLikesRequest(1L);
 
         try {
             byte [] content = mapper.writeValueAsBytes(request);
@@ -70,8 +70,8 @@ public class LikeControllerTest {
     public void unlikePost(){
         UnlikeRequest request = new UnlikeRequest();
            request.setLikeId("1");
-           request.setPostId("1");
-           request.setUserId("1");
+           request.setPostId(1L);
+           request.setUserId(1L);
            request.setAuthority("user");
         try {
             byte [] content = mapper.writeValueAsBytes(request);
@@ -106,8 +106,8 @@ public class LikeControllerTest {
     public void testThatUserCanUnLike(){
         UnlikeRequest request = new UnlikeRequest();
         request.setLikeId("234");
-        request.setShareId("1");
-        request.setUserId("1");
+        request.setShareId(1L);
+        request.setUserId(1L);
         request.setAuthority("user");
         try {
             byte [] content = mapper.writeValueAsBytes(request);

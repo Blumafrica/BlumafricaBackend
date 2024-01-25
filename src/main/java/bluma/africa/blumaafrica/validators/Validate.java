@@ -34,10 +34,12 @@ public class Validate {
 
     public Boolean validatePostDetails(PostRequest postRequest) throws BlumaException {
         Admin admin = adminRepository.findAdminById(1L);
-        if (postRequest.getPosterId().equals(admin.getId().toString()) && postRequest.getAuthority().equals(Authority.ADMIN.toString()))
+        if (postRequest.getPosterId().equals(admin.getId()) && postRequest.getAuthority().equals(Authority.ADMIN.toString()))
             return true;
         throw new BlumaException("incorrect credentials");
     }
+
+
 
 
     public ValidateLikeResponse validateLikeRequest(LikeRequest likeRequest, Authority authority) throws BlumaException {
@@ -47,7 +49,7 @@ public class Validate {
     }
 
     private ValidateLikeResponse validateUserLikeRequest(LikeRequest likeRequest) throws BlumaException {
-        Post foundPost = postService.getPostById(Long.valueOf(likeRequest.getPostId()));
+        Post foundPost = postService.getPostById(likeRequest.getPostId());
         System.out.println("at validatingLike request  foundPost ==> " + foundPost);
         if (foundPost.getPostOwnerId().equals(Long.valueOf(likeRequest.getUserId())) && foundPost != null )
             return  createValidateLikeResponse(true, foundPost, foundPost.getPostOwnerId());
@@ -58,7 +60,7 @@ public class Validate {
 
     private ValidateLikeResponse validateAdminLikeRequest(LikeRequest likeRequest) throws BlumaException {
         Admin admin = adminRepository.findAdminById(1L);
-        Post foundPost = postService.getPostById(Long.valueOf(likeRequest.getPostId()));
+        Post foundPost = postService.getPostById(likeRequest.getPostId());
         System.out.println("at validatingLike request  foundPost ==> " + foundPost);
         if (likeRequest.getUserId().equals(admin.getId().toString()) && foundPost != null )
             return createValidateLikeResponse(true, foundPost, foundPost.getPostOwnerId());
@@ -75,32 +77,30 @@ public class Validate {
     public Likes checkIfUserHasLikePost(LikeRequest likeRequest) {
         List<Likes> likes = likesRepository.findAll();
         List<Likes> postLikes = likes.stream()
-                .filter((x) -> Objects.equals(x.getPostId(), Long.valueOf(likeRequest.getPostId())))
+                .filter((x) -> Objects.equals(x.getPostId(), likeRequest.getPostId()))
                 .toList();
 
         Optional<Likes> foundLike = postLikes.stream()
-                .filter((x)-> Objects.equals(x.getUserId(), Long.valueOf(likeRequest.getPostId())))
+                .filter((x)-> Objects.equals(x.getUserId(), likeRequest.getPostId()))
                 .findAny();
-        if (foundLike.isPresent())
-            return foundLike.get();
-        return null;
+        return foundLike.orElse(null);
     }
 
     public void checkIfUserHasLike(LikeRequest likeRequest) throws LikeException {
         List<Likes> likes = likesRepository.findAll();
         List<Likes> postLikes = likes.stream()
-                .filter((x) -> Objects.equals(x.getPostId(), Long.valueOf(likeRequest.getPostId())))
+                .filter((x) -> Objects.equals(x.getPostId(), likeRequest.getPostId()))
                 .toList();
 
         Optional<Likes> foundLike = postLikes.stream()
-                .filter((x)-> Objects.equals(x.getUserId(), Long.valueOf(likeRequest.getPostId())))
+                .filter((x)-> Objects.equals(x.getUserId(), likeRequest.getPostId()))
                 .findAny();
         if (foundLike.isPresent())
             throw new LikeException("user already like this post");
     }
 
     public ValidateShareResponse validateShareRequest(ShareRequest request) throws PostNotFound, AuthorityException {
-       Post foundPost = postService.getPostById(Long.valueOf(request.getPostId()));
+       Post foundPost = postService.getPostById(request.getPostId());
        if (foundPost == null)
            throw new PostNotFound("Post not found");
        Authority authority = validateAuthority(request.getAuthority());
@@ -111,7 +111,7 @@ public class Validate {
         if (USER.name().equalsIgnoreCase(authority) || Authority.ADMIN.name().equalsIgnoreCase(authority))
             if (Authority.ADMIN.name().equalsIgnoreCase(authority))
                 return Authority.ADMIN;
-            if (USER.name().equalsIgnoreCase(authority))
+        if (USER.name().equalsIgnoreCase(authority))
                 return USER;
         throw new AuthorityException("unknown authority");
     }
@@ -151,8 +151,8 @@ public class Validate {
         throw new ShareException("shared post  not found");
     }
 
-    public void checkIfUserHasLikeShare(LikeRequest request, String shareId) throws LikeException {
-        Share share = shareRepository.findShareById(Long.valueOf(shareId));
+    public void checkIfUserHasLikeShare(LikeRequest request, Long shareId) throws LikeException {
+        Share share = shareRepository.findShareById(shareId);
         List<Likes> foundLikes = likesRepository.findAll();
         List<Likes> likesList = foundLikes.stream()
                 .filter((x) -> Objects.equals(x.getShareId(), Long.valueOf(shareId)))
@@ -165,7 +165,7 @@ public class Validate {
         if (foundLike.isPresent())
             throw new LikeException("user already like");
     }
-    public Likes getUserLikeOnShare(LikeRequest request, String shareId){
+    public Likes getUserLikeOnShare(LikeRequest request, Long shareId){
 
         List<Likes> foundLikes = likesRepository.findAll();
         List<Likes> likesList = foundLikes.stream()
@@ -196,8 +196,6 @@ public class Validate {
         response.setAuthority(userAuthority);
         return response;
     }
-
-
     public void validateCommentOnShare(CreateCommentRequest createCommentRequest) throws ShareException, AuthorityException {
         Share share = shareRepository.findShareById(Long.valueOf(createCommentRequest.getPostId()));
         Authority authority = validateAuthority(createCommentRequest.getCommenterAuthority());
@@ -210,7 +208,11 @@ public class Validate {
     }
 
 
+    public User userLoginRequest(LoginRequest request) throws UserNotFound {
+        Optional<User> user = userRepository.findByEmail(request.getEmail());
+        if (user.isPresent()){
+             return user.get();
+        }else {throw new UserNotFound("user with email %s does not exist ");}
 
-
-
+    }
 }

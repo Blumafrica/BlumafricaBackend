@@ -34,7 +34,7 @@ public class BlumaAuthenticationFilter extends UsernamePasswordAuthenticationFil
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
     private final UserService userService;
-    private final AdminService adminService;
+
 
     @Override
     public Authentication attemptAuthentication( HttpServletRequest request,
@@ -78,7 +78,8 @@ public class BlumaAuthenticationFilter extends UsernamePasswordAuthenticationFil
                 throw new RuntimeException(e);
             }
         String token = jwtService.generateAccessToken(user);
-        LoginResponse loginResponse = new LoginResponse(token);
+        LoginResponse loginResponse = new LoginResponse();
+        loginResponse.setAccessToken(token);
         response.setContentType(APPLICATION_JSON_VALUE);
         mapper.writeValue(response.getOutputStream(), loginResponse);
     }
