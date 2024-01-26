@@ -16,7 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1/admin/")
+@RequestMapping("/api/v1/admin")
 @AllArgsConstructor
 @Slf4j
 public class AdminControllers {
@@ -26,31 +26,17 @@ public class AdminControllers {
 
 
    @PostMapping("/login")
-    public ResponseEntity<?> loginAsAdmin(@RequestBody LoginAsAdminRequest request){
-       System.out.println("e enter the end point ooo ====> ");
-       log.info("response ==> e enter the end point ooo ");
+    public ResponseEntity<?> loginAsAdmin(@RequestBody LoginAsAdminRequest request) {
        LoginAsAdminResponse response = null;
        try {
            response = adminService.logInAsAdmin(request);
        } catch (BlumaException e) {
            return new ResponseEntity<>("incorrect details", HttpStatus.BAD_REQUEST);
        }
-       System.out.println("No occurs  ====> ");
        log.info("passed::  error occurs ");
        return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
    }
 
-   @PostMapping("/post")
-    public ResponseEntity<?> post(@RequestBody PostRequest request){
-       PostResponse response = null;
-       try {
-           response = adminService.post(request);
-       } catch (BlumaException e) {
-           return new ResponseEntity<>("error occurs", HttpStatus.CONFLICT);
-       }
-
-       return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
-   }
 
    @GetMapping("/getAdminPost")
    public ResponseEntity<?> getAllAdminPost(){

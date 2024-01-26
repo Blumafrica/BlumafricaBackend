@@ -35,12 +35,14 @@ public class LikeControllerTest {
     @Test
     public void testThatUserCanLikePost(){
         LikeRequest request = new LikeRequest();
-          request.setUserId(1L);
+          request.setUserId(2L);
           request.setPostId(1L);
-          request.setAuthority("ADMIN");
+          request.setAuthority("User");
+          String token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE3MDYyNDQ4MzEsImV4cCI6MTcwNjMzMTIzMSwiaXNzIjoiQmx1bWFmcmljYSAuIiwic3ViIjoiY2xhc3NpZGlvc0BnbWFpbC5jb20iLCJjbGFpbXMiOlsiVVNFUiJdfQ.-htgFGzMD7O_t-PDd4dxn7nwRh5LJF9a0rEHD6NAMz0";
         try {
             byte [] content = mapper.writeValueAsBytes(request);
-            mockMvc.perform(post("/api/like/")
+            mockMvc.perform(post("/api/like/").
+                            header("Authorization","Bearer "+ token)
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(content))
                     .andExpect(status().is2xxSuccessful())

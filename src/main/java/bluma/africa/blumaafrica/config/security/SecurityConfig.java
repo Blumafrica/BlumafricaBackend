@@ -38,7 +38,6 @@ public class SecurityConfig {
                 .authorizeHttpRequests(request -> request
                                 .requestMatchers(HttpMethod.POST, getPublicEndpoints()).permitAll()
                                 .requestMatchers(HttpMethod.GET, "/api/v1/user", "/api/v1/user/**").hasAnyAuthority(Authority.USER.name())
-
                                 .requestMatchers("/api/v1/user/register",
 
                                         "/swagger-ui.html",
