@@ -61,16 +61,6 @@ public class BlumaAdminService implements AdminService {
     }
 
     @Override
-    public PostResponse post(PostRequest postRequest) throws BlumaException {
-        validate.validatePostDetails(postRequest);
-        Post post = Mapper.map(postRequest);
-        Post savedPost  = postService. save(post);
-        System.out.println("created post " + post);
-        System.out.println("post id" + post.getId());
-        return convertToResponse(savedPost);
-    }
-
-    @Override
     public Post findPostById(long id) throws PostNotFound {
         return postService.getPostById(id);
     }
@@ -159,15 +149,7 @@ public class BlumaAdminService implements AdminService {
     }
 
 
-    private PostResponse convertToResponse(Post post){
-        PostResponse response = new PostResponse();
-        response.setPostId(post.getId());
-        response.setTimePosted(post.getCreatedAt());
-        response.setPostOwnerId(post.getPostOwnerId());
-        System.out.println("response created ==> "+ response);
-        System.out.println("time posted "+response.getTimePosted());
-        return response;
-    }
+
 
 
 

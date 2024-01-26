@@ -31,13 +31,13 @@ public class Validate {
         Admin admin = adminRepository.findAdminById(1L);
         return admin.getPassword().equals(request.getPassword()) && admin.getEmail().equals(request.getEmail());
     }
+public boolean validateAdminPostDetails(PostRequest postRequest) throws BlumaException {
+    Admin admin = adminRepository.findAdminById(1L);
+    return admin != null && postRequest.getPosterId().equals(admin.getId()) &&
+            postRequest.getAuthority().equals(Authority.ADMIN.toString());
 
-    public Boolean validatePostDetails(PostRequest postRequest) throws BlumaException {
-        Admin admin = adminRepository.findAdminById(1L);
-        if (postRequest.getPosterId().equals(admin.getId()) && postRequest.getAuthority().equals(Authority.ADMIN.toString()))
-            return true;
-        throw new BlumaException("incorrect credentials");
-    }
+}
+
 
 
 
@@ -51,7 +51,7 @@ public class Validate {
     private ValidateLikeResponse validateUserLikeRequest(LikeRequest likeRequest) throws BlumaException {
         Post foundPost = postService.getPostById(likeRequest.getPostId());
         System.out.println("at validatingLike request  foundPost ==> " + foundPost);
-        if (foundPost.getPostOwnerId().equals(Long.valueOf(likeRequest.getUserId())) && foundPost != null )
+        if (foundPost.getPostOwnerId().equals(likeRequest.getUserId()) && foundPost != null )
             return  createValidateLikeResponse(true, foundPost, foundPost.getPostOwnerId());
         throw new BlumaException("invalid like request");
 

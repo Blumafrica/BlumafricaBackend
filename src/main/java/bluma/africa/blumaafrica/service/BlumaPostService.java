@@ -11,6 +11,8 @@ import bluma.africa.blumaafrica.dtos.responses.PostResponse;
 import bluma.africa.blumaafrica.exceptions.BlumaException;
 import bluma.africa.blumaafrica.exceptions.PostNotFound;
 import bluma.africa.blumaafrica.exceptions.UserNotFound;
+import bluma.africa.blumaafrica.mapper.Mapper;
+import bluma.africa.blumaafrica.validators.Validate;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -24,20 +26,33 @@ import static bluma.africa.blumaafrica.mapper.Mapper.map;
 public class BlumaPostService implements PostService {
     private final PostRepository postRepository;
     private final UserService userService;
+    private final Validate validate;
 
 
     @Override
     public PostResponse creatPost(PostRequest postRequest) throws BlumaException {
+                Post post;
+                if (validate.validateAdminPostDetails(postRequest))
+                    post = Mapper.map(postRequest);
+                 else {
+                    var user = userService.getUserById(postRequest.getPosterId());
+                    if (user == null)
+                        throw new BlumaException("User with ID " + postRequest.getPosterId() + " not found");
+                    Long extractUserId = user.getId();
+                    post = map(postRequest);
+                    post.setPostOwnerId(extractUserId);
+                }
+                var savedPost = postRepository.save(post);
+                return convertToResponse(savedPost);
+        }
 
-        var user = userService. getUserById(postRequest.getPosterId());
-        Long extractUserId = user.getId();
-        Post post = map(postRequest);
-        post.setPostOwnerId(extractUserId);
-        var savedPost = postRepository.save(post);
+
+
+    private PostResponse convertToResponse(Post post){
         PostResponse postResponse = new PostResponse();
-        postResponse.setTimePosted(savedPost.getCreatedAt());
-        postResponse.setPostId(savedPost.getId());
-        postResponse.setPostOwnerId(savedPost.getPostOwnerId());
+        postResponse.setPostId(post.getId());
+        postResponse.setTimePosted(post.getCreatedAt());
+        postResponse.setPostOwnerId(post.getPostOwnerId());
         postResponse.setMessage("Posted!!!");
         return postResponse;
     }
@@ -68,13 +83,10 @@ public class BlumaPostService implements PostService {
          return getPostById(postOwnerId).getPostOwnerId();
     }
 
-
-
     @Override
 
     public Post getPostById(String id) throws PostNotFound {
             return postRepository.findPostById(Long.valueOf(id)).orElseThrow(() -> new PostNotFound("post not found "));
-
 
         }
 
@@ -106,10 +118,7 @@ public class BlumaPostService implements PostService {
         return new FetchUserPostResponse(foundPosts);
     }
 
-    @Override
-    public Post save(Post post) {
-        return postRepository.save(post);
-    }
+
 
 
 }
