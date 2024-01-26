@@ -8,8 +8,8 @@ target/
 # Ignore configuration files
 /InsertIntoDatabase
 
-/secret.properties
-/application.properties
+#/secret.properties
+#/application.properties
 
 
 
