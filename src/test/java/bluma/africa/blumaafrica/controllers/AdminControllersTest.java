@@ -23,9 +23,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @AutoConfigureMockMvc
 @Slf4j
+@SpringBootTest
 //@AllArgsConstructor
 class AdminControllersTest {
-
+    @Autowired
     private  MockMvc mockMvc ;
 
     private final  ObjectMapper mapper = new ObjectMapper();
@@ -38,9 +39,9 @@ class AdminControllersTest {
 
         try {
             byte [] content = mapper.writeValueAsBytes(request);
-             mockMvc.perform(post("/api/v1/login/")
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .content(content))
+             mockMvc.perform(post("/api/v1/admin/login")
+                             .content(content)
+                            .contentType(MediaType.APPLICATION_JSON))
                     .andExpect(status().is2xxSuccessful())
                     .andDo(print());
         } catch (Exception e) {
@@ -56,12 +57,16 @@ class AdminControllersTest {
         request.setPosterId(1L);
         request.setContent("Test admin");
         request.setDescription("description");
-        request.setFileUrl("C:\\Users\\mariam\\Desktop\\BlumafricaBackend\\src\\main\\resources\\assets\\the cat.jpeg");
 
 
+        String token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9." +
+                "eyJpYXQiOjE3MDYyNDQxMzQsImV4cCI6MTcwNjMzMDUzNCwiaXNzIjoiQmx1bWFmcmljYSAuIiwic3ViI" +
+                "joibWFyaWlhbTIyMjIyQGdtYWlsLmNvbSIsImNsYWltcyI6WyJBRE1JTiJdfQ." +
+                "jLA9Wv9YObKiNG2qkOPX1wYwWWgm7vVYt2Fm1aYz504";
         try {
             byte [] content = mapper.writeValueAsBytes(request);
-            mockMvc.perform(post("/api/v1/post")
+            mockMvc.perform(post("/api/v1/post/post")
+                            .header("Authorization","Bearer "+token)
                     .content(content)
                     .contentType(MediaType.APPLICATION_JSON))
                     .andExpect(status().is2xxSuccessful())

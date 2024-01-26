@@ -1,6 +1,7 @@
 package bluma.africa.blumaafrica.controllers;
 
 import bluma.africa.blumaafrica.dtos.requests.FetchUserPostRequest;
+import bluma.africa.blumaafrica.dtos.requests.LoginRequest;
 import bluma.africa.blumaafrica.dtos.requests.PostRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,20 +23,32 @@ public class PostControllerTest {
     private MockMvc mockMvc;
     private ObjectMapper objectMapper;
     private PostRequest postRequest;
+
     @BeforeEach
     void setUp(){
+        objectMapper = new ObjectMapper();
         postRequest = new PostRequest();
+
         postRequest.setContent("Reader are leader");
-        postRequest.setDescription("The leaders");
+        postRequest.setDescription("The controller");
         postRequest.setFileUrl("C:\\Users\\mr Adio\\IdeaProjects\\BlumafricaBackend\\src\\main\\resources\\assets\\e field.jpeg");
+        postRequest.setAuthority("user");
         postRequest.setPosterId(1L);
+
+
 
     }
 
     @Test
     public void userPostTest(){
+        String token =
+                "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9." +
+                        "eyJpYXQiOjE3MDYyNDE1MTAsImV4cCI6MTcwNjMyNzkxMCwiaXNzIjoi" +
+                        "Qmx1bWFmcmljYSAuIiwic3ViIjoiYWRpb2xkbWpAZ21haWwuY29tIiwiY2xhaW1zIjpbIlVTRVIiXX0." +
+                        "lmnHx46f5qdx-JDrbVaWeS675sOj8VIu_bSk7b5Zebk";
         try{
-            mockMvc.perform(post("/api/v1/user/post").
+            mockMvc.perform(post("/api/v1/post/post").
+                            header("Authorization","Bearer "+ token).
                             content(objectMapper.writeValueAsBytes(postRequest)).
                             contentType(MediaType.APPLICATION_JSON)).
                     andExpect(status().is2xxSuccessful()).

@@ -22,8 +22,6 @@ public interface PostService {
    PostResponse deletePostById(Long postId) throws PostNotFound;
 
     List<Post> getUserPosts(String userId);
-
-    Post save(Post post);
     List<Post> findByPostOwnerAuthority(Authority userAuthority);
     Long getPostOwnerId(Long postOwnerId) throws PostNotFound;
     FetchUserPostResponse findUserPosts(FetchUserPostRequest request);

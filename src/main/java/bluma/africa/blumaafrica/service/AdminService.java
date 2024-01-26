@@ -17,8 +17,6 @@ public interface AdminService {
 
     LoginAsAdminResponse logInAsAdmin(LoginAsAdminRequest request) throws BlumaException;
 
-    PostResponse post(PostRequest postRequest) throws BlumaException;
-
     Post findPostById(long id) throws PostNotFound;
 
     DeleteResponse deletePost(DeletePost deletePost) throws  BlumaException;

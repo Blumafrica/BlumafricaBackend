@@ -15,7 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1/post/")
+@RequestMapping("/api/v1/post")
 @AllArgsConstructor
 public class PostController {
 
@@ -40,7 +40,6 @@ public class PostController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
         }
     }
-
 
     @DeleteMapping("/{postId}/deletePost")
     public ResponseEntity<?> deletePost (@PathVariable Long postId) {

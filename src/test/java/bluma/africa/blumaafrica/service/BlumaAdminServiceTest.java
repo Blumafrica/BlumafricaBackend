@@ -52,30 +52,6 @@ class BlumaAdminServiceTest {
         assertThrows(BlumaException.class, ()->adminService.logInAsAdmin(request));
     }
 
-    @Test
-    public void testThatAdminCanPost() throws BlumaException {
-        PostRequest postRequest = new PostRequest();
-        postRequest.setDescription("about nigeria");
-        postRequest.setContent("I love nigerian");
-        postRequest.setFileUrl("C:\\Users\\mariam\\capstone-backend\\BlumafricaBackend\\src\\main\\resources\\assets\\e field.jpeg");
-        postRequest.setPosterId(1L);
-        postRequest.setAuthority("ADMIN");
-        PostResponse response = adminService.post(postRequest);
-        assertNotNull(response);
-
-    }
-    @Test
-    public void testThatAdminCanPostThrowsBlumaExceptionWhenWrongCredentialsIsInputed() {
-        PostRequest postRequest = new PostRequest();
-        postRequest.setDescription("about nigeria");
-        postRequest.setContent("I love nigerian");
-        postRequest.setFileUrl("C:\\Users\\mariam\\capstone-backend\\BlumafricaBackend\\src\\main\\resources\\assets\\e field.jpeg");
-        postRequest.setPosterId(1L);
-        postRequest.setAuthority("ADMIN");
-        assertThrows(BlumaException.class, ()-> adminService.post(postRequest));
-
-
-    }
 
     @Test
     public void testThatAdminCanDeletePost() throws BlumaException {
