@@ -25,5 +25,6 @@ public interface PostService {
     List<Post> findByPostOwnerAuthority(Authority userAuthority);
     Long getPostOwnerId(Long postOwnerId) throws PostNotFound;
     FetchUserPostResponse findUserPosts(FetchUserPostRequest request);
+    List<PostResponse> getAllPost(int pageNo,int pageSize);
 
 }

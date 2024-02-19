@@ -25,13 +25,13 @@ public class PostController {
     public ResponseEntity<?> userPost(@RequestBody PostRequest postRequest){
         try{
             PostResponse response = postService.creatPost(postRequest);
-            return new ResponseEntity<>(response.getMessage(), HttpStatus.OK);
+            return new ResponseEntity<>(response, HttpStatus.OK);
         }catch (BlumaException userNotFound){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(userNotFound.getMessage());
         }
     }
 
-    @PostMapping("/{postId}/editPost/")
+    @PostMapping("/editPost/{postId}")
     public  ResponseEntity<?> editPost(@PathVariable Long postId, @RequestBody PostRequest postRequest){
         try{
             EditPostResponse response = postService.editPost(postId,postRequest);
@@ -56,6 +56,10 @@ public class PostController {
 
         FetchUserPostResponse response = postService.findUserPosts(request);
         return new ResponseEntity<>(response, HttpStatus.FOUND);
+    }
+    @GetMapping("/getAllPosts/{pageNo}/{pageSize}")
+    public ResponseEntity<?> getAllPost(@PathVariable int pageNo, @PathVariable int pageSize){
+        return ResponseEntity.ok(postService.getAllPost(pageNo,pageSize));
     }
 
 

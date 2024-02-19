@@ -14,6 +14,11 @@ import bluma.africa.blumaafrica.exceptions.UserNotFound;
 import bluma.africa.blumaafrica.mapper.Mapper;
 import bluma.africa.blumaafrica.validators.Validate;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -23,10 +28,12 @@ import static bluma.africa.blumaafrica.mapper.Mapper.map;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class BlumaPostService implements PostService {
     private final PostRepository postRepository;
     private final UserService userService;
     private final Validate validate;
+    private ModelMapper modelMapper;
 
 
     @Override
@@ -46,13 +53,14 @@ public class BlumaPostService implements PostService {
                 return convertToResponse(savedPost);
         }
 
-
-
     private PostResponse convertToResponse(Post post){
         PostResponse postResponse = new PostResponse();
+        postResponse.setDescription(post.getDescription());
+        postResponse.setFileUrl(post.getFileUrl());
+        postResponse.setContent(post.getContent());
         postResponse.setPostId(post.getId());
         postResponse.setTimePosted(post.getCreatedAt());
-        postResponse.setPostOwnerId(post.getPostOwnerId());
+        postResponse.setPosterId(post.getPostOwnerId());
         postResponse.setMessage("Posted!!!");
         return postResponse;
     }
@@ -114,6 +122,18 @@ public class BlumaPostService implements PostService {
         List<Post> foundPosts = getUserPosts(request.getUserId());
         return convertToResponse(foundPosts);
     }
+
+    @Override
+    public List<PostResponse> getAllPost(int pageNo, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNo -1,pageNo);
+        Page<Post>postPage = postRepository.findAll(pageable);
+        List<Post> posts = postPage.getContent();
+        log.info("posts:: {}",posts);
+        return posts.stream()
+                .map(post -> modelMapper.map(post,PostResponse.class) ).
+                toList();
+    }
+
     private FetchUserPostResponse convertToResponse(List<Post> foundPosts) {
         return new FetchUserPostResponse(foundPosts);
     }
