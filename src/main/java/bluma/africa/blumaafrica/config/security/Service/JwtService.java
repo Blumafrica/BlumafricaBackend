@@ -27,14 +27,13 @@ public class JwtService {
                 .stream()
                 .map(Authority::name)
                 .collect(Collectors.toList());
-        String token = JWT.create()
+        return JWT.create()
                 .withIssuedAt(Instant.now())
                 .withExpiresAt(Instant.now().plus(86400L, ChronoUnit.SECONDS))
                 .withIssuer("Blumafrica .")
                 .withSubject(user.getEmail())
                 .withClaim("claims",authorities)
                 .sign(Algorithm.HMAC256("secret"));
-        return token;
 
     }
     public String generateAccessTokenForAdmin(Admin admin){
@@ -42,14 +41,13 @@ public class JwtService {
                 .stream()
                 .map(Authority::name)
                 .collect(Collectors.toList());
-        String token = JWT.create()
+        return JWT.create()
                 .withIssuedAt(Instant.now())
                 .withExpiresAt(Instant.now().plus(86400L, ChronoUnit.SECONDS))
                 .withIssuer("Blumafrica .")
                 .withSubject(admin.getEmail())
                 .withClaim("claims",authorities)
                 .sign(Algorithm.HMAC256("secret"));
-        return token;
 
     }
     public String extractUsernameFromToken(String token){

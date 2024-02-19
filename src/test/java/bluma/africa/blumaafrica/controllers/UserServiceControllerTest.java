@@ -105,16 +105,16 @@ public class UserServiceControllerTest {
     @Test
     public void testThatAnotherUserCanLogin(){
         LoginRequest request = new LoginRequest();
-        request.setEmail("classidios@gmail.com");
-        request.setPassword("password");
+        request.setEmail("adioldmj@gmail.com");
+        request.setPassword("12345678");
 
         try {
             byte [] content = objectMapper.writeValueAsBytes(request);
 
-            mockMvc.perform(post("/api/v1/user/login")
+            mockMvc.perform(post("/login")
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(content))
-                    .andExpect(status().is3xxRedirection())
+                    .andExpect(status().is2xxSuccessful())
                     .andDo(print());
         } catch (Exception e) {
             e.printStackTrace();

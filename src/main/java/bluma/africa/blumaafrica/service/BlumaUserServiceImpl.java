@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 import static bluma.africa.blumaafrica.mapper.Mapper.introductionMessage;
+import static org.hibernate.cfg.JdbcSettings.USER;
 
 @Service
 @AllArgsConstructor
@@ -62,6 +63,7 @@ public class BlumaUserServiceImpl implements UserService {
         UserResponse response = new UserResponse();
         response.setId(savedUser.getId());
         response.setToken(token);
+        response.setAuthority(String.valueOf(Authority.USER));
         response.setMessage("Successfully created");
         return response;
     }
@@ -120,7 +122,7 @@ public class BlumaUserServiceImpl implements UserService {
             String token = jwtService.generateAccessToken(user);
             LoginResponse response = new LoginResponse();
             response.setUserAuthority(user.getAuthorities().get(0).toString());
-            response.setUserId(user.getId().toString());
+            response.setUserId(user.getId());
             response.setAccessToken(token);
             return response;
         }

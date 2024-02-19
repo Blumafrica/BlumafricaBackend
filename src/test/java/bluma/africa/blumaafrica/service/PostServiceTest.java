@@ -9,14 +9,19 @@ import bluma.africa.blumaafrica.dtos.responses.PostResponse;
 import bluma.africa.blumaafrica.exceptions.BlumaException;
 import bluma.africa.blumaafrica.exceptions.PostNotFound;
 import bluma.africa.blumaafrica.exceptions.UserNotFound;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
+@Slf4j
 public class PostServiceTest {
 
     @Autowired
@@ -107,6 +112,12 @@ public class PostServiceTest {
         request.setDescription("let's see");
         request.setAuthority("master");
         var response  = postService.creatPost(request);
+     }
+     @Test
+    public void getAllPostTest(){
+        List<PostResponse> posts = postService.getAllPost(1,3);
+        log.info("post :: {}",posts);
+        assertThat(posts).hasSize(3);
      }
 
 }

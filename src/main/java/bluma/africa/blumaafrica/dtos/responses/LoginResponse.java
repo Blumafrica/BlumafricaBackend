@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @Getter
 public class LoginResponse {
-    private String userId;
+    private Long userId;
     private String userAuthority;
 
     private String accessToken;

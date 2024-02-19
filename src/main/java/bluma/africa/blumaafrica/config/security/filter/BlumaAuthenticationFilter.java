@@ -80,6 +80,8 @@ public class BlumaAuthenticationFilter extends UsernamePasswordAuthenticationFil
         String token = jwtService.generateAccessToken(user);
         LoginResponse loginResponse = new LoginResponse();
         loginResponse.setAccessToken(token);
+        loginResponse.setUserId(user.getId());
+        loginResponse.setUserAuthority(user.getAuthorities().toString());
         response.setContentType(APPLICATION_JSON_VALUE);
         mapper.writeValue(response.getOutputStream(), loginResponse);
     }
